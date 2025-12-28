@@ -1,0 +1,242 @@
+{
+  "version": "1.0",
+  "created_at": "2025-12-27T10:00:00Z",
+  "last_synced_at": "2025-12-27T15:30:00Z",
+  "feature_name": "User Authentication",
+  "source_file": "/home/user/project/specs/001-user-auth/tasks.md",
+  "root_epic": "proj-a1b2",
+  "phases": {
+    "1": {
+      "name": "Setup",
+      "beads_id": "proj-a1b2.1",
+      "task_count": 3
+    },
+    "2": {
+      "name": "Foundational",
+      "beads_id": "proj-a1b2.2",
+      "task_count": 6
+    },
+    "3": {
+      "name": "User Story 1 - User Registration",
+      "beads_id": "proj-a1b2.3",
+      "user_story": "US1",
+      "priority": "P1",
+      "task_count": 8
+    },
+    "4": {
+      "name": "User Story 2 - User Login",
+      "beads_id": "proj-a1b2.4",
+      "user_story": "US2",
+      "priority": "P1",
+      "task_count": 6
+    },
+    "5": {
+      "name": "User Story 3 - Password Reset",
+      "beads_id": "proj-a1b2.5",
+      "user_story": "US3",
+      "priority": "P2",
+      "task_count": 5
+    },
+    "6": {
+      "name": "Polish & Cross-Cutting",
+      "beads_id": "proj-a1b2.6",
+      "task_count": 4
+    }
+  },
+  "tasks": {
+    "T001": {
+      "beads_id": "proj-a1b2.1.1",
+      "phase": 1,
+      "description": "Create project structure per implementation plan",
+      "file_path": null,
+      "is_parallel": false,
+      "user_story": null,
+      "line_number": 25
+    },
+    "T002": {
+      "beads_id": "proj-a1b2.1.2",
+      "phase": 1,
+      "description": "Initialize Python project with FastAPI dependencies",
+      "file_path": "pyproject.toml",
+      "is_parallel": true,
+      "user_story": null,
+      "line_number": 26
+    },
+    "T003": {
+      "beads_id": "proj-a1b2.1.3",
+      "phase": 1,
+      "description": "Configure linting and formatting tools",
+      "file_path": "pyproject.toml",
+      "is_parallel": true,
+      "user_story": null,
+      "line_number": 27
+    },
+    "T004": {
+      "beads_id": "proj-a1b2.2.1",
+      "phase": 2,
+      "description": "Setup database schema and migrations framework",
+      "file_path": "src/db/migrations/",
+      "is_parallel": false,
+      "user_story": null,
+      "line_number": 33
+    },
+    "T005": {
+      "beads_id": "proj-a1b2.2.2",
+      "phase": 2,
+      "description": "Implement authentication middleware",
+      "file_path": "src/middleware/auth.py",
+      "is_parallel": true,
+      "user_story": null,
+      "line_number": 34
+    },
+    "T006": {
+      "beads_id": "proj-a1b2.2.3",
+      "phase": 2,
+      "description": "Setup API routing structure",
+      "file_path": "src/api/router.py",
+      "is_parallel": true,
+      "user_story": null,
+      "line_number": 35
+    },
+    "T007": {
+      "beads_id": "proj-a1b2.2.4",
+      "phase": 2,
+      "description": "Create base User model",
+      "file_path": "src/models/user.py",
+      "is_parallel": false,
+      "user_story": null,
+      "line_number": 36
+    },
+    "T008": {
+      "beads_id": "proj-a1b2.2.5",
+      "phase": 2,
+      "description": "Configure error handling infrastructure",
+      "file_path": "src/core/errors.py",
+      "is_parallel": true,
+      "user_story": null,
+      "line_number": 37
+    },
+    "T009": {
+      "beads_id": "proj-a1b2.2.6",
+      "phase": 2,
+      "description": "Setup environment configuration management",
+      "file_path": "src/core/config.py",
+      "is_parallel": true,
+      "user_story": null,
+      "line_number": 38
+    },
+    "T010": {
+      "beads_id": "proj-a1b2.3.1",
+      "phase": 3,
+      "description": "Create registration request/response schemas",
+      "file_path": "src/schemas/auth.py",
+      "is_parallel": true,
+      "user_story": "US1",
+      "line_number": 46
+    },
+    "T011": {
+      "beads_id": "proj-a1b2.3.2",
+      "phase": 3,
+      "description": "Implement password hashing service",
+      "file_path": "src/services/password.py",
+      "is_parallel": true,
+      "user_story": "US1",
+      "line_number": 47
+    },
+    "T012": {
+      "beads_id": "proj-a1b2.3.3",
+      "phase": 3,
+      "description": "Implement UserService.register()",
+      "file_path": "src/services/user_service.py",
+      "is_parallel": false,
+      "user_story": "US1",
+      "line_number": 48
+    },
+    "T013": {
+      "beads_id": "proj-a1b2.3.4",
+      "phase": 3,
+      "description": "Create POST /api/auth/register endpoint",
+      "file_path": "src/api/routes/auth.py",
+      "is_parallel": false,
+      "user_story": "US1",
+      "line_number": 49
+    },
+    "T014": {
+      "beads_id": "proj-a1b2.3.5",
+      "phase": 3,
+      "description": "Add email validation",
+      "file_path": "src/services/validation.py",
+      "is_parallel": false,
+      "user_story": "US1",
+      "line_number": 50
+    },
+    "T015": {
+      "beads_id": "proj-a1b2.3.6",
+      "phase": 3,
+      "description": "Add duplicate user detection",
+      "file_path": "src/services/user_service.py",
+      "is_parallel": false,
+      "user_story": "US1",
+      "line_number": 51
+    },
+    "T016": {
+      "beads_id": "proj-a1b2.3.7",
+      "phase": 3,
+      "description": "Add registration logging",
+      "file_path": "src/services/user_service.py",
+      "is_parallel": false,
+      "user_story": "US1",
+      "line_number": 52
+    },
+    "T017": {
+      "beads_id": "proj-a1b2.3.8",
+      "phase": 3,
+      "description": "Write registration integration tests",
+      "file_path": "tests/integration/test_registration.py",
+      "is_parallel": false,
+      "user_story": "US1",
+      "line_number": 53
+    }
+  },
+  "dependencies": {
+    "phase_deps": [
+      { "phase": 2, "depends_on": 1 },
+      { "phase": 3, "depends_on": 2 },
+      { "phase": 4, "depends_on": 2 },
+      { "phase": 5, "depends_on": 2 },
+      { "phase": 6, "depends_on": [3, 4, 5] }
+    ],
+    "task_deps": [
+      { "task": "T004", "depends_on": "T001" },
+      { "task": "T007", "depends_on": "T004" },
+      { "task": "T012", "depends_on": ["T010", "T011"] },
+      { "task": "T013", "depends_on": "T012" },
+      { "task": "T014", "depends_on": "T013" },
+      { "task": "T015", "depends_on": "T014" },
+      { "task": "T016", "depends_on": "T015" },
+      { "task": "T017", "depends_on": "T016" }
+    ]
+  },
+  "stats": {
+    "total_phases": 6,
+    "total_tasks": 32,
+    "parallel_tasks": 10,
+    "sequential_tasks": 22,
+    "user_story_tasks": 20,
+    "dependencies_created": 28
+  },
+  "sync_history": [
+    {
+      "timestamp": "2025-12-27T12:00:00Z",
+      "tasks_synced": 0,
+      "conflicts_resolved": 0,
+      "direction": "initial_import"
+    },
+    {
+      "timestamp": "2025-12-27T15:30:00Z",
+      "tasks_synced": 5,
+      "conflicts_resolved": 1,
+      "direction": "bidirectional"
+    }
+  ]
+}
