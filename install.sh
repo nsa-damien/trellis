@@ -54,11 +54,19 @@ install_commands() {
     # Create destination directory if needed
     mkdir -p "$dest_dir"
 
-    # Copy command files
+    # Create symlinks to command files
     for cmd in "$COMMANDS_DIR"/*.md; do
         if [[ -f "$cmd" ]]; then
-            cp "$cmd" "$dest_dir/"
-            print_status "Installed $(basename "$cmd")"
+            local basename="$(basename "$cmd")"
+            local target="$dest_dir/$basename"
+
+            # Remove existing file/symlink if present
+            if [[ -e "$target" ]] || [[ -L "$target" ]]; then
+                rm "$target"
+            fi
+
+            ln -s "$cmd" "$target"
+            print_status "Linked $(basename "$cmd") -> $cmd"
         fi
     done
 
