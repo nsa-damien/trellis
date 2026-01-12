@@ -11,15 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - `/trellis.epics` command - Break down a PRD into sequenced, LLM-executable epics for phased implementation
 - `/trellis.implement` now generates comprehensive `test-plan.md` after implementation completion
+  - Test environment setup (prerequisites, setup steps, test accounts)
   - Manual verification checklist organized by phase and user story
   - Feature testing scenarios with step-by-step instructions
-  - Edge cases and error scenarios
-  - Integration testing flows
-  - API testing with curl examples (when applicable)
-  - UI/UX verification including accessibility checks
-  - Data validation and security testing checklists
-  - Browser/device compatibility matrix
-  - Test data requirements and sign-off checklist
+  - Customized for tech stack (API curl examples, DevTools checks, CLI examples as applicable)
 
 ## [0.1.2] - 2025-12-28
 
@@ -53,6 +48,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Architecture documentation explaining the spec-kit/beads bridge
 - AGENTS.md snippet for automatic beads awareness in Claude Code
 
+[Unreleased]: https://github.com/nsa-damien/trellis/compare/v0.1.2...HEAD
 [0.1.2]: https://github.com/nsa-damien/trellis/releases/tag/v0.1.2
 [0.1.1]: https://github.com/nsa-damien/trellis/releases/tag/v0.1.1
 [0.1.0]: https://github.com/nsa-damien/trellis/releases/tag/v0.1.0

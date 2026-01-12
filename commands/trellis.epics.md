@@ -6,7 +6,7 @@ handoffs:
     prompt: "bd create --title=\"Epic: {epic_name}\" --type=feature --priority=2"
     send: false
   - label: Implement Epic
-    agent: speckit.implement
+    agent: trellis.implement
     prompt: Implement the first ready epic from this plan
     send: true
 ---
@@ -93,132 +93,76 @@ Before finalizing an epic, verify:
 
 ## Epic Document Structure
 
-Each epic is a standalone markdown file structured as an LLM implementation prompt.
+Each epic is a standalone markdown file that an LLM can execute independently.
 
 ```markdown
 # Epic [N]: [Descriptive Title]
 
-**Phase:** [N] of [Total]
-**Milestone:** [Parent milestone from PRD]
-**Priority:** P[0-4]
-**Estimated Scope:** [Small | Medium | Large]
+**Phase:** [N] of [Total] | **Milestone:** [Parent milestone] | **Priority:** P[0-4] | **Scope:** [Small|Medium|Large]
 
 ---
 
 ## Context
-
-[2-3 paragraphs providing essential background. Include:
-- What this epic contributes to the overall product
-- What has been completed in prior epics (if any)
-- Why this work is sequenced at this point]
-
----
+[2-3 paragraphs: what this epic contributes, what prior work exists, why it's sequenced here]
 
 ## Prior State
-
-[What exists before this epic begins. Be specific about:
-- Completed functionality from previous epics
-- Existing project structure and files
-- Available dependencies or integrations]
-
----
+[What exists before this epic: completed functionality, project structure, available integrations]
 
 ## Objectives
-
-[Clear, numbered list of what this epic must accomplish. Each objective should be independently verifiable.]
-
-1. [First objective — specific and measurable]
-2. [Second objective — specific and measurable]
-3. [Third objective — specific and measurable]
+1. [Specific, measurable objective]
+2. [Specific, measurable objective]
+3. [Specific, measurable objective]
 
 ---
 
 ## Functional Requirements
 
-[Requirements for this epic only. Reference the parent PRD requirement IDs where applicable.]
-
-### Required Capabilities
-
 | ID | Requirement | PRD Reference |
 |----|-------------|---------------|
 | E[N]-001 | [What the system must do] | FR-XXX |
-| E[N]-002 | [What the system must do] | FR-XXX |
 
 ### User-Facing Behavior
+[Expected behavior from user's perspective: capabilities, interactions, feedback]
 
-[Describe the expected behavior from the user's perspective. Include:
-- What users can do after this epic is complete
-- How they interact with the new functionality
-- What feedback or responses they receive]
-
-### Edge Cases & Error Handling
-
-[Specific edge cases this epic must handle. Don't over-specify — focus on cases critical to this phase.]
-
-- **When [condition]:** [expected behavior]
+### Edge Cases
 - **When [condition]:** [expected behavior]
 
 ---
 
 ## Acceptance Criteria
-
-[Concrete, testable criteria that define "done" for this epic.]
-
-1. [ ] [First criterion — specific, observable outcome]
-2. [ ] [Second criterion — specific, observable outcome]
-3. [ ] [Third criterion — specific, observable outcome]
-
----
+1. [ ] [Testable criterion]
+2. [ ] [Testable criterion]
 
 ## Scope Boundaries
 
-### In Scope
-- [Specific functionality included]
-- [Specific functionality included]
+**In Scope:** [Functionality included]
 
-### Explicitly Out of Scope
-- [What this epic does NOT include — to prevent scope creep]
-- [Functionality deferred to later epics]
+**Out of Scope:** [What this epic does NOT include]
 
 ---
 
 ## Dependencies
 
-### Requires (Blocking)
-- [Prior epic or external dependency that must be complete]
+**Requires:** [Prior epics or external dependencies]
 
-### Enables (Unlocks)
-- [What future epics this work unblocks]
+**Enables:** [Future epics this unblocks]
 
 ---
 
-## Validation Approach
-
-[How to verify this epic is complete. Be specific enough for automated or manual testing.]
-
-1. [Validation step — what to test and expected result]
-2. [Validation step — what to test and expected result]
-3. [Validation step — what to test and expected result]
-
----
+## Validation
+1. [Test step and expected result]
+2. [Test step and expected result]
 
 ## Implementation Notes
-
-[Guidance for the implementing LLM. Include:
-- Suggested approach (without mandating specific code)
-- Patterns to follow from existing codebase
-- Potential challenges to be aware of
-- Questions to ask the user if decisions are needed]
+[Guidance: suggested approach, codebase patterns to follow, potential challenges, questions for user]
 
 ---
 
 ## Definition of Done
-
-This epic is complete when:
-1. All acceptance criteria are met
-2. Code is committed and pushed
+1. All acceptance criteria met
+2. Code committed and pushed
 3. Validation steps pass
-4. Beads issue is closed with `bd close <id>`
+4. Beads issue closed with `bd close <id>`
 ```
 
 ---
@@ -298,7 +242,7 @@ graph LR
 To implement this plan:
 
 1. Start with Epic 1 (no dependencies)
-2. Use `/speckit.implement` with the epic document
+2. Use `/trellis.implement` with the epic document
 3. Track progress with `bd` commands
 4. Validate completion using the epic's acceptance criteria
 5. Proceed to the next unblocked epic
@@ -314,23 +258,7 @@ bd ready
 
 ---
 
-## Key Principles
-
-### What Each Epic Includes
-- Complete context for standalone LLM execution
-- Functional requirements only (no specific technologies)
-- Clear acceptance criteria and validation steps
-- Explicit scope boundaries to prevent drift
-- Dependencies on prior epics clearly stated
-
-### What Each Epic Excludes
-- Code samples or implementation snippets
-- Specific technology or library mandates
-- Architecture decisions (unless from PRD Domain Context)
-- Timeline estimates
-- References to future epics' details
-
-### Epic Sizing Guidance
+## Epic Sizing
 
 | Size | Scope | Typical Content |
 |------|-------|-----------------|
@@ -342,52 +270,31 @@ Prefer Medium-sized epics. Split Large epics if possible.
 
 ---
 
-## Discovery Questions (If Needed)
+## Discovery Questions
 
-If the PRD is ambiguous or incomplete for epic decomposition, ask clarifying questions:
+If the PRD is ambiguous, ask up to 5 clarifying questions before proceeding:
 
 ```markdown
-**Question [N]:** [Specific question about scope, priority, or dependencies]
-
-**Recommended:** [Your suggested approach based on best practices]
+**Question [N]:** [Specific question]
+**Recommended:** [Your suggested approach]
 
 | Option | Description | Impact on Epics |
 |--------|-------------|-----------------|
-| A | [First option] | [How this affects decomposition] |
-| B | [Second option] | [How this affects decomposition] |
+| A | [First option] | [Effect] |
+| B | [Second option] | [Effect] |
 
-Reply with option letter, "yes" to accept recommendation, or provide your answer.
+Reply with option letter, "yes" to accept, or provide your answer.
 ```
-
-Maximum 5 clarifying questions before proceeding with decomposition.
-
----
-
-## Execution Flow
-
-1. **Receive PRD path** from user input or ask for it
-2. **Read and analyze PRD** — understand milestones, requirements, dependencies
-3. **Identify decomposition points** — where milestones naturally split
-4. **Ask clarifying questions** if PRD is ambiguous (max 5)
-5. **Generate epic index** — create the sequence map first
-6. **Generate individual epics** — create each epic document
-7. **Validate the plan** — ensure coverage and independence
-8. **Save all documents** to output directory
-9. **Create beads issues** — optionally create tracking issues
-10. **Report completion** — summarize what was created and next steps
 
 ---
 
 ## Key Rules
 
-- Use absolute paths when reading PRD and saving epics
+- Use absolute paths for all file operations
 - Each milestone produces 2-3+ epics minimum
 - No epic should reference future epic details
-- All epics must be independently implementable
-- Include explicit scope boundaries in every epic
-- Validate that epic sequence covers all PRD requirements
 - Create the index document before individual epics
-- Offer to create beads issues for tracking
+- Offer to create beads issues for tracking after generation
 
 ---
 
