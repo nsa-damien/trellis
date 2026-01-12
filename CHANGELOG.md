@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- `/trellis.epics` command - Break down a PRD into sequenced, LLM-executable epics for phased implementation
+- `/trellis.implement` now generates comprehensive `test-plan.md` after implementation completion
+  - Manual verification checklist organized by phase and user story
+  - Feature testing scenarios with step-by-step instructions
+  - Edge cases and error scenarios
+  - Integration testing flows
+  - API testing with curl examples (when applicable)
+  - UI/UX verification including accessibility checks
+  - Data validation and security testing checklists
+  - Browser/device compatibility matrix
+  - Test data requirements and sign-off checklist
+
 ## [0.1.2] - 2025-12-28
 
 ### Changed
