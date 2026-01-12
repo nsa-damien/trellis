@@ -7,16 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-01-12
+
 ### Added
 
 - `/trellis.epics` command - Break down a PRD into sequenced, LLM-executable epics for phased implementation
+- `/trellis.prd` command - Interactive PRD development workflow through structured discovery
 - `/trellis.implement` now generates comprehensive `test-plan.md` after implementation completion
   - Test environment setup (prerequisites, setup steps, test accounts)
   - Manual verification checklist organized by phase and user story
   - Feature testing scenarios with step-by-step instructions
   - Customized for tech stack (API curl examples, DevTools checks, CLI examples as applicable)
 
-## [0.1.2] - 2025-12-28
+### Changed
+
+- Streamlined README from 435 to 80 lines
+- Simplified AGENTS.md to essential commands and checklist
+- Updated ARCHITECTURE.md with correct command names
+
+### Removed
+
+- Redundant docs/AGENTS-snippet.md (content now in main docs)
+
+## [0.1.2] - 2025-12-28 [YANKED]
 
 ### Changed
 
@@ -48,7 +61,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Architecture documentation explaining the spec-kit/beads bridge
 - AGENTS.md snippet for automatic beads awareness in Claude Code
 
-[Unreleased]: https://github.com/nsa-damien/trellis/compare/v0.1.2...HEAD
-[0.1.2]: https://github.com/nsa-damien/trellis/releases/tag/v0.1.2
+[Unreleased]: https://github.com/nsa-damien/trellis/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/nsa-damien/trellis/releases/tag/v0.2.0
 [0.1.1]: https://github.com/nsa-damien/trellis/releases/tag/v0.1.1
 [0.1.0]: https://github.com/nsa-damien/trellis/releases/tag/v0.1.0
