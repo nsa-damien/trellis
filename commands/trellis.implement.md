@@ -294,7 +294,53 @@ You **MUST** consider the user input before proceeding (if not empty).
       ```
     - Run `bd sync` to commit all beads changes to git
 
-12. **Completion report**:
+12. **Generate manual test plan**:
+
+    After implementation is complete, generate `FEATURE_DIR/test-plan.md`.
+
+    **Step 12a: Gather context** from spec.md (user stories, acceptance criteria), plan.md (tech stack), contracts/ (API specs), data-model.md (entities), and the list of implemented files.
+
+    **Step 12b: Generate test-plan.md** with these sections:
+
+    ```markdown
+    # Manual Test Plan: [FEATURE_NAME]
+
+    **Generated**: [DATE] | **Feature Epic**: [ROOT_EPIC_ID] | **Status**: Complete
+
+    ## Test Environment Setup
+    - Prerequisites (software, accounts, env vars)
+    - Setup steps with commands
+    - Test user accounts and roles
+
+    ## Manual Verification Checklist
+
+    ### Phase 1: [PHASE_NAME]
+    #### User Story: [US_ID] - [TITLE]
+    **Test Case 1.1: [Scenario]**
+    - [ ] Setup: [steps]
+    - [ ] Action: [what to do]
+    - [ ] Expected: [result]
+    - [ ] Status: PASS / FAIL
+
+    ## Feature Testing Scenarios
+
+    ### Scenario 1: [Happy Path]
+    **Steps**: [numbered steps with expected behavior]
+    **Verification**: [checkboxes for specific validations]
+
+    ## Notes
+    [Space for tester observations]
+    ```
+
+    **Step 12c: Customize for implementation** - Use actual file paths, component names, API endpoints, field names, and setup commands from the implementation. Tailor to tech stack (curl examples for APIs, DevTools checks for web apps, CLI examples, etc.).
+
+    **Display confirmation**:
+    ```
+    ✓ Manual test plan generated: [FEATURE_DIR]/test-plan.md
+    Ready for QA validation.
+    ```
+
+13. **Completion report**:
 
     ```
     ═══════════════════════════════════════════════════════════
@@ -321,6 +367,7 @@ You **MUST** consider the user input before proceeding (if not empty).
     FILES MODIFIED:
     • tasks.md - All checkboxes synced
     • beads-mapping.json - Status updated
+    • test-plan.md - Manual testing guide generated
     • [List of implementation files created/modified]
 
     BEADS CLEANUP:
@@ -329,6 +376,7 @@ You **MUST** consider the user input before proceeding (if not empty).
     • Changes synced to git via `bd sync`
 
     VERIFICATION:
+    • Follow test-plan.md for comprehensive manual testing
     • Run quickstart.md scenarios to validate implementation
     • Run test suite: [test command from plan.md]
     • Review implementation against spec.md user stories
