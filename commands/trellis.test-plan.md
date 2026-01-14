@@ -19,14 +19,14 @@ You **MUST** consider the user input before proceeding (if not empty).
    - **REQUIRED**: Read plan.md for tech stack and architecture
    - **IF EXISTS**: Read tasks.md, data-model.md, contracts/, research.md, quickstart.md
 
-3. **Verify and load beads integration**:
+3. **Check for beads integration** (optional):
    - Check if `FEATURE_DIR/beads-mapping.json` exists
-   - If NOT found: Display "No beads integration found. Run `/trellis.import` first to import tasks, or use `/speckit.implement` for standard execution." and **STOP**
+   - If NOT found: Display "No beads integration found. Proceeding with spec-based test generation." and continue to step 4
    - If found: Load mapping, verify beads accessible (`bd info`), verify root epic exists (`bd show [ROOT_EPIC_ID]`)
-   - **Get current beads state**:
-   - Run: `bd show [ROOT_EPIC_ID]`, `bd ready`, `bd blocked`, `bd stats` (all with --json)
-   - Build task status map: completed, in_progress, ready (unblocked), blocked
-   - Display progress table showing phases, completion counts, ready work, and blocked tasks
+     - **Get current beads state**:
+     - Run: `bd show [ROOT_EPIC_ID]`, `bd ready`, `bd blocked`, `bd stats` (all with --json)
+     - Build task status map: completed, in_progress, ready (unblocked), blocked
+     - Display progress table showing phases, completion counts, ready work, and blocked tasks
 
 
 4. **Detect tech stack** from plan.md:
