@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.1] - 2026-01-14
+
+### Changed
+
+- `/trellis.test-plan` command now works without beads integration
+  - If `beads-mapping.json` is not found, proceeds with spec-based test generation instead of stopping
+  - Allows the command to work in projects that don't use beads for task tracking
+
 ## [0.3.0] - 2026-01-14
 
 ### Added
@@ -94,7 +102,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Architecture documentation explaining the spec-kit/beads bridge
 - AGENTS.md snippet for automatic beads awareness in Claude Code
 
-[Unreleased]: https://github.com/nsa-damien/trellis/compare/v0.3.0...HEAD
+[Unreleased]: https://github.com/nsa-damien/trellis/compare/v0.3.1...HEAD
+[0.3.1]: https://github.com/nsa-damien/trellis/compare/v0.3.0...v0.3.1
 [0.3.0]: https://github.com/nsa-damien/trellis/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/nsa-damien/trellis/releases/tag/v0.2.0
 [0.1.1]: https://github.com/nsa-damien/trellis/releases/tag/v0.1.1
