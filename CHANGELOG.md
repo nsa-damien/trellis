@@ -7,6 +7,37 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `/trellis.test-plan` command - Generate manual test file and test plan documentation for a feature specification
+  - Creates runnable test file (`FEATURE_DIR/tests/manual.{ext}`) with HTTP logging transport
+  - Generates `FEATURE_DIR/test-plan.md` with verification checklists and testing scenarios
+  - Supports Go, Python, TypeScript, and JavaScript
+  - Includes sensitive data masking for shareable logs
+
+### Fixed
+
+- `/trellis.implement` now always generates test-plan.md by executing test plan generation BEFORE final completion validation
+  - Previously, step 13 "Completion validation" closed the root epic, causing agents to stop before reaching step 14 "Generate manual test plan"
+  - Reordered steps so test plan generation (step 13) happens before completion validation and epic closure (step 14)
+  - Ensures test-plan.md is consistently created for all successful implementations
+- Refactored `/trellis.implement` command file from 667 lines to 159 lines (76% reduction)
+  - Removed excessive pseudocode and verbose bd command examples
+  - Consolidated redundant sections while preserving all functionality
+  - Improved clarity by following speckit.implement's concise style
+  - Maintained all features: parallel execution, agent specialization, validation, test plan generation
+
+### Changed
+
+- `/trellis.implement` now uses parallel agent orchestration for 3-5x faster implementation
+  - Launches multiple specialized agents simultaneously when tasks are unblocked
+  - Routes tasks to domain experts: frontend-developer, backend-architect, database-architect, python-pro, typescript-pro, golang-pro
+  - Hybrid conflict detection: predicts file overlaps and serializes conflicting tasks
+  - Medium validation: verifies files exist, syntax is valid, and relevant tests pass before marking complete
+  - Configurable parallelism via `--parallel-limit N` (default: 3) and `--no-parallel` flags
+  - All implementation agents use Opus model for complex work
+  - Completion report now includes parallel execution statistics and agent utilization
+
 ## [0.2.0] - 2026-01-12
 
 ### Added
