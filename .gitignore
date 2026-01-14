@@ -12,4 +12,3 @@ Thumbs.db
 # Test artifacts
 *.log
 tmp/
-.beads/.sync.lock
