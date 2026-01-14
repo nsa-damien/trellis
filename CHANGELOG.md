@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-01-14
+
 ### Added
 
 - `/trellis.test-plan` command - Generate manual test file and test plan documentation for a feature specification
@@ -92,7 +94,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Architecture documentation explaining the spec-kit/beads bridge
 - AGENTS.md snippet for automatic beads awareness in Claude Code
 
-[Unreleased]: https://github.com/nsa-damien/trellis/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/nsa-damien/trellis/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/nsa-damien/trellis/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/nsa-damien/trellis/releases/tag/v0.2.0
 [0.1.1]: https://github.com/nsa-damien/trellis/releases/tag/v0.1.1
 [0.1.0]: https://github.com/nsa-damien/trellis/releases/tag/v0.1.0
