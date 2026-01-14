@@ -11,6 +11,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- `/trellis.push` command - Commit and push changes with proper workflow integration
+  - Runs `bd sync` for beads integration
+  - Checks for in-progress issues that should be closed
+  - Updates CHANGELOG.md for notable changes
+  - Writes concise conventional commit messages
+  - Supports beads workflow with `--from-main` sync for ephemeral branches
 - `/trellis.release` command - Create releases with changelog, release notes, and tagged GitHub releases from existing PRs
   - Validates open PR exists before proceeding
   - Analyzes changes and determines semantic version (major/minor/patch)
