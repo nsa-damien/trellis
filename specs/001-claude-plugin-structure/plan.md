@@ -38,7 +38,7 @@
        "email": "support@northshoreautomation.com"
      },
      "repository": "https://github.com/NorthShoreAutomation/trellis",
-     "license": "MIT",
+     "license": "Proprietary",
      "keywords": ["spec-kit", "beads", "task-tracking", "planning"]
    }
    ```
@@ -90,14 +90,14 @@
 ### For Users
 
 ```bash
-claude plugin add github:NorthShoreAutomation/trellis
+claude plugin install github:NorthShoreAutomation/trellis
 ```
 
 ### For Contributors
 
 ```bash
 git clone https://github.com/NorthShoreAutomation/trellis.git
-claude plugin add /path/to/local/trellis
+claude --plugin-dir /path/to/trellis
 ```
 
 ## Migrating from Symlink Installation
@@ -113,7 +113,7 @@ If you previously installed Trellis using `install.sh`:
 
 2. Install via plugin:
    ```bash
-   claude plugin add github:NorthShoreAutomation/trellis
+   claude plugin install github:NorthShoreAutomation/trellis
    ```
 ```
 

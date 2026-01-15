@@ -89,12 +89,12 @@ GitHub installation provides easy distribution. Local path installation enables 
 
 **End user installation:**
 ```bash
-claude plugin add github:NorthShoreAutomation/trellis
+claude plugin install github:NorthShoreAutomation/trellis
 ```
 
 **Contributor installation:**
 ```bash
-claude plugin add /path/to/local/trellis
+claude --plugin-dir /path/to/trellis
 ```
 
 **Key behaviors:**

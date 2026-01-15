@@ -5,7 +5,7 @@
 **Feature Name:** Claude Plugin Structure
 **Version:** 1.0
 **Status:** Draft
-**Created:** 2025-01-14
+**Created:** 2026-01-14
 
 ### Problem Statement
 
@@ -23,7 +23,7 @@ Configure Trellis as a native Claude Code plugin that users can install directly
 
 ### Success Criteria
 
-1. Users can install Trellis with a single command: `claude plugin add github:NorthShoreAutomation/trellis`
+1. Users can install Trellis with a single command: `claude plugin install github:NorthShoreAutomation/trellis`
 2. All existing Trellis commands (`/trellis.import`, `/trellis.sync`, etc.) work after installation
 3. Users can update the plugin using Claude's standard update mechanism
 4. Users can uninstall cleanly without orphaned files or broken references
@@ -67,7 +67,7 @@ All Trellis commands must be discoverable by Claude's plugin system without addi
 Users must be able to install Trellis using Claude's native plugin installation workflow.
 
 **Acceptance Criteria:**
-- Installation works via `claude plugin add github:NorthShoreAutomation/trellis`
+- Installation works via `claude plugin install github:NorthShoreAutomation/trellis`
 - No manual steps required after the install command
 - Installation provides feedback confirming available commands
 - Failed installations provide clear error messages
@@ -95,7 +95,7 @@ Existing users with symlink installations should have a clear migration path.
 Contributors must be able to install Trellis from a local path for development and testing.
 
 **Acceptance Criteria:**
-- Local path installation works via `claude plugin add /path/to/local/trellis`
+- Local path installation works via `claude --plugin-dir /path/to/trellis`
 - Edits to command files are reflected immediately without reinstallation
 - Development workflow is documented in README
 
@@ -110,7 +110,7 @@ Contributors must be able to install Trellis from a local path for development a
 
 **Flow:**
 1. User has Claude Code installed
-2. User runs `claude plugin add github:NorthShoreAutomation/trellis`
+2. User runs `claude plugin install github:NorthShoreAutomation/trellis`
 3. Claude confirms successful installation and lists available commands
 4. User runs `/trellis.status` to verify commands work
 
@@ -126,7 +126,7 @@ Contributors must be able to install Trellis from a local path for development a
 **Flow:**
 1. User reads migration documentation
 2. User removes existing symlinks from `~/.claude/commands/` or `.claude/commands/` (required prerequisite)
-3. User installs via plugin: `claude plugin add github:NorthShoreAutomation/trellis`
+3. User installs via plugin: `claude plugin install github:NorthShoreAutomation/trellis`
 4. User verifies commands work as expected
 
 **Expected Outcome:** Clean transition with no duplicate or conflicting command definitions
@@ -150,7 +150,7 @@ Contributors must be able to install Trellis from a local path for development a
 
 **Flow:**
 1. Contributor clones the Trellis repository
-2. Contributor installs from local path: `claude plugin add /path/to/local/trellis`
+2. Contributor installs from local path: `claude --plugin-dir /path/to/trellis`
 3. Contributor edits command files in `commands/`
 4. Changes are immediately available when invoking `/trellis.*` commands
 5. Contributor tests, iterates, and commits when ready
@@ -214,8 +214,8 @@ Contributors must be able to install Trellis from a local path for development a
 
 ## Clarifications
 
-### Session 2025-01-14
+### Session 2026-01-14
 
 - Q: Should the legacy install.sh be removed or kept with deprecation notice? → A: Remove entirely, rely solely on plugin installation
 - Q: How to handle duplicate commands if user doesn't remove symlinks before plugin install? → A: Document prerequisite only; user must remove symlinks first
-- Q: How do contributors test commands during development? → A: Local path installation via `claude plugin add /path/to/local/trellis`; README must document this workflow
+- Q: How do contributors test commands during development? → A: Local path installation via `claude --plugin-dir /path/to/trellis`; README must document this workflow

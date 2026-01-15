@@ -64,6 +64,11 @@ If upgrading from the symlink-based installer:
 | `/trellis.sync` | Reconcile beads ↔ tasks.md |
 | `/trellis.ready` | Show unblocked tasks |
 | `/trellis.status` | Project health overview |
+| `/trellis.prd` | Interactive PRD development |
+| `/trellis.epics` | Break PRD into sequenced epics |
+| `/trellis.test-plan` | Generate test plan documentation |
+| `/trellis.push` | Commit and push with changelog |
+| `/trellis.release` | Create release from PR |
 
 Run any command with `--help` for options (e.g., `--dry-run`, `--force`).
 
