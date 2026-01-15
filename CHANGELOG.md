@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.1] - 2026-01-14
+
+### Fixed
+
+- `/trellis.push` and `/trellis.release` commands now use `description` frontmatter (project convention)
+- Added beads availability check before running `bd` commands to prevent errors when beads is not configured
+- Fixed prerelease detection instructions in `/trellis.release` for clarity
+- Corrected step number references in error recovery documentation
+- Simplified commit message instructions in `/trellis.push`
+
 ## [0.4.0] - 2026-01-14
 
 ### Added
@@ -121,8 +131,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Architecture documentation explaining the spec-kit/beads bridge
 - AGENTS.md snippet for automatic beads awareness in Claude Code
 
-[Unreleased]: https://github.com/nsa-damien/trellis/compare/v0.4.0...HEAD
-[0.4.0]: https://github.com/nsa-damien/trellis/compare/v0.3.1...v0.4.0
+[Unreleased]: https://github.com/NorthShoreAutomation/trellis/compare/v0.4.1...HEAD
+[0.4.1]: https://github.com/NorthShoreAutomation/trellis/compare/v0.4.0...v0.4.1
+[0.4.0]: https://github.com/NorthShoreAutomation/trellis/compare/v0.3.1...v0.4.0
 [0.3.1]: https://github.com/nsa-damien/trellis/compare/v0.3.0...v0.3.1
 [0.3.0]: https://github.com/nsa-damien/trellis/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/nsa-damien/trellis/releases/tag/v0.2.0
