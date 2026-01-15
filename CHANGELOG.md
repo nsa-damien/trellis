@@ -7,6 +7,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.1] - 2026-01-14
+
+### Fixed
+
+- `/trellis.push` and `/trellis.release` commands now use `description` frontmatter (project convention)
+- Added beads availability check before running `bd` commands to prevent errors when beads is not configured
+- Fixed prerelease detection instructions in `/trellis.release` for clarity
+- Corrected step number references in error recovery documentation
+- Simplified commit message instructions in `/trellis.push`
+
+## [0.4.0] - 2026-01-14
+
+### Added
+
+- `/trellis.push` command - Commit and push changes with proper workflow integration
+  - Runs `bd sync` for beads integration
+  - Checks for in-progress issues that should be closed
+  - Updates CHANGELOG.md for notable changes
+  - Writes concise conventional commit messages
+  - Supports beads workflow with `--from-main` sync for ephemeral branches
+- `/trellis.release` command - Create releases with changelog, release notes, and tagged GitHub releases from existing PRs
+  - Validates open PR exists before proceeding
+  - Analyzes changes and determines semantic version (major/minor/patch)
+  - Updates CHANGELOG.md following Keep a Changelog format
+  - Creates release notes in `docs/release/v{version}.md`
+  - Merges PR, creates annotated git tag, and publishes GitHub release
+  - Supports pre-release versions (alpha/beta/rc) with automatic detection
+  - Includes comprehensive error recovery and rollback instructions
+
 ## [0.3.1] - 2026-01-14
 
 ### Changed
@@ -102,7 +131,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Architecture documentation explaining the spec-kit/beads bridge
 - AGENTS.md snippet for automatic beads awareness in Claude Code
 
-[Unreleased]: https://github.com/nsa-damien/trellis/compare/v0.3.1...HEAD
+[Unreleased]: https://github.com/NorthShoreAutomation/trellis/compare/v0.4.1...HEAD
+[0.4.1]: https://github.com/NorthShoreAutomation/trellis/compare/v0.4.0...v0.4.1
+[0.4.0]: https://github.com/NorthShoreAutomation/trellis/compare/v0.3.1...v0.4.0
 [0.3.1]: https://github.com/nsa-damien/trellis/compare/v0.3.0...v0.3.1
 [0.3.0]: https://github.com/nsa-damien/trellis/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/nsa-damien/trellis/releases/tag/v0.2.0
