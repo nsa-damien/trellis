@@ -1,5 +1,5 @@
 ---
-version: 1.0.0
+description: Create a release with changelog, release notes, and tagged GitHub release from an existing PR
 ---
 
 ## User Input
@@ -89,13 +89,9 @@ Create a release with changelog, release notes, and tagged GitHub release from a
 3. Push tag: `git push origin v{{version}}`
    - **Handle push failure**: If this fails, check if tag already exists on remote or if you have push permissions
 4. Create GitHub release:
-```bash
-   # Add --prerelease flag if this is a pre-release version
-   gh release create v{{version}} \
-     --title "v{{version}}" \
-     --notes-file docs/release/v{{version}}.md \
-     $(if [[ "{{version}}" =~ (alpha|beta|rc) ]]; then echo "--prerelease"; fi)
-```
+   - Determine if pre-release: check if version contains `-alpha`, `-beta`, or `-rc`
+   - Run: `gh release create v{{version}} --title "v{{version}}" --notes-file docs/release/v{{version}}.md`
+   - Add `--prerelease` flag if version contains alpha/beta/rc suffix
    - **Handle release creation failure**: If `gh release create` fails, check the error:
      - If release already exists: `gh release view v{{version}}` to see existing release
      - If notes file missing: Verify `docs/release/v{{version}}.md` exists
@@ -117,12 +113,12 @@ If the release process fails at any stage, follow these recovery steps:
 - No rollback needed - simply fix the issue and re-run the release command
 - Uncommitted changes can be discarded: `git checkout -- .`
 
-### If failure occurs AFTER merging PR but BEFORE tagging (step 6):
+### If failure occurs AFTER merging PR but BEFORE tagging (step 6 complete, step 7 pending):
 - PR is merged but no tag/release exists
 - Simply re-run the release command, it will skip to tagging
 - Or manually complete: create tag and release using steps 7-8
 
-### If failure occurs AFTER tagging but BEFORE release creation (step 7.1-7.3):
+### If failure occurs AFTER tagging but BEFORE release creation (steps 7.1-7.3 complete):
 - **Delete the tag**:
   - Local: `git tag -d v{{version}}`
   - Remote: `git push origin --delete v{{version}}`

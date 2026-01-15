@@ -1,5 +1,5 @@
 ---
-version: 1.0.0
+description: Commit and push current changes to the remote repository with changelog updates
 ---
 
 ## User Input
@@ -17,25 +17,21 @@ Commit and push the current changes to the remote repository.
 
 1. Run `git status` to see all staged and unstaged changes
 2. Run `git diff --staged` and `git diff` to understand what changed
-3. If using beads, run `bd sync --from-main` to pull latest beads updates (if on ephemeral branch)
-4. Check `bd list --status=in_progress` to see if any issues should be closed with `bd close <id>`
-5. Update the CHANGELOG.md file for any changes that should be documented for a subsequent release:
+3. If beads is configured (`.beads/` directory exists and `bd` command available):
+   - Run `bd sync --from-main` to pull latest beads updates (if not on main branch)
+   - Run `bd list --status=in_progress` to see if any issues should be closed with `bd close <id>`
+   - If `bd` commands fail, warn user but continue with git operations
+4. Update the CHANGELOG.md file for any changes that should be documented for a subsequent release:
    - New features, bug fixes, breaking changes, deprecations
    - Skip for minor typos, internal refactoring, or documentation-only changes
-6. Stage all relevant changes with `git add`
-7. Write a commit message that:
+5. Stage all relevant changes with `git add`
+6. Write a commit message that:
    - Uses a single concise subject line (50 chars or less if possible)
    - Follows conventional commit format when appropriate (feat:, fix:, refactor:, docs:, chore:, etc.)
    - Focuses on WHAT changed and WHY, not HOW
-   - Does NOT include lengthy descriptions, bullet lists, or verbose explanations
-   - Includes the standard co-authored-by footer:
-     ```
-     🤖 Generated with [Claude Code](https://claude.com/claude-code)
-     ```
-8. Commit the changes
-9. Push to the current branch with `git push` (use `-u origin <branch>` if no upstream is set)
-10. Do NOT create a pull request
-
+7. Commit the changes
+8. Push to the current branch with `git push` (use `-u origin <branch>` if no upstream is set)
+9. Do NOT create a pull request
 ## Important
 
 - Keep the commit message short and meaningful
