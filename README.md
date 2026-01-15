@@ -23,11 +23,37 @@ spec-kit                    Trellis
 **Prerequisites:** [Claude Code](https://claude.ai/code), [beads](https://github.com/steveyegge/beads), [spec-kit](https://github.com/github/spec-kit)
 
 ```bash
-git clone https://github.com/nsa-damien/trellis.git
-cd trellis
-./install.sh           # User-level (all projects)
-./install.sh --project # Project-level (single project)
+claude plugin install github:NorthShoreAutomation/trellis
 ```
+
+## Development
+
+For contributors developing Trellis locally:
+
+```bash
+git clone https://github.com/NorthShoreAutomation/trellis.git
+claude --plugin-dir /path/to/trellis
+```
+
+The `--plugin-dir` flag loads the plugin for that session. Changes to command files are reflected on restart.
+
+## Migration
+
+If upgrading from the symlink-based installer:
+
+1. Remove existing symlinks:
+   ```bash
+   # Check for and remove user-level symlinks
+   rm -f ~/.claude/commands/trellis.*.md
+
+   # Check for and remove project-level symlinks
+   rm -f .claude/commands/trellis.*.md
+   ```
+
+2. Install via plugin:
+   ```bash
+   claude plugin install github:NorthShoreAutomation/trellis
+   ```
 
 ## Commands
 
@@ -38,6 +64,11 @@ cd trellis
 | `/trellis.sync` | Reconcile beads ↔ tasks.md |
 | `/trellis.ready` | Show unblocked tasks |
 | `/trellis.status` | Project health overview |
+| `/trellis.prd` | Interactive PRD development |
+| `/trellis.epics` | Break PRD into sequenced epics |
+| `/trellis.test-plan` | Generate test plan documentation |
+| `/trellis.push` | Commit and push with changelog |
+| `/trellis.release` | Create release from PR |
 
 Run any command with `--help` for options (e.g., `--dry-run`, `--force`).
 
@@ -76,4 +107,4 @@ bd stats
 
 ## License
 
-MIT - See [LICENSE](LICENSE)
+Proprietary - See [LICENSE](LICENSE)

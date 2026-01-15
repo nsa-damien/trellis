@@ -7,6 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-01-14
+
+### Added
+
+- `.claude-plugin/plugin.json` manifest for native Claude Code plugin installation
+- `CLAUDE.md` for Claude Code guidance when working in this repository
+
+### Changed
+
+- **BREAKING:** License changed from MIT to Proprietary
+  - Use restricted to North Shore Automation employees and contractors only
+- Installation now uses `claude plugin install github:NorthShoreAutomation/trellis`
+- Contributors can load locally via `claude --plugin-dir /path/to/trellis`
+
+### Removed
+
+- **BREAKING:** `install.sh` symlink-based installer removed
+  - Existing users must migrate to plugin installation (see Migration section in README)
+
 ## [0.4.1] - 2026-01-14
 
 ### Fixed
@@ -131,7 +150,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Architecture documentation explaining the spec-kit/beads bridge
 - AGENTS.md snippet for automatic beads awareness in Claude Code
 
-[Unreleased]: https://github.com/NorthShoreAutomation/trellis/compare/v0.4.1...HEAD
+[Unreleased]: https://github.com/NorthShoreAutomation/trellis/compare/v0.5.0...HEAD
+[0.5.0]: https://github.com/NorthShoreAutomation/trellis/compare/v0.4.1...v0.5.0
 [0.4.1]: https://github.com/NorthShoreAutomation/trellis/compare/v0.4.0...v0.4.1
 [0.4.0]: https://github.com/NorthShoreAutomation/trellis/compare/v0.3.1...v0.4.0
 [0.3.1]: https://github.com/nsa-damien/trellis/compare/v0.3.0...v0.3.1
