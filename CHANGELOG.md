@@ -44,13 +44,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Includes detailed command references and practical examples
   - Provides troubleshooting tips and best practices
 
-### Changed
-
-- `/trellis.release` now auto-creates a PR if one doesn't exist
-  - No longer stops with "create a PR first" error
-  - Checks for uncommitted changes and offers to commit them
-  - Creates PR automatically, then continues with release process
-
 ## [0.5.0] - 2026-01-14
 
 ### Added
