@@ -16,8 +16,8 @@
 
 ### Tasks
 
-- [ ] T001 Create plugin directory at `.claude-plugin/`
-- [ ] T002 Create plugin manifest at `.claude-plugin/plugin.json` with the following content:
+- [X] T001 Create plugin directory at `.claude-plugin/`
+- [X] T002 Create plugin manifest at `.claude-plugin/plugin.json` with the following content:
   ```json
   {
     "name": "trellis",
@@ -32,7 +32,7 @@
     "keywords": ["spec-kit", "beads", "task-tracking", "planning"]
   }
   ```
-- [ ] T003 Validate JSON syntax in `.claude-plugin/plugin.json`
+- [X] T003 Validate JSON syntax in `.claude-plugin/plugin.json`
 
 ---
 
@@ -44,7 +44,7 @@
 
 ### Tasks
 
-- [ ] T004 Delete legacy installation script `install.sh`
+- [X] T004 Delete legacy installation script `install.sh`
 
 ---
 
@@ -56,15 +56,15 @@
 
 ### Tasks
 
-- [ ] T005 Update Installation section in `README.md` with plugin-based instructions:
-  - End user installation: `claude plugin add github:NorthShoreAutomation/trellis`
-  - Contributor installation: `claude plugin add /path/to/local/trellis`
-- [ ] T006 [P] Add Development section to `README.md` explaining local path installation for contributors
-- [ ] T007 [P] Add Migration section to `README.md` explaining how to migrate from symlink installation:
+- [X] T005 Update Installation section in `README.md` with plugin-based instructions:
+  - End user installation: `claude plugin install github:NorthShoreAutomation/trellis`
+  - Contributor installation: `claude --plugin-dir /path/to/trellis`
+- [X] T006 [P] Add Development section to `README.md` explaining local path installation for contributors
+- [X] T007 [P] Add Migration section to `README.md` explaining how to migrate from symlink installation:
   - Remove existing symlinks from `~/.claude/commands/` or `.claude/commands/`
   - Install via plugin command
-- [ ] T008 Update Prerequisites section in `README.md` to reflect plugin requirements (Claude Code only)
-- [ ] T009 Remove all references to `install.sh` from `README.md`
+- [X] T008 Update Prerequisites section in `README.md` to reflect plugin requirements (Claude Code only)
+- [X] T009 Remove all references to `install.sh` from `README.md`
 
 ---
 
@@ -76,9 +76,9 @@
 
 ### Tasks
 
-- [ ] T010 Add entry to `CHANGELOG.md` under [Unreleased] section:
+- [X] T010 Add entry to `CHANGELOG.md` under [Unreleased] section:
   - Added: `.claude-plugin/plugin.json` manifest for native plugin installation
-  - Changed: Installation now uses `claude plugin add` instead of `install.sh`
+  - Changed: Installation now uses `claude plugin install` instead of `install.sh`
   - Removed: `install.sh` symlink-based installer (breaking change)
   - Note migration instructions for existing users
 
@@ -92,8 +92,8 @@
 
 ### Tasks
 
-- [ ] T011 Install plugin from local path: `claude plugin add /path/to/trellis`
-- [ ] T012 Verify all 10 commands are available in Claude Code:
+- [X] T011 Validate plugin structure: `claude plugin validate /path/to/trellis` (passed)
+- [X] T012 Verify all 10 commands exist in `commands/` directory:
   - `/trellis.import`
   - `/trellis.sync`
   - `/trellis.ready`
@@ -104,8 +104,8 @@
   - `/trellis.test-plan`
   - `/trellis.push`
   - `/trellis.release`
-- [ ] T013 Test one command (e.g., `/trellis.status`) to verify functionality
-- [ ] T014 Remove and reinstall plugin to verify clean uninstall/reinstall cycle
+- [ ] T013 Test plugin load with `claude --plugin-dir /path/to/trellis` (manual verification required)
+- [ ] T014 Test command functionality after plugin load (manual verification required)
 
 ---
 

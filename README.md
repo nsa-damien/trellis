@@ -23,11 +23,37 @@ spec-kit                    Trellis
 **Prerequisites:** [Claude Code](https://claude.ai/code), [beads](https://github.com/steveyegge/beads), [spec-kit](https://github.com/github/spec-kit)
 
 ```bash
-git clone https://github.com/nsa-damien/trellis.git
-cd trellis
-./install.sh           # User-level (all projects)
-./install.sh --project # Project-level (single project)
+claude plugin install github:NorthShoreAutomation/trellis
 ```
+
+## Development
+
+For contributors developing Trellis locally:
+
+```bash
+git clone https://github.com/NorthShoreAutomation/trellis.git
+claude --plugin-dir /path/to/trellis
+```
+
+The `--plugin-dir` flag loads the plugin for that session. Changes to command files are reflected on restart.
+
+## Migration
+
+If upgrading from the symlink-based installer:
+
+1. Remove existing symlinks:
+   ```bash
+   # Check for and remove user-level symlinks
+   rm -f ~/.claude/commands/trellis.*.md
+
+   # Check for and remove project-level symlinks
+   rm -f .claude/commands/trellis.*.md
+   ```
+
+2. Install via plugin:
+   ```bash
+   claude plugin install github:NorthShoreAutomation/trellis
+   ```
 
 ## Commands
 
@@ -76,4 +102,4 @@ bd stats
 
 ## License
 
-MIT - See [LICENSE](LICENSE)
+Proprietary - See [LICENSE](LICENSE)
