@@ -7,6 +7,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.6.0] - 2026-01-15
+
+### Added
+
+- `/trellis.pr` command - Create pull requests for the current branch
+  - Verifies branch state (must be on feature branch, no existing PR)
+  - Handles uncommitted changes with user confirmation
+  - Syncs beads if configured and uses related issues in PR description
+  - Creates PR with structured description (Summary, Changes, Test Plan, Related Issues)
+  - Supports draft PRs via "draft" argument
+  - Handles closed/merged PR states with appropriate guidance
+  - Bridges the gap between `/trellis.push` and `/trellis.release` in the workflow
+- Workflow documentation in CLAUDE.md showing `/trellis.push` → `/trellis.pr` → `/trellis.release` sequence
+
+### Changed
+
+- `/trellis.release` now auto-creates a PR if one doesn't exist
+  - No longer stops with "create a PR first" error
+  - Checks for uncommitted changes and offers to commit them
+  - Creates PR automatically, then continues with release process
+  - Uses consistent PR template with Test Plan and Related Issues sections
+- Improved error handling across PR commands
+  - Explicit STOP conditions for `gh pr create` failures in both `/trellis.pr` and `/trellis.release`
+  - Explicit STOP condition for push failures in `/trellis.release` auto-create flow
+  - Better distinction between "no PR exists" vs network/auth errors
+  - Detached HEAD state detection with clear user guidance
+- Aligned force push warnings with `/trellis.push` (includes `--force-with-lease` warning)
+
 ## [0.5.1] - 2026-01-15
 
 ### Added
@@ -159,7 +187,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Architecture documentation explaining the spec-kit/beads bridge
 - AGENTS.md snippet for automatic beads awareness in Claude Code
 
-[Unreleased]: https://github.com/NorthShoreAutomation/trellis/compare/v0.5.1...HEAD
+[Unreleased]: https://github.com/NorthShoreAutomation/trellis/compare/v0.6.0...HEAD
+[0.6.0]: https://github.com/NorthShoreAutomation/trellis/compare/v0.5.1...v0.6.0
 [0.5.1]: https://github.com/NorthShoreAutomation/trellis/compare/v0.5.0...v0.5.1
 [0.5.0]: https://github.com/NorthShoreAutomation/trellis/compare/v0.4.1...v0.5.0
 [0.4.1]: https://github.com/NorthShoreAutomation/trellis/compare/v0.4.0...v0.4.1

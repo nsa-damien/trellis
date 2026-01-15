@@ -24,7 +24,17 @@ spec-kit (tasks.md) → /trellis.import → beads issues
 | `/trellis.ready` | Show unblocked tasks |
 | `/trellis.status` | Project health overview |
 | `/trellis.push` | Commit and push with changelog updates |
+| `/trellis.pr` | Create a pull request for the current branch |
 | `/trellis.release` | Create release from PR with version tag |
+
+**Typical Workflow:**
+```
+/trellis.push → /trellis.pr → /trellis.release
+     ↓              ↓              ↓
+  commit+push   create PR    merge+tag+release
+```
+
+Note: `/trellis.release` will auto-create a PR if one doesn't exist, so `/trellis.pr` is optional.
 
 ### Beads Commands
 ```bash

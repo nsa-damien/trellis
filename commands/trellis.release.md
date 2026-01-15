@@ -1,5 +1,5 @@
 ---
-description: Create a release with changelog, release notes, and tagged GitHub release from an existing PR
+description: Create a release with changelog, release notes, and tagged GitHub release (auto-creates PR if needed)
 ---
 
 ## User Input
@@ -11,14 +11,42 @@ $ARGUMENTS
 You **MUST** consider the user input before proceeding (if not empty).
 
 
-Create a release with changelog, release notes, and tagged GitHub release from an existing PR.
+Create a release with changelog, release notes, and tagged GitHub release. Automatically creates a PR if one doesn't exist.
 
 ## Instructions
 
-### 1. Verify Existing PR
-1. Run `gh pr view --json number,title,state,baseRefName` to check for an open PR
-2. **If no PR exists or PR is not open: STOP and inform the user they must create a PR first**
-3. Confirm the PR base branch (should be main/master)
+### 1. Verify or Create PR
+1. Run `git branch --show-current` to get current branch name
+2. **If empty (detached HEAD state): STOP and inform user** they must checkout a branch first
+3. **If on main/master: STOP and inform user** they must be on a feature branch to create a release
+4. Run `gh pr view --json number,title,state,baseRefName` to check for an open PR
+   - **If command fails with auth/network errors: STOP and inform user** of the connectivity issue
+5. **If no PR exists or PR is not open**, create one:
+   a. Check for uncommitted changes with `git status`
+   b. If uncommitted changes exist, ask user if they want to commit them first
+   c. If yes, stage and commit with a descriptive message (follow `/trellis.push` process)
+   d. Push to remote: `git push -u origin $(git branch --show-current)`
+      - **If push fails: STOP and inform user.** Cannot create PR without pushing to remote first.
+   e. Create the PR:
+      ```bash
+      gh pr create --title "<title>" --body "$(cat <<'EOF'
+      ## Summary
+      <!-- Auto-generated PR for release -->
+
+      ## Changes
+      <!-- See commit history -->
+
+      ## Test Plan
+      <!-- How to test these changes -->
+
+      ## Related Issues
+      <!-- Link to any related beads issues or GitHub issues -->
+      EOF
+      )"
+      ```
+   f. **If PR creation fails: STOP and inform user.** The release cannot proceed without a valid PR.
+   g. Inform user that PR was auto-created
+6. Confirm the PR base branch (should be main/master)
 
 ### 2. Analyze Changes
 1. Run `git status` and `git diff` to understand staged/unstaged changes
@@ -147,7 +175,7 @@ git push origin main
 
 ## Important
 
-- **Requires an open PR** — will not create one
+- **Auto-creates PR if needed** — no need to run `/trellis.pr` first
 - **Always confirm version number** with user before making changes
 - If PR requires approval, stop and allow user to get approval, then re-run release command
 - Do not include secrets or credentials in release notes
