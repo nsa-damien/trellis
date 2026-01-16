@@ -100,3 +100,10 @@ claude --plugin-dir /path/to/trellis
 ```
 
 Commands are markdown files in `commands/`. Changes require restart to take effect.
+
+## Active Technologies
+- Markdown (Claude Code command file format) + Claude Code Task tool, beads CLI (`bd`), speckit scripts (002-implement-concurrency)
+- N/A (stateless command orchestration; beads handles persistence) (002-implement-concurrency)
+
+## Recent Changes
+- 002-implement-concurrency: Added Markdown (Claude Code command file format) + Claude Code Task tool, beads CLI (`bd`), speckit scripts

@@ -1,5 +1,5 @@
 ---
-description: Execute implementation using beads for task tracking - wrapper around speckit.implement with LLM-aware dependency management
+description: Execute implementation using beads for task tracking with continuous execution, fresh agents per bead, intelligent routing, and maximized parallelism
 ---
 
 ## User Input
@@ -38,57 +38,178 @@ You **MUST** consider the user input before proceeding (if not empty).
    - Build task status map: completed, in_progress, ready (unblocked), blocked
    - Display progress table showing phases, completion counts, ready work, and blocked tasks
 
-7. **Agent Specialization**:
-   Route tasks to specialized agents based on patterns:
-   - **frontend-developer**: UI components (.tsx, .jsx, .vue, .svelte files)
-   - **backend-architect**: API endpoints, services, controllers
-   - **database-architect**: migrations, schema, models, queries
-   - **python-pro**, **typescript-pro**, **golang-pro**: Language-specific tasks
-   - Extract relevant context from plan.md for each agent type
+7. **Agent Specialization & Routing**:
 
-8. **Parallel Execution with Conflict Detection**:
-   - Predict file conflicts: Build file modification map from task descriptions
-   - Serialize conflicting tasks (same file, different tasks)
-   - Parallelize non-conflicting tasks up to `--parallel-limit N` (default: 3)
-   - Launch specialized agents in parallel (single message, multiple Task tool calls)
-   - Use Opus model for all implementation agents
+   **Routing Algorithm** (execute in order, first match wins):
 
-9. **Beads-driven execution loop**:
+   1. **File Extension Matching**:
+      - `.tsx`, `.jsx`, `.vue`, `.svelte` → `frontend-developer`
+      - `.py` → `python-pro`
+      - `.go` → `golang-pro`
+      - `.ts` (non-frontend) → `typescript-pro`
+
+   2. **Keyword Matching** (in bead title/description):
+      - `api`, `endpoint`, `service`, `controller`, `route`, `handler` → `backend-architect`
+      - `migration`, `schema`, `model`, `database`, `table`, `query` → `database-architect`
+      - `component`, `ui`, `page`, `view`, `layout`, `style` → `frontend-developer`
+
+   3. **Multi-Domain Tasks** (AR-009):
+      - If task mentions multiple domains, identify PRIMARY focus (most files or most critical)
+      - Route to primary specialist; that agent handles secondary concerns
+
+   4. **Fallback**:
+      - Tasks with unclear scope → `general-purpose`
+
+   **Model Requirement** (AR-008): All implementation agents MUST use Opus model via `model: "opus"` parameter.
+
+   **Context for Each Agent**: Include spec summary, relevant plan.md sections, data-model (if applicable), contracts (if applicable), and specific bead requirements.
+
+8. **Parallel Execution with Fresh Agents**:
+
+   **Fresh Agent Requirement**: Each bead MUST get a completely fresh agent instance. NEVER use the `resume` parameter - each Task call starts with clean context.
+
+   **Single-Message Multi-Task Pattern**: To execute beads in parallel, launch multiple agents in a SINGLE assistant response with multiple Task tool calls:
+
    ```
-   WHILE open tasks exist:
-     ready_tasks = bd ready | filter by feature epic
+   FOR batch of ready beads (up to --parallel-limit):
+     In ONE response, include multiple Task invocations:
+       Task(subagent_type="[agent1]", model="opus", prompt="[full context + task]", description="Implement [bead-id]")
+       Task(subagent_type="[agent2]", model="opus", prompt="[full context + task]", description="Implement [bead-id]")
+       Task(subagent_type="[agent3]", model="opus", prompt="[full context + task]", description="Implement [bead-id]")
+   ```
 
-     IF ready_tasks empty AND open tasks exist:
-       Display blocked status, ask user for guidance, BREAK
+   **File Conflict Detection**:
+   - Parse each bead's title/description for file paths mentioned
+   - Build predicted file modification map
+   - If two beads mention the same file → serialize them (different batches)
+   - If beads mention different files → can parallelize
 
-     Detect conflicts, partition into parallelizable vs serialized
-     Launch parallel batch (up to --parallel-limit)
+   **Batch Partitioning**:
+   ```
+   FUNCTION partitionIntoBatches(ready_beads, parallel_limit):
+     batches = []
+     assigned = set()
 
-     FOR each agent result:
-       IF successful:
-         Validate: files exist, syntax valid, tests pass
-         IF validation passed:
-           bd close [BEADS_ID]
-           Mark [X] in tasks.md
-           Display completion + newly unblocked tasks
+     WHILE unassigned beads remain:
+       batch = []
+       batch_files = set()
+
+       FOR each bead in ready_beads:
+         IF bead already assigned: CONTINUE
+         IF batch.size >= parallel_limit: BREAK
+
+         bead_files = predictModifiedFiles(bead)
+         IF bead_files intersects batch_files: CONTINUE  # Conflict - skip
+
+         batch.add(bead)
+         batch_files.addAll(bead_files)
+         assigned.add(bead)
+
+       batches.add(batch)
+
+     RETURN batches
+   ```
+
+9. **Continuous Execution Loop**:
+
+   **CRITICAL**: Execute continuously without per-task user prompts. Only stop for genuine blockers.
+
+   ```
+   WHILE open beads exist for this feature:
+     ready_beads = bd ready --json | filter by feature epic
+
+     # BLOCKER CHECK: All remaining work is blocked
+     IF ready_beads is empty AND open beads exist:
+       blocked_beads = bd blocked --json | filter by feature epic
+       Display blocker summary using ACTIONABLE BLOCKER FORMAT (see below)
+       Ask user for guidance
+       BREAK
+
+     # Partition into batches respecting parallel-limit and file conflicts
+     batches = partitionIntoBatches(ready_beads, parallel_limit)
+
+     FOR each batch:
+       # Launch ALL batch agents in SINGLE response (parallel execution)
+       Launch Task tools for all beads in batch simultaneously
+       Wait for all agents to complete
+
+       successful = []
+       failed = []
+
+       FOR each agent result:
+         IF successful:
+           Validate: files exist, syntax valid
+           IF validation passed:
+             bd close [BEADS_ID]
+             Mark [X] in tasks.md
+             successful.add(bead)
+             # DO NOT prompt user - continue automatically
+           ELSE:
+             bd update [BEADS_ID] --notes "Validation failed: [reason]"
+             failed.add(bead)
          ELSE:
-           Update beads with failure notes
+           bd update [BEADS_ID] --notes "Agent failed: [reason]"
+           failed.add(bead)
 
-     Handle partial failures: ask to continue/retry/stop
+       # Display batch completion summary (no prompt)
+       Display: "✓ Batch complete: [successful.count] succeeded, [failed.count] failed"
+       Display newly unblocked tasks
 
-     IF phase complete:
-       Close phase epic, display phase stats
+       # BLOCKER CHECK: Entire batch failed
+       IF successful.count == 0 AND failed.count > 0:
+         Display batch failure using ACTIONABLE BLOCKER FORMAT
+         Ask user: retry / skip all / stop
+         IF stop: BREAK outer loop
+
+     # Phase transition (silent - no prompt)
+     IF current phase epic has all tasks closed:
+       bd close [PHASE_EPIC_ID] --reason "Phase complete"
+       Display: "✓ Phase [N] complete"
+       # Continue to next phase automatically
 
    END WHILE
    ```
 
 10. **Sync tasks.md**: After each task completion, update `- [ ] TASK_ID` to `- [X] TASK_ID` in tasks.md. Beads is source of truth.
 
-11. **Error handling**:
-    - Beads connection issues: retry with `--no-daemon`, fall back to tasks.md-only
+11. **Error Handling with Blocker Categories**:
+
+    **Blocker Categories**:
+    - **BC-001**: Missing environment variables or configuration
+    - **BC-002**: External service unavailable
+    - **BC-003**: Dependency cycle detected (`bd dep cycles`)
+    - **BC-004**: All remaining tasks blocked by unresolved dependencies
+    - **BC-005**: Agent reports inability to complete task
+
+    **Detection**:
+    - BC-001/BC-002: Agent reports specific missing resource
+    - BC-003: Run `bd dep cycles` - non-empty means cycle exists
+    - BC-004: `bd ready` empty but `bd list --status=open` non-empty
+    - BC-005: Agent returns failure with explanation
+
+    **ACTIONABLE BLOCKER FORMAT**:
+    ```
+    ⚠️ BLOCKER: [BC-XXX: Category Name]
+
+    What happened:
+      [Specific issue description]
+
+    What was attempted:
+      [Agent/operation that failed]
+
+    Resolution options:
+      1. [Primary resolution - most likely fix]
+      2. [Alternative approach]
+      3. Skip this bead and continue with others
+      4. Stop execution
+
+    Your choice: [wait for user input]
+    ```
+
+    **Fallback Handling**:
+    - Beads connection issues: retry with `--no-daemon`, then fall back to tasks.md-only
     - Sync conflicts: Beads authoritative, update tasks.md to match
-    - Partial completion: On restart, offer to resume/complete/reset in_progress tasks
-    - Dependency cycles: Detect with `bd dep cycles`, report and suggest resolution
+    - Partial completion: On restart, detect in_progress beads, offer to resume/complete/reset
 
 12. **Validation**:
     - Verify all issues closed: `bd list --status open | filter by feature epic`
@@ -114,12 +235,48 @@ You **MUST** consider the user input before proceeding (if not empty).
     - Close root epic: `bd close [ROOT_EPIC_ID] --reason "Feature implementation complete"`
     - Run `bd sync` to commit beads changes to git
 
-15. **Completion report**:
-    Display final status table (phases, task counts), summary (total tasks, parallel batches, specialized agents used), files modified, beads cleanup status, and verification instructions (follow test-plan.md, run test suite, review against spec.md).
+15. **Completion Report**:
+
+    Display comprehensive summary:
+
+    ```
+    ═══════════════════════════════════════════════════════════════
+    ✓ IMPLEMENTATION COMPLETE: [Feature Name]
+    ═══════════════════════════════════════════════════════════════
+
+    Execution Summary:
+    ├── Total beads: [N]
+    ├── Successful: [N]
+    ├── Failed: [N] (if any)
+    ├── Skipped: [N] (if any)
+    └── Parallel batches executed: [N]
+
+    Agent Utilization:
+    ├── frontend-developer: [N] tasks
+    ├── backend-architect: [N] tasks
+    ├── database-architect: [N] tasks
+    ├── python-pro: [N] tasks
+    ├── typescript-pro: [N] tasks
+    ├── golang-pro: [N] tasks
+    └── general-purpose: [N] tasks
+
+    Continuous Execution Stats:
+    ├── User prompts required: [N] (blockers only)
+    ├── Automatic transitions: [N]
+    └── Execution mode: [continuous/interrupted]
+
+    Files Modified: [list or count]
+
+    Verification:
+    ├── Test plan: [FEATURE_DIR]/test-plan.md
+    ├── Run test suite: [command]
+    └── Review against: spec.md
+    ═══════════════════════════════════════════════════════════════
+    ```
 
 ## Execution Modes
 
-- **Default**: Execute all ready tasks until completion or blockage
+- **Default**: Execute all ready tasks continuously until completion or blocker
 - **Single-task** (`--task T001`): Execute only specified task
 - **Phase** (`--phase N`): Execute only tasks in phase N
 - **Dry-run** (`--dry-run`): Show execution plan without making changes
@@ -132,8 +289,8 @@ You **MUST** consider the user input before proceeding (if not empty).
 - `--phase N`: Execute phase N only
 - `--continue`: Resume from previous session
 - `--no-sync`: Don't sync to tasks.md (beads only)
-- `--verbose`: Show all bd commands
-- `--force`: Continue past failures without prompting
+- `--verbose`: Show all bd commands and agent routing decisions
+- `--force`: Continue past failures without prompting (skip blockers automatically)
 - `--parallel-limit N`: Max concurrent agents per batch (default: 3)
 - `--no-parallel`: Force sequential execution (parallel-limit=1)
 
@@ -143,3 +300,6 @@ You **MUST** consider the user input before proceeding (if not empty).
 - Beads is source of truth; tasks.md kept in sync for compatibility
 - Run `bd sync` at end of session to commit beads changes to git
 - For standard execution without beads, use `/speckit.implement`
+- **Continuous execution**: No prompts between successful tasks; only blockers pause execution
+- **Fresh agents**: Each bead gets isolated context via new Task invocation (no resume)
+- **Parallel execution**: Use single-message multi-Task pattern for concurrent agent launches
