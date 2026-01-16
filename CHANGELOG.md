@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- `/trellis.implement` enhanced with continuous execution and maximized parallelism
+  - **Continuous execution**: Processes all beads without per-task prompts; only stops for genuine blockers
+  - **Fresh agents per bead**: Each task gets isolated context via new Task invocation (no resume)
+  - **Intelligent agent routing**: Routes tasks to specialized agents based on file patterns and keywords
+    - `.tsx/.jsx/.vue/.svelte` → frontend-developer
+    - API/endpoint/service → backend-architect
+    - migration/schema/model → database-architect
+    - `.py` → python-pro, `.go` → golang-pro, `.ts` → typescript-pro
+  - **Maximized parallel execution**: Single-message multi-Task pattern for concurrent agent launches
+  - **Graceful blocker handling**: Actionable messages with blocker categories (BC-001 through BC-005)
+  - **Enhanced completion report**: Shows agent utilization, parallel batches, continuous execution stats
+
 ## [0.6.0] - 2026-01-15
 
 ### Added
