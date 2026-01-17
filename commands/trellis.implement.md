@@ -143,6 +143,12 @@ You **MUST** consider the user input before proceeding (if not empty).
              bd close [BEADS_ID]
              Mark [X] in tasks.md
              successful.add(bead)
+             # Commit and push changes (unless --no-commit)
+             IF NOT --no-commit:
+               git add -A
+               git commit -m "feat: complete [BEADS_ID] - [bead title]"
+               git push
+               Display: "✓ Committed and pushed: [BEADS_ID]"
              # DO NOT prompt user - continue automatically
            ELSE:
              bd update [BEADS_ID] --notes "Validation failed: [reason]"
@@ -289,6 +295,7 @@ You **MUST** consider the user input before proceeding (if not empty).
 - `--phase N`: Execute phase N only
 - `--continue`: Resume from previous session
 - `--no-sync`: Don't sync to tasks.md (beads only)
+- `--no-commit`: Don't commit and push after each completed bead
 - `--verbose`: Show all bd commands and agent routing decisions
 - `--force`: Continue past failures without prompting (skip blockers automatically)
 - `--parallel-limit N`: Max concurrent agents per batch (default: 3)
@@ -303,3 +310,4 @@ You **MUST** consider the user input before proceeding (if not empty).
 - **Continuous execution**: No prompts between successful tasks; only blockers pause execution
 - **Fresh agents**: Each bead gets isolated context via new Task invocation (no resume)
 - **Parallel execution**: Use single-message multi-Task pattern for concurrent agent launches
+- **Auto-commit**: Each completed bead is committed and pushed immediately (disable with `--no-commit`)

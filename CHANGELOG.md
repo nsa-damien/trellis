@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.7.1] - 2026-01-17
+
+### Changed
+
+- `/trellis.implement` now commits and pushes after each completed bead
+  - Each successful task is immediately committed with message: `feat: complete [BEADS_ID] - [bead title]`
+  - Changes are pushed to remote after each commit for real-time progress visibility
+  - New `--no-commit` flag to disable auto-commit behavior when needed
+- `/trellis.test-plan` enhanced with improved configuration and documentation generation
+  - **Configuration loading**: Prioritizes app defaults → project root `.env` → OS env vars
+  - **New `.env.example`**: Generated in `tests/` folder documenting all required environment variables
+  - **New `USAGE.md`**: Generated in `tests/` folder with run instructions, prerequisites, and troubleshooting
+  - **Improved log format**: Clear request/response separation with timestamps and duration for API debugging
+  - **Language-specific patterns**: Added Python (`requests`/`httpx`) and TypeScript (`axios`) logging patterns
+  - **New `--skip-test-plan` flag**: Skip generating test-plan.md if it already exists
+
 ## [0.7.0] - 2026-01-16
 
 ### Changed
@@ -203,7 +219,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Architecture documentation explaining the spec-kit/beads bridge
 - AGENTS.md snippet for automatic beads awareness in Claude Code
 
-[Unreleased]: https://github.com/NorthShoreAutomation/trellis/compare/v0.7.0...HEAD
+[Unreleased]: https://github.com/NorthShoreAutomation/trellis/compare/v0.7.1...HEAD
+[0.7.1]: https://github.com/NorthShoreAutomation/trellis/compare/v0.7.0...v0.7.1
 [0.7.0]: https://github.com/NorthShoreAutomation/trellis/compare/v0.6.0...v0.7.0
 [0.6.0]: https://github.com/NorthShoreAutomation/trellis/compare/v0.5.1...v0.6.0
 [0.5.1]: https://github.com/NorthShoreAutomation/trellis/compare/v0.5.0...v0.5.1
