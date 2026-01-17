@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- `/trellis.implement` now commits and pushes after each completed bead
+  - Each successful task is immediately committed with message: `feat: complete [BEADS_ID] - [bead title]`
+  - Changes are pushed to remote after each commit for real-time progress visibility
+  - New `--no-commit` flag to disable auto-commit behavior when needed
 - `/trellis.test-plan` enhanced with improved configuration and documentation generation
   - **Configuration loading**: Prioritizes app defaults → project root `.env` → OS env vars
   - **New `.env.example`**: Generated in `tests/` folder documenting all required environment variables
