@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- `/trellis.test-plan` enhanced with improved configuration and documentation generation
+  - **Configuration loading**: Prioritizes app defaults → project root `.env` → OS env vars
+  - **New `.env.example`**: Generated in `tests/` folder documenting all required environment variables
+  - **New `USAGE.md`**: Generated in `tests/` folder with run instructions, prerequisites, and troubleshooting
+  - **Improved log format**: Clear request/response separation with timestamps and duration for API debugging
+  - **Language-specific patterns**: Added Python (`requests`/`httpx`) and TypeScript (`axios`) logging patterns
+  - **New `--skip-test-plan` flag**: Skip generating test-plan.md if it already exists
+
 ## [0.7.0] - 2026-01-16
 
 ### Changed
