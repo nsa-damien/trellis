@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.7.2] - 2026-01-18
+
+### Changed
+
+- `/trellis.implement` now delegates test plan generation to `/trellis.test-plan` command
+  - Removed duplicate inline test plan instructions from step 13
+  - Invokes `/trellis.test-plan` via Skill tool for consistent behavior
+  - Keeps test plan logic in one place, reducing maintenance burden
+
 ## [0.7.1] - 2026-01-17
 
 ### Changed
@@ -219,7 +228,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Architecture documentation explaining the spec-kit/beads bridge
 - AGENTS.md snippet for automatic beads awareness in Claude Code
 
-[Unreleased]: https://github.com/NorthShoreAutomation/trellis/compare/v0.7.1...HEAD
+[Unreleased]: https://github.com/NorthShoreAutomation/trellis/compare/v0.7.2...HEAD
+[0.7.2]: https://github.com/NorthShoreAutomation/trellis/compare/v0.7.1...v0.7.2
 [0.7.1]: https://github.com/NorthShoreAutomation/trellis/compare/v0.7.0...v0.7.1
 [0.7.0]: https://github.com/NorthShoreAutomation/trellis/compare/v0.6.0...v0.7.0
 [0.6.0]: https://github.com/NorthShoreAutomation/trellis/compare/v0.5.1...v0.6.0
