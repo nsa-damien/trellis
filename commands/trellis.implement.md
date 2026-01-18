@@ -223,19 +223,19 @@ You **MUST** consider the user input before proceeding (if not empty).
     - **DO NOT close root epic yet - test plan generation comes first**
 
 13. **Generate manual test plan**:
-    When all tasks closed, **BEFORE** closing root epic, generate `FEATURE_DIR/test-plan.md`:
+    When all tasks closed, **BEFORE** closing root epic, invoke the test plan command:
 
-    **Gather context**: spec.md (user stories, acceptance criteria), plan.md (tech stack), contracts/ (API specs), data-model.md (entities), implemented files list
+    ```
+    Use the Skill tool to invoke: /trellis.test-plan
+    ```
 
-    **Generate test-plan.md** with sections:
-    - Test Environment Setup (prerequisites, setup steps, test accounts)
-    - Manual Verification Checklist (organized by phase/user story with test cases)
-    - Feature Testing Scenarios (happy path, edge cases)
-    - Notes (space for tester observations)
+    This generates the complete test infrastructure including:
+    - `FEATURE_DIR/test-plan.md` - Manual verification checklist and test scenarios
+    - `FEATURE_DIR/tests/manual.{ext}` - Executable test file with logging
+    - `FEATURE_DIR/tests/.env.example` - Environment variable template
+    - `FEATURE_DIR/tests/USAGE.md` - Instructions for running tests
 
-    **Customize**: Use actual file paths, component names, API endpoints, commands from implementation. Tailor to tech stack (curl for APIs, DevTools for web, CLI examples, etc.)
-
-    Display: `✓ Manual test plan generated: [FEATURE_DIR]/test-plan.md`
+    Display: `✓ Test plan generated via /trellis.test-plan`
 
 14. **Final sync and epic closure**:
     - Close root epic: `bd close [ROOT_EPIC_ID] --reason "Feature implementation complete"`
