@@ -1,7 +1,7 @@
 {
   "name": "trellis",
   "description": "Bridge spec-kit planning with beads issue tracking for Claude Code",
-  "version": "0.5.0",
+  "version": "0.7.3",
   "author": {
     "name": "NorthShoreAutomation",
     "email": "support@northshoreautomation.com"

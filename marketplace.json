@@ -1,0 +1,11 @@
+{
+  "name": "trellis-marketplace",
+  "description": "Trellis plugin marketplace - Bridge spec-kit planning with beads issue tracking",
+  "plugins": [
+    {
+      "name": "trellis",
+      "description": "Bridge spec-kit planning with beads issue tracking for Claude Code",
+      "source": "./"
+    }
+  ]
+}

@@ -22,8 +22,52 @@ spec-kit                    Trellis
 
 **Prerequisites:** [Claude Code](https://claude.ai/code), [beads](https://github.com/steveyegge/beads), [spec-kit](https://github.com/github/spec-kit)
 
+### From GitHub (Private Repository)
+
+Since this is a private repository, you need to configure authentication first:
+
+**1. Create a GitHub Personal Access Token:**
+- Go to [GitHub Settings > Developer settings > Personal access tokens > Tokens (classic)](https://github.com/settings/tokens)
+- Click "Generate new token (classic)"
+- Give it a descriptive name (e.g., "Claude Code plugins")
+- Select the `repo` scope (required for private repository access)
+- Click "Generate token" and copy the token
+
+**2. Set the environment variable:**
+
 ```bash
-claude plugin install github:NorthShoreAutomation/trellis
+# Add to your shell profile (~/.bashrc, ~/.zshrc, etc.)
+export GITHUB_TOKEN=ghp_your_token_here
+```
+
+**3. Add the marketplace and install:**
+
+```bash
+# Add the repository as a marketplace source
+/plugin marketplace add NorthShoreAutomation/trellis
+
+# Install the plugin
+/plugin install trellis@NorthShoreAutomation/trellis
+```
+
+### Alternative: Settings File
+
+Add to `~/.claude/settings.json`:
+
+```json
+{
+  "extraKnownMarketplaces": {
+    "nsa-trellis": {
+      "source": {
+        "source": "github",
+        "repo": "NorthShoreAutomation/trellis"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "trellis@nsa-trellis": true
+  }
+}
 ```
 
 ## Development
