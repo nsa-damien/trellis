@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.8.0] - 2026-01-20
+
+### Added
+
+- `/trellis.codemap` command - Generate and maintain CODEMAP.yaml for LLM code navigation
+  - Auto-detects project type (Go, TypeScript/JavaScript, Python)
+  - Extracts entry points, key types, and interfaces using language-specific heuristics
+  - Hybrid generation: auto-detect structure, guided prompts for semantic enrichment
+  - Sequential one-at-a-time clarification questions for ambiguous modules
+  - Update mode: detects drift when CODEMAP.yaml exists, validates changes sequentially
+  - Links modules to spec-kit specs when available
+  - Supports `--dry-run`, `--no-interactive`, `--language`, `--include/exclude`, `--json`
+
+### Changed
+
+- `/trellis.implement` now updates CODEMAP.yaml after implementation sessions
+  - Scans modified files for new/changed symbols
+  - Prompts sequentially for each detected change
+  - Suggests creating CODEMAP.yaml if none exists
+
 ## [0.7.3] - 2026-01-19
 
 ### Added
@@ -243,7 +263,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Architecture documentation explaining the spec-kit/beads bridge
 - AGENTS.md snippet for automatic beads awareness in Claude Code
 
-[Unreleased]: https://github.com/NorthShoreAutomation/trellis/compare/v0.7.3...HEAD
+[Unreleased]: https://github.com/NorthShoreAutomation/trellis/compare/v0.8.0...HEAD
+[0.8.0]: https://github.com/NorthShoreAutomation/trellis/compare/v0.7.3...v0.8.0
 [0.7.3]: https://github.com/NorthShoreAutomation/trellis/compare/v0.7.2...v0.7.3
 [0.7.2]: https://github.com/NorthShoreAutomation/trellis/compare/v0.7.1...v0.7.2
 [0.7.1]: https://github.com/NorthShoreAutomation/trellis/compare/v0.7.0...v0.7.1
