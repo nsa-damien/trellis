@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `/trellis.codemap` command - Generate and maintain CODEMAP.yaml for LLM code navigation
+  - Auto-detects project type (Go, TypeScript/JavaScript, Python)
+  - Extracts entry points, key types, and interfaces using language-specific heuristics
+  - Hybrid generation: auto-detect structure, guided prompts for semantic enrichment
+  - Sequential one-at-a-time clarification questions for ambiguous modules
+  - Update mode: detects drift when CODEMAP.yaml exists, validates changes sequentially
+  - Links modules to spec-kit specs when available
+  - Supports `--no-interactive`, `--language`, `--include/exclude` patterns
+
+### Changed
+
+- `/trellis.implement` now updates CODEMAP.yaml after implementation sessions
+  - Scans modified files for new/changed symbols
+  - Prompts sequentially for each detected change
+  - Suggests creating CODEMAP.yaml if none exists
+
 ## [0.7.3] - 2026-01-19
 
 ### Added

@@ -241,7 +241,23 @@ You **MUST** consider the user input before proceeding (if not empty).
     - Close root epic: `bd close [ROOT_EPIC_ID] --reason "Feature implementation complete"`
     - Run `bd sync` to commit beads changes to git
 
-15. **Completion Report**:
+15. **CODEMAP updates** (if CODEMAP.yaml exists):
+    - Scan all files modified during this implementation session
+    - Extract new/changed symbols from modified files
+    - Compare against existing `CODEMAP.yaml`
+    - If changes detected:
+      ```
+      "CODEMAP updates detected from implementation:"
+      ```
+    - For each change, ask sequentially (one at a time):
+      ```
+      → "New entry point auth/oauth.go:RefreshToken - add to 'authentication'?" [yes/no/different module]
+      → "Entry point jobs/legacy.go:OldProcess no longer exists - remove?" [yes/no]
+      ```
+    - Write updated CODEMAP.yaml if changes accepted
+    - If no CODEMAP.yaml exists: Suggest `"Consider running /trellis.codemap to create a code map"`
+
+16. **Completion Report**:
 
     Display comprehensive summary:
 

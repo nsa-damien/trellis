@@ -26,6 +26,7 @@ spec-kit (tasks.md) → /trellis.import → beads issues
 | `/trellis.push` | Commit and push with changelog updates |
 | `/trellis.pr` | Create a pull request for the current branch |
 | `/trellis.release` | Create release from PR with version tag |
+| `/trellis.codemap` | Generate/update CODEMAP.yaml for LLM navigation |
 
 **Typical Workflow:**
 ```
