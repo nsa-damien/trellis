@@ -242,7 +242,7 @@ You **MUST** consider the user input before proceeding (if not empty).
     - Run `bd sync` to commit beads changes to git
 
 15. **CODEMAP updates** (if CODEMAP.yaml exists):
-    - Scan all files modified during this implementation session
+    - Scan all files modified during this implementation session (use `git diff --name-only` against the commit before session started, or track files from each bead's agent results)
     - Extract new/changed symbols from modified files
     - Compare against existing `CODEMAP.yaml`
     - If changes detected:

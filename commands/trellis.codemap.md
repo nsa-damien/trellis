@@ -125,7 +125,7 @@ Key types:
 
 ### Phase 4: Enrichment (Interactive)
 
-**For each module, one question at a time:**
+**For each module, one question at a time.** Modules with high-confidence detection get quick confirmation prompts; ambiguous modules require more detailed input.
 
 1. **Clear modules** (obvious purpose, clear entry points):
    - Present auto-generated description
@@ -170,11 +170,11 @@ Key types:
 
 ```yaml
 # CODEMAP.yaml - Semantic code map for LLM navigation
-# Generated: 2025-01-20T10:30:00Z
+# Generated: 2026-01-20T10:30:00Z
 # Run /trellis.codemap to update
 
 version: "1.0"
-generated: "2025-01-20T10:30:00Z"
+generated: "2026-01-20T10:30:00Z"
 project:
   name: "project-name"
   type: "go"
@@ -231,6 +231,7 @@ modules:
 
 ## User Arguments
 
+- `--dry-run`: Show what would be generated without writing CODEMAP.yaml
 - `--update`: Force update mode even if no changes detected
 - `--no-interactive`: Skip enrichment questions, use auto-generated descriptions
 - `--language <lang>`: Override detected language (go, typescript, python)

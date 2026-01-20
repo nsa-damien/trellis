@@ -1,6 +1,6 @@
 # Code Mapping Feature Design
 
-**Date:** 2025-01-20
+**Date:** 2026-01-20
 **Status:** Approved
 **Branch:** feature/code-mapping
 
@@ -26,7 +26,7 @@
 
 ```yaml
 version: "1.0"
-generated: "2025-01-20T10:30:00Z"
+generated: "2026-01-20T10:30:00Z"
 project:
   name: "project-name"
   type: "go"                    # detected primary language

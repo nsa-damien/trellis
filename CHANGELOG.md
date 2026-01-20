@@ -16,7 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Sequential one-at-a-time clarification questions for ambiguous modules
   - Update mode: detects drift when CODEMAP.yaml exists, validates changes sequentially
   - Links modules to spec-kit specs when available
-  - Supports `--no-interactive`, `--language`, `--include/exclude` patterns
+  - Supports `--dry-run`, `--no-interactive`, `--language`, `--include/exclude`, `--json`
 
 ### Changed
 
