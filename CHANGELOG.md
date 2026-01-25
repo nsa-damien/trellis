@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.8.1] - 2026-01-24
+
+### Changed
+
+- `/trellis.test-plan` now uses app config with `settings.json` instead of `.env` files
+  - Tests use `--config` flag to specify app config path
+  - `settings.json` stores only test-specific variables (cleaner separation)
+  - Console output simplified to PASS/FAIL per test with failure reason
+  - Detailed request/response logging moved to log file only
+
 ## [0.8.0] - 2026-01-20
 
 ### Added
@@ -263,7 +273,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Architecture documentation explaining the spec-kit/beads bridge
 - AGENTS.md snippet for automatic beads awareness in Claude Code
 
-[Unreleased]: https://github.com/NorthShoreAutomation/trellis/compare/v0.8.0...HEAD
+[Unreleased]: https://github.com/NorthShoreAutomation/trellis/compare/v0.8.1...HEAD
+[0.8.1]: https://github.com/NorthShoreAutomation/trellis/compare/v0.8.0...v0.8.1
 [0.8.0]: https://github.com/NorthShoreAutomation/trellis/compare/v0.7.3...v0.8.0
 [0.7.3]: https://github.com/NorthShoreAutomation/trellis/compare/v0.7.2...v0.7.3
 [0.7.2]: https://github.com/NorthShoreAutomation/trellis/compare/v0.7.1...v0.7.2
