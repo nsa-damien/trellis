@@ -79,7 +79,7 @@ git clone https://github.com/NorthShoreAutomation/trellis.git
 claude --plugin-dir /path/to/trellis
 ```
 
-The `--plugin-dir` flag loads the plugin for that session. Changes to skills/agents are reflected on restart.
+The `--plugin-dir` flag loads the plugin for that session. Changes to `.claude/skills/` and `.claude/agents/` are reflected on restart.
 
 ## Migration
 

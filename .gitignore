@@ -4,6 +4,12 @@ Thumbs.db
 .beads/
 .claude/*
 !.claude/settings.local.json
+!.claude/commands/
+!.claude/commands/**
+!.claude/skills/
+!.claude/skills/**
+!.claude/agents/
+!.claude/agents/**
 .specify/
 .cache/
 
