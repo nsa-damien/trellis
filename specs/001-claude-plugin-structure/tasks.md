@@ -93,7 +93,7 @@
 ### Tasks
 
 - [X] T011 Validate plugin structure: `claude plugin validate /path/to/trellis` (passed)
-- [X] T012 Verify all 10 commands exist in `commands/` directory:
+- [X] T012 Verify all 10 commands are defined as skills:
   - `/trellis.import`
   - `/trellis.sync`
   - `/trellis.ready`
@@ -151,4 +151,4 @@ Phase 2 (Cleanup)─┘
 - This is a configuration change, not a code change
 - No data models or API contracts needed
 - Version in plugin.json (0.5.0) will be the new release version
-- The `commands/` directory remains unchanged - Claude auto-discovers it
+- Skills and agents are auto-discovered by Claude Code from standard locations

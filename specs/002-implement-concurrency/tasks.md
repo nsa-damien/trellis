@@ -5,13 +5,13 @@
 
 **Tests**: Manual testing only (per quickstart.md); no automated tests required.
 
-**Organization**: Tasks modify a single file (`commands/trellis.implement.md`). Organized by user story to enable incremental validation.
+**Organization**: Tasks modify a single file (`skills/trellis.implement/SKILL.md`). Organized by user story to enable incremental validation.
 
 ## Format: `[ID] [P?] [Story] Description`
 
 - **[P]**: Can run in parallel (not applicable - single file)
 - **[Story]**: Which user story this task belongs to (US1-US5)
-- File path: All tasks modify `commands/trellis.implement.md`
+- File path: All tasks modify `skills/trellis.implement/SKILL.md`
 
 ---
 
@@ -19,7 +19,7 @@
 
 **Purpose**: Backup and preparation
 
-- [X] T001 Create backup of current `commands/trellis.implement.md` as `commands/trellis.implement.md.backup`
+- [X] T001 Create backup of current `skills/trellis.implement/SKILL.md` as `skills/trellis.implement/SKILL.md.backup`
 - [X] T002 Review current command structure and identify sections to modify
 
 **Checkpoint**: Ready to begin modifications
@@ -32,11 +32,11 @@
 
 **⚠️ CRITICAL**: The loop structure must be correct before user story features can be added
 
-- [X] T003 Rewrite step 9 (Beads-driven execution loop) to remove per-task user prompts in `commands/trellis.implement.md`
-- [X] T004 Update step 9 to continue automatically after each successful task completion in `commands/trellis.implement.md`
-- [X] T005 Update step 9 to only break loop on genuine blockers (empty ready queue, batch-wide failure) in `commands/trellis.implement.md`
-- [X] T006 Remove "Handle partial failures: ask to continue/retry/stop" for single failures in step 9 of `commands/trellis.implement.md`
-- [X] T007 Update phase transition to happen silently (no prompts) in step 9 of `commands/trellis.implement.md`
+- [X] T003 Rewrite step 9 (Beads-driven execution loop) to remove per-task user prompts in `skills/trellis.implement/SKILL.md`
+- [X] T004 Update step 9 to continue automatically after each successful task completion in `skills/trellis.implement/SKILL.md`
+- [X] T005 Update step 9 to only break loop on genuine blockers (empty ready queue, batch-wide failure) in `skills/trellis.implement/SKILL.md`
+- [X] T006 Remove "Handle partial failures: ask to continue/retry/stop" for single failures in step 9 of `skills/trellis.implement/SKILL.md`
+- [X] T007 Update phase transition to happen silently (no prompts) in step 9 of `skills/trellis.implement/SKILL.md`
 
 **Checkpoint**: Core loop runs continuously without interruption
 
@@ -50,10 +50,10 @@
 
 ### Implementation for User Story 1
 
-- [X] T008 [US1] Add explicit WHILE loop continuation condition (open beads exist for feature) to step 9 in `commands/trellis.implement.md`
-- [X] T009 [US1] Add batch success handling that proceeds to next batch without prompting in step 9 of `commands/trellis.implement.md`
-- [X] T010 [US1] Add auto-close for phase epics when all phase tasks complete in step 9 of `commands/trellis.implement.md`
-- [X] T011 [US1] Update completion report (step 15) to show continuous execution stats in `commands/trellis.implement.md`
+- [X] T008 [US1] Add explicit WHILE loop continuation condition (open beads exist for feature) to step 9 in `skills/trellis.implement/SKILL.md`
+- [X] T009 [US1] Add batch success handling that proceeds to next batch without prompting in step 9 of `skills/trellis.implement/SKILL.md`
+- [X] T010 [US1] Add auto-close for phase epics when all phase tasks complete in step 9 of `skills/trellis.implement/SKILL.md`
+- [X] T011 [US1] Update completion report (step 15) to show continuous execution stats in `skills/trellis.implement/SKILL.md`
 
 **Checkpoint**: US1 complete - command runs through all tasks without stopping
 
@@ -67,9 +67,9 @@
 
 ### Implementation for User Story 2
 
-- [X] T012 [US2] Document fresh agent requirement in step 8 (Parallel Execution) of `commands/trellis.implement.md`
-- [X] T013 [US2] Add explicit "NO resume parameter" instruction to Task invocation pattern in step 8 of `commands/trellis.implement.md`
-- [X] T014 [US2] Add context assembly instructions: include spec summary, plan context, bead requirements for each agent in step 8 of `commands/trellis.implement.md`
+- [X] T012 [US2] Document fresh agent requirement in step 8 (Parallel Execution) of `skills/trellis.implement/SKILL.md`
+- [X] T013 [US2] Add explicit "NO resume parameter" instruction to Task invocation pattern in step 8 of `skills/trellis.implement/SKILL.md`
+- [X] T014 [US2] Add context assembly instructions: include spec summary, plan context, bead requirements for each agent in step 8 of `skills/trellis.implement/SKILL.md`
 
 **Checkpoint**: US2 complete - each bead uses isolated fresh agent
 
@@ -83,12 +83,12 @@
 
 ### Implementation for User Story 3
 
-- [X] T015 [US3] Expand step 7 (Agent Specialization) with complete routing algorithm from research.md in `commands/trellis.implement.md`
-- [X] T016 [US3] Add file extension pattern matching logic (.tsx→frontend, .py→python-pro, etc.) to step 7 of `commands/trellis.implement.md`
-- [X] T017 [US3] Add keyword-based routing (API→backend-architect, migration→database-architect) to step 7 of `commands/trellis.implement.md`
-- [X] T018 [US3] Add multi-domain task handling: route to primary focus specialist (AR-009) in step 7 of `commands/trellis.implement.md`
-- [X] T019 [US3] Add general-purpose fallback for unclear scope tasks in step 7 of `commands/trellis.implement.md`
-- [X] T020 [US3] Specify Opus model requirement for all implementation agents (AR-008) in step 7 of `commands/trellis.implement.md`
+- [X] T015 [US3] Expand step 7 (Agent Specialization) with complete routing algorithm from research.md in `skills/trellis.implement/SKILL.md`
+- [X] T016 [US3] Add file extension pattern matching logic (.tsx→frontend, .py→python-pro, etc.) to step 7 of `skills/trellis.implement/SKILL.md`
+- [X] T017 [US3] Add keyword-based routing (API→backend-architect, migration→database-architect) to step 7 of `skills/trellis.implement/SKILL.md`
+- [X] T018 [US3] Add multi-domain task handling: route to primary focus specialist (AR-009) in step 7 of `skills/trellis.implement/SKILL.md`
+- [X] T019 [US3] Add general-purpose fallback for unclear scope tasks in step 7 of `skills/trellis.implement/SKILL.md`
+- [X] T020 [US3] Specify Opus model requirement for all implementation agents (AR-008) in step 7 of `skills/trellis.implement/SKILL.md`
 
 **Checkpoint**: US3 complete - tasks route to appropriate specialized agents
 
@@ -102,11 +102,11 @@
 
 ### Implementation for User Story 4
 
-- [X] T021 [US4] Update step 8 with explicit single-message multi-Task pattern from research.md in `commands/trellis.implement.md`
-- [X] T022 [US4] Add file conflict detection algorithm from data-model.md to step 8 of `commands/trellis.implement.md`
-- [X] T023 [US4] Add batch partitioning logic that respects parallel-limit and conflicts to step 8 of `commands/trellis.implement.md`
-- [X] T024 [US4] Add instruction to launch all batch agents in single response message in step 8 of `commands/trellis.implement.md`
-- [X] T025 [US4] Update completion report (step 15) to show parallel batches executed in `commands/trellis.implement.md`
+- [X] T021 [US4] Update step 8 with explicit single-message multi-Task pattern from research.md in `skills/trellis.implement/SKILL.md`
+- [X] T022 [US4] Add file conflict detection algorithm from data-model.md to step 8 of `skills/trellis.implement/SKILL.md`
+- [X] T023 [US4] Add batch partitioning logic that respects parallel-limit and conflicts to step 8 of `skills/trellis.implement/SKILL.md`
+- [X] T024 [US4] Add instruction to launch all batch agents in single response message in step 8 of `skills/trellis.implement/SKILL.md`
+- [X] T025 [US4] Update completion report (step 15) to show parallel batches executed in `skills/trellis.implement/SKILL.md`
 
 **Checkpoint**: US4 complete - independent tasks run in parallel
 
@@ -120,11 +120,11 @@
 
 ### Implementation for User Story 5
 
-- [X] T026 [US5] Add Blocker Categories section (BC-001 through BC-005) to command documentation in `commands/trellis.implement.md`
-- [X] T027 [US5] Implement blocker detection for BC-004 (all blocked) in step 9 of `commands/trellis.implement.md`
-- [X] T028 [US5] Add actionable blocker message format from research.md to step 9 of `commands/trellis.implement.md`
-- [X] T029 [US5] Add resolution options (retry, skip, stop) to blocker handling in step 9 of `commands/trellis.implement.md`
-- [X] T030 [US5] Update error handling (step 11) with blocker category references in `commands/trellis.implement.md`
+- [X] T026 [US5] Add Blocker Categories section (BC-001 through BC-005) to command documentation in `skills/trellis.implement/SKILL.md`
+- [X] T027 [US5] Implement blocker detection for BC-004 (all blocked) in step 9 of `skills/trellis.implement/SKILL.md`
+- [X] T028 [US5] Add actionable blocker message format from research.md to step 9 of `skills/trellis.implement/SKILL.md`
+- [X] T029 [US5] Add resolution options (retry, skip, stop) to blocker handling in step 9 of `skills/trellis.implement/SKILL.md`
+- [X] T030 [US5] Update error handling (step 11) with blocker category references in `skills/trellis.implement/SKILL.md`
 
 **Checkpoint**: US5 complete - blockers show clear actionable messages
 
@@ -134,11 +134,11 @@
 
 **Purpose**: Final cleanup and documentation
 
-- [X] T031 Update command description (YAML frontmatter) to reflect enhanced capabilities in `commands/trellis.implement.md`
-- [X] T032 Update Notes section with new behavior summary in `commands/trellis.implement.md`
-- [X] T033 Verify all existing flags still work as documented in `commands/trellis.implement.md`
+- [X] T031 Update command description (YAML frontmatter) to reflect enhanced capabilities in `skills/trellis.implement/SKILL.md`
+- [X] T032 Update Notes section with new behavior summary in `skills/trellis.implement/SKILL.md`
+- [X] T033 Verify all existing flags still work as documented in `skills/trellis.implement/SKILL.md`
 - [X] T034 Run quickstart.md validation tests manually
-- [X] T035 Remove backup file `commands/trellis.implement.md.backup` after successful validation
+- [X] T035 Remove backup file `skills/trellis.implement/SKILL.md.backup` after successful validation
 
 ---
 
@@ -200,7 +200,7 @@ Each increment is independently valuable and testable.
 
 ## Notes
 
-- All tasks modify single file: `commands/trellis.implement.md`
+- All tasks modify single file: `skills/trellis.implement/SKILL.md`
 - No [P] markers - single-file changes must be sequential
 - [Story] labels enable tracking which user story each task serves
 - Backup created in T001 enables rollback if needed
