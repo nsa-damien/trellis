@@ -50,7 +50,8 @@ bd stats                              # Project statistics
 ## Repository Structure
 
 ```
-commands/           # Trellis slash commands (*.md files)
+skills/              # Trellis skills (*.md files)
+agents/              # Trellis subagents
 .claude-plugin/     # Plugin manifest for Claude Code
 .specify/           # spec-kit templates and scripts
   templates/        # Document templates (spec, plan, tasks)
@@ -100,7 +101,7 @@ To work on Trellis itself:
 claude --plugin-dir /path/to/trellis
 ```
 
-Commands are markdown files in `commands/`. Changes require restart to take effect.
+Skills are markdown files in `skills/<skill-name>/SKILL.md` and subagents are defined in `agents/`. Changes require restart to take effect.
 
 ## Active Technologies
 - Markdown (Claude Code command file format) + Claude Code Task tool, beads CLI (`bd`), speckit scripts (002-implement-concurrency)

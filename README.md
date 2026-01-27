@@ -79,25 +79,11 @@ git clone https://github.com/NorthShoreAutomation/trellis.git
 claude --plugin-dir /path/to/trellis
 ```
 
-The `--plugin-dir` flag loads the plugin for that session. Changes to command files are reflected on restart.
+The `--plugin-dir` flag loads the plugin for that session. Changes to skills/agents are reflected on restart.
 
 ## Migration
 
-If upgrading from the symlink-based installer:
-
-1. Remove existing symlinks:
-   ```bash
-   # Check for and remove user-level symlinks
-   rm -f ~/.claude/commands/trellis.*.md
-
-   # Check for and remove project-level symlinks
-   rm -f .claude/commands/trellis.*.md
-   ```
-
-2. Install via plugin:
-   ```bash
-   claude plugin install github:NorthShoreAutomation/trellis
-   ```
+If upgrading from older installs that copied command files into `~/.claude/commands/` or `.claude/commands/`, remove those copies and install via plugin.
 
 ## Commands
 
