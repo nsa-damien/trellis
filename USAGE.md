@@ -170,7 +170,7 @@ Executes tasks using beads for dependency-aware ordering:
 
 ### Agents (Implementation Routing)
 
-`/trellis.implement` launches specialized subagents (defined in the Trellis plugin under `.claude/agents/`) to execute individual beads/tasks.
+`/trellis.implement` launches specialized subagents (defined in the Trellis plugin under `agents/`) to execute individual beads/tasks.
 
 Common agent roles:
 - `frontend-developer`: UI work (React/Vue/Svelte, CSS, components)
