@@ -36,7 +36,7 @@ Spec-kit commands are bundled with Trellis. No separate installation needed.
 ## Workflow Overview
 
 ```
-PRD → Epics → Specify → Clarify → Plan → Tasks → Analyze → Import → Implement → Test Plan → Push → Release
+PRD → Epics → Specify → Clarify → Plan → Tasks → Analyze → Import → Implement → Test Plan → Push → Open PR → Review → Release
 ```
 
 ---
@@ -168,6 +168,23 @@ Executes tasks using beads for dependency-aware ordering:
 
 **Requires:** `specs/{feature}/beads-mapping.json` (created by `/trellis.import`)
 
+### Agents (Implementation Routing)
+
+`/trellis.implement` launches specialized subagents (defined in the Trellis plugin under `agents/`) to execute individual beads/tasks.
+
+Common agent roles:
+- `frontend-developer`: UI work (React/Vue/Svelte, CSS, components)
+- `backend-architect`: APIs, services, validation, error handling
+- `database-architect`: schema changes, migrations, queries
+- `python-pro`: Python-focused implementation
+- `typescript-pro`: TypeScript/Node-focused implementation
+- `golang-pro`: Go-focused implementation
+- `general-purpose`: fallback for unclear scope
+
+Support roles:
+- `code-reviewer`: read-only review of recent changes
+- `test-runner`: runs tests and reports failures
+
 ---
 
 ## Step 10: Generate Test Plan
@@ -199,10 +216,10 @@ Commits and pushes current changes with:
 
 ## Step 12: Create Pull Request
 
-Create a PR using standard git workflow:
+Create a PR for the current branch:
 
 ```bash
-gh pr create --title "feat: your feature" --body "Description"
+/trellis.pr
 ```
 
 ---
@@ -237,6 +254,7 @@ Creates a release from an existing PR:
 | Execution | `/trellis.implement` | Build with beads tracking |
 | Testing | `/trellis.test-plan` | Generate test documentation |
 | Commit | `/trellis.push` | Push with changelog |
+| PR | `/trellis.pr` | Create pull request |
 | Release | `/trellis.release` | Publish release from PR |
 
 ---
