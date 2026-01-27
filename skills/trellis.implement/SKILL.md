@@ -1,5 +1,7 @@
 ---
+name: trellis.implement
 description: Execute implementation using beads for task tracking with continuous execution, fresh agents per bead, intelligent routing, and maximized parallelism
+disable-model-invocation: true
 ---
 
 ## User Input
@@ -308,7 +310,7 @@ You **MUST** consider the user input before proceeding (if not empty).
 
 - `--dry-run`: Show execution plan without changes
 - `--task T001`: Execute specific task only
-- `--phase N`: Execute phase N only
+- `--phase N`: Execute only tasks in phase N only
 - `--continue`: Resume from previous session
 - `--no-sync`: Don't sync to tasks.md (beads only)
 - `--no-commit`: Don't commit and push after each completed bead

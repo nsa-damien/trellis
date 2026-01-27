@@ -48,7 +48,7 @@ The repository must include a plugin manifest file that describes Trellis to Cla
 All Trellis commands must be discoverable by Claude's plugin system without additional configuration.
 
 **Acceptance Criteria:**
-- Commands remain in the `commands/` directory (current location)
+- Skills are defined under `skills/<skill-name>/SKILL.md`
 - All 10 existing commands are available after plugin installation:
   - `/trellis.import`
   - `/trellis.sync`
@@ -96,7 +96,7 @@ Contributors must be able to install Trellis from a local path for development a
 
 **Acceptance Criteria:**
 - Local path installation works via `claude --plugin-dir /path/to/trellis`
-- Edits to command files are reflected immediately without reinstallation
+- Edits to skills/agents are reflected immediately without reinstallation
 - Development workflow is documented in README
 
 ---
@@ -151,7 +151,7 @@ Contributors must be able to install Trellis from a local path for development a
 **Flow:**
 1. Contributor clones the Trellis repository
 2. Contributor installs from local path: `claude --plugin-dir /path/to/trellis`
-3. Contributor edits command files in `commands/`
+3. Contributor edits skill files in `skills/` and agent definitions in `agents/`
 4. Changes are immediately available when invoking `/trellis.*` commands
 5. Contributor tests, iterates, and commits when ready
 
@@ -163,7 +163,7 @@ Contributors must be able to install Trellis from a local path for development a
 
 1. Claude Code's plugin system supports installation from public GitHub repositories
 2. Claude Code's plugin system supports installation from local file paths for development
-3. The `commands/` directory location is auto-discovered by Claude's plugin loader
+3. The `skills/` directory location is auto-discovered by Claude's plugin loader
 4. Plugin updates are handled by Claude's plugin management system
 5. The repository name and owner (NorthShoreAutomation/trellis) remain stable
 

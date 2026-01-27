@@ -1,5 +1,7 @@
 ---
+name: trellis.ready
 description: Show issues ready to work - unblocked tasks with no pending dependencies
+disable-model-invocation: true
 ---
 
 ## User Input

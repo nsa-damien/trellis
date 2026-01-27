@@ -46,10 +46,10 @@ This is the official format used by Anthropic's own plugins (e.g., `commit-comma
 ## Directory Structure
 
 ### Decision
-Keep `commands/` at repository root (current location). Add `.claude-plugin/plugin.json` only.
+Use `skills/` and `agents/` at repository root. Keep `.claude-plugin/plugin.json` for Claude Code discovery.
 
 ### Rationale
-Claude Code auto-discovers components from standard directory locations at plugin root level. The existing `commands/` directory is already correctly placed.
+Claude Code auto-discovers components from standard directory locations at plugin root level. `skills/` and `agents/` are standard plugin component locations.
 
 ### Findings
 
@@ -58,17 +58,19 @@ Claude Code auto-discovers components from standard directory locations at plugi
 trellis/
 ├── .claude-plugin/
 │   └── plugin.json          # NEW - Required manifest
-├── commands/                 # EXISTING - Already correct
-│   ├── trellis.import.md
-│   ├── trellis.sync.md
-│   └── ... (10 commands)
+├── skills/
+│   ├── trellis.import/
+│   │   └── SKILL.md
+│   └── ...
+├── agents/
+│   └── ...
 ├── README.md                # UPDATE - New install instructions
 └── ...
 ```
 
 **Auto-discovery behavior:**
 1. Claude reads `.claude-plugin/plugin.json` when plugin enables
-2. Scans `commands/` for `.md` files automatically
+2. Scans `skills/` and `agents/` automatically
 3. No registration needed in manifest
 
 ### Alternatives Considered

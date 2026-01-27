@@ -1,5 +1,7 @@
 ---
+name: trellis.pr
 description: Create a pull request for the current branch
+disable-model-invocation: true
 ---
 
 ## User Input
@@ -9,7 +11,6 @@ $ARGUMENTS
 ```
 
 You **MUST** consider the user input before proceeding (if not empty).
-
 
 Create a pull request for the current branch.
 

@@ -1,5 +1,7 @@
 ---
+name: trellis.import
 description: Import tasks.md into beads issue tracker for LLM-aware task execution with dependency management
+disable-model-invocation: true
 ---
 
 ## User Input

@@ -1,5 +1,7 @@
 ---
+name: trellis.sync
 description: Bidirectional synchronization between beads issue tracker and tasks.md - reconcile status, detect conflicts, and maintain consistency
+disable-model-invocation: true
 ---
 
 ## User Input
@@ -263,7 +265,7 @@ You **MUST** consider the user input before proceeding (if not empty).
           "conflicts_resolved": 2,
           "direction": "bidirectional"
         }
-      ],
+      ]
       // ... rest of mapping
     }
     ```

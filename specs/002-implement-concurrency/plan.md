@@ -27,7 +27,7 @@ The constitution template is unpopulated for this project. Applying general best
 
 | Gate | Status | Notes |
 |------|--------|-------|
-| Single file change | ✅ PASS | Modifying only `commands/trellis.implement.md` |
+| Single file change | ✅ PASS | Modifying only `skills/trellis.implement/SKILL.md` |
 | No new dependencies | ✅ PASS | Uses existing Task tool, bd CLI, agent types |
 | Backwards compatible | ✅ PASS | Existing flags preserved; new behavior is default |
 | Testable | ✅ PASS | Can be tested with existing beads projects |
@@ -48,8 +48,9 @@ specs/002-implement-concurrency/
 ### Source Code (repository root)
 
 ```text
-commands/
-└── trellis.implement.md    # THE ONLY FILE BEING MODIFIED
+skills/
+└── trellis.implement/
+    └── SKILL.md    # THE ONLY FILE BEING MODIFIED
 ```
 
 **Structure Decision**: This is a single-file enhancement to an existing command. No new directories or files in the source tree are required.

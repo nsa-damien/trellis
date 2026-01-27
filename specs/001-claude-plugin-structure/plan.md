@@ -172,7 +172,7 @@ If you previously installed Trellis using `install.sh`:
 |------|------------|
 | Users miss migration instructions | Add prominent note in CHANGELOG and README |
 | Plugin manifest schema incorrect | Validated against official examples |
-| Commands not discovered | Using standard `commands/` location |
+| Commands not discovered | Using standard `skills/` and `agents/` locations |
 
 ## Notes
 

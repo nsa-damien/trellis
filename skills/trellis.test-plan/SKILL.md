@@ -1,5 +1,7 @@
 ---
+name: trellis.test-plan
 description: Generate manual test file and test plan documentation for a feature specification
+disable-model-invocation: true
 ---
 
 ## User Input

@@ -1,5 +1,7 @@
 ---
+name: trellis.release
 description: Create a release with changelog, release notes, and tagged GitHub release (auto-creates PR if needed)
+disable-model-invocation: true
 ---
 
 ## User Input
@@ -9,7 +11,6 @@ $ARGUMENTS
 ```
 
 You **MUST** consider the user input before proceeding (if not empty).
-
 
 Create a release with changelog, release notes, and tagged GitHub release. Automatically creates a PR if one doesn't exist.
 

@@ -1,14 +1,7 @@
 ---
+name: trellis.epics
 description: Break down a PRD into sequenced, LLM-executable epics. Each epic is a self-contained phase of work that moves the project forward by a measurable step without being overly ambitious.
-handoffs:
-  - label: Create Beads Issues
-    agent: Bash
-    prompt: "bd create --title=\"Epic: {epic_name}\" --type=feature --priority=2"
-    send: false
-  - label: Implement Epic
-    agent: trellis.implement
-    prompt: Implement the first ready epic from this plan
-    send: true
+disable-model-invocation: true
 ---
 
 ## User Input

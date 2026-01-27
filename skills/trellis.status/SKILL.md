@@ -1,4 +1,5 @@
 ---
+name: trellis.status
 description: Project health and statistics overview - progress, blocked work, and sync status
 ---
 

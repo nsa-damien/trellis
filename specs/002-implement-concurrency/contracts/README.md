@@ -3,7 +3,7 @@
 This feature modifies a Claude Code command file. There are no API contracts to define.
 
 The "contract" for this feature is the command's interface (flags and behavior), which is documented in:
-- The command file itself (`commands/trellis.implement.md`)
+- The skill file itself (`skills/trellis.implement/SKILL.md`)
 - The spec (`spec.md`)
 - The quickstart (`quickstart.md`)
 
