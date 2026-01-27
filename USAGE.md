@@ -7,8 +7,14 @@ Step-by-step workflow for spec-driven development with Trellis.
 ### Install Trellis
 
 ```bash
-claude plugin install github:NorthShoreAutomation/trellis
+# Add the repository as a marketplace source
+/plugin marketplace add NorthShoreAutomation/trellis
+
+# Install the plugin
+/plugin install trellis@NorthShoreAutomation/trellis
 ```
+
+If upgrading from older installs that copied Trellis command files into `~/.claude/commands/` or `.claude/commands/`, remove those copies to avoid duplicate command definitions.
 
 ### Install and Initialize Beads
 

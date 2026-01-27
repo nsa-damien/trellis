@@ -83,7 +83,7 @@ The `--plugin-dir` flag loads the plugin for that session. Changes to skills/age
 
 ## Migration
 
-If upgrading from older installs that copied command files into `~/.claude/commands/` or `.claude/commands/`, remove those copies and install via plugin.
+If upgrading from older installs that copied Trellis command files into `~/.claude/commands/` or `.claude/commands/`, remove those copies to avoid duplicate command definitions.
 
 ## Commands
 

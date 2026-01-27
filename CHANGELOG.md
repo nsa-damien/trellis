@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Trellis commands are now implemented as Claude Code skills under `skills/<skill-name>/SKILL.md`
+- Trellis subagents are now defined under `agents/`
+
+### Removed
+
+- Legacy `commands/` directory
+
 ## [0.8.1] - 2026-01-24
 
 ### Changed
