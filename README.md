@@ -13,9 +13,9 @@ spec-kit                    Trellis
 ─────────                   ───────
 /speckit.spec → spec.md
 /speckit.plan → plan.md
-/speckit.tasks → tasks.md ──→ /trellis.import ──→ beads issues
-                            /trellis.implement ──→ dependency-aware execution
-                            /trellis.sync ──→ bidirectional sync
+/speckit.tasks → tasks.md ──→ /trellis:import ──→ beads issues
+                            /trellis:implement ──→ dependency-aware execution
+                            /trellis:sync ──→ bidirectional sync
 ```
 
 ## Installation
@@ -89,16 +89,16 @@ If upgrading from older installs that copied Trellis command files into `~/.clau
 
 | Command | Purpose |
 |---------|---------|
-| `/trellis.import` | Import tasks.md into beads |
-| `/trellis.implement` | Execute with dependency-aware ordering |
-| `/trellis.sync` | Reconcile beads ↔ tasks.md |
-| `/trellis.ready` | Show unblocked tasks |
-| `/trellis.status` | Project health overview |
-| `/trellis.prd` | Interactive PRD development |
-| `/trellis.epics` | Break PRD into sequenced epics |
-| `/trellis.test-plan` | Generate test plan documentation |
-| `/trellis.push` | Commit and push with changelog |
-| `/trellis.release` | Create release from PR |
+| `/trellis:import` | Import tasks.md into beads |
+| `/trellis:implement` | Execute with dependency-aware ordering |
+| `/trellis:sync` | Reconcile beads ↔ tasks.md |
+| `/trellis:ready` | Show unblocked tasks |
+| `/trellis:status` | Project health overview |
+| `/trellis:prd` | Interactive PRD development |
+| `/trellis:epics` | Break PRD into sequenced epics |
+| `/trellis:test-plan` | Generate test plan documentation |
+| `/trellis:push` | Commit and push with changelog |
+| `/trellis:release` | Create release from PR |
 
 Run any command with `--help` for options (e.g., `--dry-run`, `--force`).
 
@@ -109,13 +109,13 @@ Run any command with `--help` for options (e.g., `--dry-run`, `--force`).
 /speckit.tasks
 
 # 2. Import to beads
-/trellis.import
+/trellis:import
 
 # 3. Execute with tracking
-/trellis.implement
+/trellis:implement
 
 # 4. Check progress anytime
-/trellis.status
+/trellis:status
 bd ready
 bd stats
 ```

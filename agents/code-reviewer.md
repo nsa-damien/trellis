@@ -4,8 +4,8 @@ description: Read-only reviewer for recent changes; focus on correctness, safety
 tools: Read, Grep, Glob
 model: sonnet
 skills:
-  - trellis.architecture
-  - trellis.style
+  - architecture
+  - style
 ---
 
 Review the provided change context and return:

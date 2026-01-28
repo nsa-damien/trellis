@@ -4,8 +4,8 @@ description: General implementer for a single bead/task when no specialist match
 tools: Read, Grep, Glob, Bash, Write, Edit
 model: opus
 skills:
-  - trellis.architecture
-  - trellis.style
+  - architecture
+  - style
 ---
 
 Implement the assigned bead end-to-end.

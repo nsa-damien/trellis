@@ -1,5 +1,5 @@
 ---
-name: trellis.sync
+name: sync
 description: Bidirectional synchronization between beads issue tracker and tasks.md - reconcile status, detect conflicts, and maintain consistency
 disable-model-invocation: true
 ---
@@ -19,7 +19,7 @@ You **MUST** consider the user input before proceeding (if not empty).
 2. **Verify integration exists**:
    - Check if `FEATURE_DIR/beads-mapping.json` exists
    - If NOT found:
-     - Display: "No beads integration found. Run `/trellis.import` first to create the integration."
+     - Display: "No beads integration found. Run `/trellis:import` first to create the integration."
      - **STOP** execution
    - Load and validate the mapping file structure
    - Verify beads database is accessible: `bd info --json`
@@ -174,8 +174,8 @@ You **MUST** consider the user input before proceeding (if not empty).
    - Offer to: recreate in beads, remove from mapping, or ignore
 
    **New tasks.md entries**:
-   - Report tasks in tasks.md not in mapping (added after `/trellis.import`)
-   - Offer to: import to beads (like `/trellis.import` would), or ignore
+   - Report tasks in tasks.md not in mapping (added after `/trellis:import`)
+   - Offer to: import to beads (like `/trellis:import` would), or ignore
 
 7. **Execute sync operations**:
 
@@ -399,7 +399,7 @@ Fixes mapping file issues:
 4. Rebuilds mapping integrity
 
 ```bash
-/trellis.sync --repair-mapping --dry-run
+/trellis:sync --repair-mapping --dry-run
 ```
 
 ### Include Notes (`--include-notes`)
@@ -421,7 +421,7 @@ After:
 Check sync status without making any changes:
 
 ```bash
-/trellis.sync --validate
+/trellis:sync --validate
 ```
 
 Returns exit code:
@@ -467,7 +467,7 @@ Remember to commit your changes:
 
 Or with `--git-commit` flag, auto-commit:
 ```bash
-/trellis.sync --git-commit -m "Sync task status"
+/trellis:sync --git-commit -m "Sync task status"
 ```
 
 ## Notes
@@ -476,4 +476,4 @@ Or with `--git-commit` flag, auto-commit:
 - Beads `in_progress` status is preserved (not synced to tasks.md checkbox)
 - Phase-level epics are synced when all child tasks are complete
 - The mapping file `last_synced_at` is updated even if no changes were needed
-- For major refactoring of tasks.md, consider re-running `/trellis.import` with `--force`
+- For major refactoring of tasks.md, consider re-running `/trellis:import` with `--force`

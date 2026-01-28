@@ -3,7 +3,7 @@
 ## Data Flow
 
 ```
-┌─────────────┐     /trellis.import      ┌─────────────┐
+┌─────────────┐     /trellis:import      ┌─────────────┐
 │  tasks.md   │ ──────────────────────→  │   beads     │
 │  (spec-kit) │                          │  database   │
 └──────┬──────┘                          └──────┬──────┘
@@ -11,7 +11,7 @@
        │         beads-mapping.json             │
        │    (task_id ←→ beads_id mapping)       │
        │                                        │
-       ↓           /trellis.sync                ↓
+       ↓           /trellis:sync                ↓
 ┌─────────────┐  ←────────────────────→  ┌─────────────┐
 │  checkboxes │                          │   status    │
 │  [ ] / [X]  │                          │   updates   │

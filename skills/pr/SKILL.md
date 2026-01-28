@@ -1,5 +1,5 @@
 ---
-name: trellis.pr
+name: pr
 description: Create a pull request for the current branch
 disable-model-invocation: true
 ---
@@ -31,7 +31,7 @@ Create a pull request for the current branch.
 1. Run `git status` to see all staged and unstaged changes
 2. If there are uncommitted changes:
    - Ask user if they want to commit them before creating the PR
-   - If yes, follow the commit process from `/trellis.push` (includes changelog updates)
+   - If yes, follow the commit process from `/trellis:push` (includes changelog updates)
    - If no, warn that uncommitted changes won't be in the PR
 
 ### 3. Sync Beads (if configured)
@@ -85,7 +85,7 @@ EOF
 2. Display the PR URL to the user
 3. Inform user they can now:
    - Request reviews
-   - Run `/trellis.release` when ready to merge and release
+   - Run `/trellis:release` when ready to merge and release
 
 ## Important
 

@@ -1,5 +1,5 @@
 ---
-name: trellis.implement
+name: implement
 description: Execute implementation using beads for task tracking with continuous execution, fresh agents per bead, intelligent routing, and maximized parallelism
 disable-model-invocation: true
 ---
@@ -18,7 +18,7 @@ You **MUST** consider the user input before proceeding (if not empty).
 
 2. **Verify beads integration**:
    - Check if `FEATURE_DIR/beads-mapping.json` exists
-   - If NOT found: Display "No beads integration found. Run `/trellis.import` first to import tasks, or use `/speckit.implement` for standard execution." and **STOP**
+   - If NOT found: Display "No beads integration found. Run `/trellis:import` first to import tasks, or use `/speckit.implement` for standard execution." and **STOP**
    - If found: Load mapping, verify beads accessible (`bd info`), verify root epic exists (`bd show [ROOT_EPIC_ID]`)
 
 3. **Check checklists status**
@@ -228,7 +228,7 @@ You **MUST** consider the user input before proceeding (if not empty).
     When all tasks closed, **BEFORE** closing root epic, invoke the test plan command:
 
     ```
-    Use the Skill tool to invoke: /trellis.test-plan
+    Use the Skill tool to invoke: /trellis:test-plan
     ```
 
     This generates the complete test infrastructure including:
@@ -237,7 +237,7 @@ You **MUST** consider the user input before proceeding (if not empty).
     - `FEATURE_DIR/tests/.env.example` - Environment variable template
     - `FEATURE_DIR/tests/USAGE.md` - Instructions for running tests
 
-    Display: `✓ Test plan generated via /trellis.test-plan`
+    Display: `✓ Test plan generated via /trellis:test-plan`
 
 14. **Final sync and epic closure**:
     - Close root epic: `bd close [ROOT_EPIC_ID] --reason "Feature implementation complete"`
@@ -257,7 +257,7 @@ You **MUST** consider the user input before proceeding (if not empty).
       → "Entry point jobs/legacy.go:OldProcess no longer exists - remove?" [yes/no]
       ```
     - Write updated CODEMAP.yaml if changes accepted
-    - If no CODEMAP.yaml exists: Suggest `"Consider running /trellis.codemap to create a code map"`
+    - If no CODEMAP.yaml exists: Suggest `"Consider running /trellis:codemap to create a code map"`
 
 16. **Completion Report**:
 
@@ -321,7 +321,7 @@ You **MUST** consider the user input before proceeding (if not empty).
 
 ## Notes
 
-- Requires `/trellis.import` to be run first
+- Requires `/trellis:import` to be run first
 - Beads is source of truth; tasks.md kept in sync for compatibility
 - Run `bd sync` at end of session to commit beads changes to git
 - For standard execution without beads, use `/speckit.implement`

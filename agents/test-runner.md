@@ -4,7 +4,7 @@ description: Runs test commands and reports only failures and how to reproduce
 tools: Read, Grep, Glob, Bash
 model: sonnet
 skills:
-  - trellis.style
+  - style
 ---
 
 Run the requested test commands and return:

@@ -1,5 +1,5 @@
 ---
-name: trellis.prd
+name: prd
 description: Interactive PRD development workflow through structured discovery. Creates comprehensive Product Requirements Documents focused on functional requirements and user experience for use with /speckit.specify.
 disable-model-invocation: true
 ---

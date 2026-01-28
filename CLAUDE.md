@@ -8,9 +8,9 @@ Trellis bridges spec-kit planning with beads issue tracking for Claude Code. It 
 
 **Architecture:**
 ```
-spec-kit (tasks.md) → /trellis.import → beads issues
-                      /trellis.implement → dependency-aware execution
-                      /trellis.sync → bidirectional sync
+spec-kit (tasks.md) → /trellis:import → beads issues
+                      /trellis:implement → dependency-aware execution
+                      /trellis:sync → bidirectional sync
 ```
 
 ## Key Commands
@@ -18,24 +18,24 @@ spec-kit (tasks.md) → /trellis.import → beads issues
 ### Trellis Commands (this plugin)
 | Command | Purpose |
 |---------|---------|
-| `/trellis.import` | Import tasks.md into beads with dependency graph |
-| `/trellis.implement` | Execute tasks using beads ordering |
-| `/trellis.sync` | Reconcile beads ↔ tasks.md status |
-| `/trellis.ready` | Show unblocked tasks |
-| `/trellis.status` | Project health overview |
-| `/trellis.push` | Commit and push with changelog updates |
-| `/trellis.pr` | Create a pull request for the current branch |
-| `/trellis.release` | Create release from PR with version tag |
-| `/trellis.codemap` | Generate/update CODEMAP.yaml for LLM navigation |
+| `/trellis:import` | Import tasks.md into beads with dependency graph |
+| `/trellis:implement` | Execute tasks using beads ordering |
+| `/trellis:sync` | Reconcile beads ↔ tasks.md status |
+| `/trellis:ready` | Show unblocked tasks |
+| `/trellis:status` | Project health overview |
+| `/trellis:push` | Commit and push with changelog updates |
+| `/trellis:pr` | Create a pull request for the current branch |
+| `/trellis:release` | Create release from PR with version tag |
+| `/trellis:codemap` | Generate/update CODEMAP.yaml for LLM navigation |
 
 **Typical Workflow:**
 ```
-/trellis.push → /trellis.pr → /trellis.release
+/trellis:push → /trellis:pr → /trellis:release
      ↓              ↓              ↓
   commit+push   create PR    merge+tag+release
 ```
 
-Note: `/trellis.release` will auto-create a PR if one doesn't exist, so `/trellis.pr` is optional.
+Note: `/trellis:release` will auto-create a PR if one doesn't exist, so `/trellis:pr` is optional.
 
 ### Beads Commands
 ```bash

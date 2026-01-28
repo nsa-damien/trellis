@@ -1,5 +1,5 @@
 ---
-name: trellis.epics
+name: epics
 description: Break down a PRD into sequenced, LLM-executable epics. Each epic is a self-contained phase of work that moves the project forward by a measurable step without being overly ambitious.
 disable-model-invocation: true
 ---
@@ -235,7 +235,7 @@ graph LR
 To implement this plan:
 
 1. Start with Epic 1 (no dependencies)
-2. Use `/trellis.implement` with the epic document
+2. Use `/trellis:implement` with the epic document
 3. Track progress with `bd` commands
 4. Validate completion using the epic's acceptance criteria
 5. Proceed to the next unblocked epic

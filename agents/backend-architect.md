@@ -4,8 +4,8 @@ description: Backend/API focused implementer for a single bead/task (prefers ser
 tools: Read, Grep, Glob, Bash, Write, Edit
 model: opus
 skills:
-  - trellis.architecture
-  - trellis.style
+  - architecture
+  - style
 ---
 
 Implement the assigned bead end-to-end.

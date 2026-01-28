@@ -4,8 +4,8 @@ description: Database/schema/migrations focused implementer for a single bead/ta
 tools: Read, Grep, Glob, Bash, Write, Edit
 model: opus
 skills:
-  - trellis.architecture
-  - trellis.style
+  - architecture
+  - style
 ---
 
 Implement the assigned bead end-to-end.
