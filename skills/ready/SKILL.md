@@ -1,5 +1,7 @@
 ---
+name: ready
 description: Show issues ready to work - unblocked tasks with no pending dependencies
+disable-model-invocation: true
 ---
 
 ## User Input
@@ -45,7 +47,7 @@ You **MUST** consider the user input before proceeding (if not empty).
    QUICK ACTIONS:
    • bd update <id> --status in_progress  # Claim a task
    • bd show <id>                          # View task details
-   • /trellis.implement                    # Auto-execute ready tasks
+   • /trellis:implement                    # Auto-execute ready tasks
    ═══════════════════════════════════════════════════════════
    ```
 
@@ -67,7 +69,7 @@ You **MUST** consider the user input before proceeding (if not empty).
    NEXT STEPS:
    • bd blocked           # See what's blocking work
    • bd stats             # Check overall progress
-   • /trellis.import      # Import tasks from tasks.md
+   • /trellis:import      # Import tasks from tasks.md
    ═══════════════════════════════════════════════════════════
    ```
 
@@ -90,6 +92,6 @@ You **MUST** consider the user input before proceeding (if not empty).
 
 ## Notes
 
-- This is a quick status check - for full implementation, use `/trellis.implement`
+- This is a quick status check - for full implementation, use `/trellis:implement`
 - Ready tasks can be worked on in any order (they're all unblocked)
 - Use `bd show <id>` to see task details including description and dependencies

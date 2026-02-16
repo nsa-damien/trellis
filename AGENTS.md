@@ -15,11 +15,11 @@ bd sync                               # Sync with git
 ## Trellis Commands
 
 ```bash
-/trellis.import       # Import tasks.md into beads
-/trellis.implement    # Execute with beads tracking
-/trellis.sync         # Sync beads ↔ tasks.md
-/trellis.ready        # Show available work
-/trellis.status       # Project health overview
+/trellis:import       # Import tasks.md into beads
+/trellis:implement    # Execute with beads tracking
+/trellis:sync         # Sync beads ↔ tasks.md
+/trellis:ready        # Show available work
+/trellis:status       # Project health overview
 ```
 
 ## Session End Checklist

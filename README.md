@@ -13,9 +13,9 @@ spec-kit                    Trellis
 ─────────                   ───────
 /speckit.spec → spec.md
 /speckit.plan → plan.md
-/speckit.tasks → tasks.md ──→ /trellis.import ──→ beads issues
-                            /trellis.implement ──→ dependency-aware execution
-                            /trellis.sync ──→ bidirectional sync
+/speckit.tasks → tasks.md ──→ /trellis:import ──→ beads issues
+                            /trellis:implement ──→ dependency-aware execution
+                            /trellis:sync ──→ bidirectional sync
 ```
 
 ## Installation
@@ -79,40 +79,26 @@ git clone https://github.com/NorthShoreAutomation/trellis.git
 claude --plugin-dir /path/to/trellis
 ```
 
-The `--plugin-dir` flag loads the plugin for that session. Changes to command files are reflected on restart.
+The `--plugin-dir` flag loads the plugin for that session. Changes to skills/agents are reflected on restart.
 
 ## Migration
 
-If upgrading from the symlink-based installer:
-
-1. Remove existing symlinks:
-   ```bash
-   # Check for and remove user-level symlinks
-   rm -f ~/.claude/commands/trellis.*.md
-
-   # Check for and remove project-level symlinks
-   rm -f .claude/commands/trellis.*.md
-   ```
-
-2. Install via plugin:
-   ```bash
-   claude plugin install github:NorthShoreAutomation/trellis
-   ```
+If upgrading from older installs that copied Trellis command files into `~/.claude/commands/` or `.claude/commands/`, remove those copies to avoid duplicate command definitions.
 
 ## Commands
 
 | Command | Purpose |
 |---------|---------|
-| `/trellis.import` | Import tasks.md into beads |
-| `/trellis.implement` | Execute with dependency-aware ordering |
-| `/trellis.sync` | Reconcile beads ↔ tasks.md |
-| `/trellis.ready` | Show unblocked tasks |
-| `/trellis.status` | Project health overview |
-| `/trellis.prd` | Interactive PRD development |
-| `/trellis.epics` | Break PRD into sequenced epics |
-| `/trellis.test-plan` | Generate test plan documentation |
-| `/trellis.push` | Commit and push with changelog |
-| `/trellis.release` | Create release from PR |
+| `/trellis:import` | Import tasks.md into beads |
+| `/trellis:implement` | Execute with dependency-aware ordering |
+| `/trellis:sync` | Reconcile beads ↔ tasks.md |
+| `/trellis:ready` | Show unblocked tasks |
+| `/trellis:status` | Project health overview |
+| `/trellis:prd` | Interactive PRD development |
+| `/trellis:epics` | Break PRD into sequenced epics |
+| `/trellis:test-plan` | Generate test plan documentation |
+| `/trellis:push` | Commit and push with changelog |
+| `/trellis:release` | Create release from PR |
 
 Run any command with `--help` for options (e.g., `--dry-run`, `--force`).
 
@@ -123,13 +109,13 @@ Run any command with `--help` for options (e.g., `--dry-run`, `--force`).
 /speckit.tasks
 
 # 2. Import to beads
-/trellis.import
+/trellis:import
 
 # 3. Execute with tracking
-/trellis.implement
+/trellis:implement
 
 # 4. Check progress anytime
-/trellis.status
+/trellis:status
 bd ready
 bd stats
 ```

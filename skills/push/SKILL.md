@@ -1,5 +1,7 @@
 ---
+name: push
 description: Commit and push current changes to the remote repository with changelog updates
+disable-model-invocation: true
 ---
 
 ## User Input
@@ -9,7 +11,6 @@ $ARGUMENTS
 ```
 
 You **MUST** consider the user input before proceeding (if not empty).
-
 
 Commit and push the current changes to the remote repository.
 
@@ -32,6 +33,7 @@ Commit and push the current changes to the remote repository.
 7. Commit the changes
 8. Push to the current branch with `git push` (use `-u origin <branch>` if no upstream is set)
 9. Do NOT create a pull request
+
 ## Important
 
 - Keep the commit message short and meaningful

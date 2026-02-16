@@ -1,14 +1,7 @@
 ---
+name: epics
 description: Break down a PRD into sequenced, LLM-executable epics. Each epic is a self-contained phase of work that moves the project forward by a measurable step without being overly ambitious.
-handoffs:
-  - label: Create Beads Issues
-    agent: Bash
-    prompt: "bd create --title=\"Epic: {epic_name}\" --type=feature --priority=2"
-    send: false
-  - label: Implement Epic
-    agent: trellis.implement
-    prompt: Implement the first ready epic from this plan
-    send: true
+disable-model-invocation: true
 ---
 
 ## User Input
@@ -242,7 +235,7 @@ graph LR
 To implement this plan:
 
 1. Start with Epic 1 (no dependencies)
-2. Use `/trellis.implement` with the epic document
+2. Use `/trellis:implement` with the epic document
 3. Track progress with `bd` commands
 4. Validate completion using the epic's acceptance criteria
 5. Proceed to the next unblocked epic

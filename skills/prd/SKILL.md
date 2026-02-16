@@ -1,14 +1,7 @@
 ---
+name: prd
 description: Interactive PRD development workflow through structured discovery. Creates comprehensive Product Requirements Documents focused on functional requirements and user experience for use with /speckit.specify.
-handoffs:
-  - label: Create Specification
-    agent: speckit.specify
-    prompt: Create a technical specification from this PRD
-    send: true
-  - label: Create Tasks
-    agent: speckit.tasks
-    prompt: Break the PRD into implementation tasks
-    send: true
+disable-model-invocation: true
 ---
 
 ## User Input

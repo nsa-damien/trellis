@@ -1,4 +1,5 @@
 ---
+name: status
 description: Project health and statistics overview - progress, blocked work, and sync status
 ---
 
@@ -86,8 +87,8 @@ You **MUST** consider the user input before proceeding (if not empty).
    └─────────────────────────────────────────────────────────┘
 
    QUICK ACTIONS:
-   • /trellis.ready       # Detailed view of ready work
-   • /trellis.implement   # Start executing tasks
+   • /trellis:ready       # Detailed view of ready work
+   • /trellis:implement   # Start executing tasks
    • bd show <id>         # View specific issue
    • bd dep tree <id>     # View dependency tree
    ═══════════════════════════════════════════════════════════
@@ -109,7 +110,7 @@ You **MUST** consider the user input before proceeding (if not empty).
    SYNC STATUS:
    • Last synced: 2025-12-27 15:30:00
    • Beads ↔ tasks.md: In sync
-   • Run `/trellis.sync --validate` to verify
+   • Run `/trellis:sync --validate` to verify
    ```
 
 6. **Health checks**:
@@ -143,6 +144,6 @@ Trellis: 15/30 complete (50%) | Ready: 5 | In Progress: 3 | Blocked: 4
 ## Notes
 
 - This command provides a read-only overview - no modifications are made
-- For sync operations, use `/trellis.sync`
-- For implementation, use `/trellis.implement`
+- For sync operations, use `/trellis:sync`
+- For implementation, use `/trellis:implement`
 - Health checks can identify issues before they become problems

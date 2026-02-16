@@ -1,4 +1,5 @@
 ---
+name: codemap
 description: Generate or update CODEMAP.yaml - a semantic map of code locations for LLM navigation
 ---
 
@@ -171,7 +172,7 @@ Key types:
 ```yaml
 # CODEMAP.yaml - Semantic code map for LLM navigation
 # Generated: 2026-01-20T10:30:00Z
-# Run /trellis.codemap to update
+# Run /trellis:codemap to update
 
 version: "1.0"
 generated: "2026-01-20T10:30:00Z"
@@ -225,7 +226,7 @@ modules:
    NEXT STEPS:
    • Review CODEMAP.yaml for accuracy
    • Commit: git add CODEMAP.yaml && git commit -m "Add code map"
-   • Update after changes: /trellis.codemap
+   • Update after changes: /trellis:codemap
    ═══════════════════════════════════════════════════════════
    ```
 
@@ -265,6 +266,6 @@ Continuing with other files...
 
 - CODEMAP.yaml should be committed to the repository
 - The file is designed to be human-readable and manually editable
-- `/trellis.implement` will suggest updates after implementation sessions
+- `/trellis:implement` will suggest updates after implementation sessions
 - Keep it compact: exclude modules with no meaningful entry points
 - Prefer fewer, high-quality entries over comprehensive but noisy listings

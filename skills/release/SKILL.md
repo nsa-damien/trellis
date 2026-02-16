@@ -1,5 +1,7 @@
 ---
+name: release
 description: Create a release with changelog, release notes, and tagged GitHub release (auto-creates PR if needed)
+disable-model-invocation: true
 ---
 
 ## User Input
@@ -9,7 +11,6 @@ $ARGUMENTS
 ```
 
 You **MUST** consider the user input before proceeding (if not empty).
-
 
 Create a release with changelog, release notes, and tagged GitHub release. Automatically creates a PR if one doesn't exist.
 
@@ -24,7 +25,7 @@ Create a release with changelog, release notes, and tagged GitHub release. Autom
 5. **If no PR exists or PR is not open**, create one:
    a. Check for uncommitted changes with `git status`
    b. If uncommitted changes exist, ask user if they want to commit them first
-   c. If yes, stage and commit with a descriptive message (follow `/trellis.push` process)
+   c. If yes, stage and commit with a descriptive message (follow `/trellis:push` process)
    d. Push to remote: `git push -u origin $(git branch --show-current)`
       - **If push fails: STOP and inform user.** Cannot create PR without pushing to remote first.
    e. Create the PR:
@@ -175,7 +176,7 @@ git push origin main
 
 ## Important
 
-- **Auto-creates PR if needed** — no need to run `/trellis.pr` first
+- **Auto-creates PR if needed** — no need to run `/trellis:pr` first
 - **Always confirm version number** with user before making changes
 - If PR requires approval, stop and allow user to get approval, then re-run release command
 - Do not include secrets or credentials in release notes

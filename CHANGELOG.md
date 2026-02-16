@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.9.0] - 2026-02-16
+
+### Changed
+
+- Migrated all trellis commands from `commands/` to skills architecture under `skills/<skill-name>/SKILL.md`
+- Trellis subagents moved to `agents/` directory at plugin root
+- Simplified skill names for cleaner invocation (e.g., `/trellis:push`, `/trellis:pr`)
+- Expanded knowledge skills with architecture and style reference content
+- Expanded all 8 agent definitions (code-reviewer, database-architect, frontend-developer, general-purpose, golang-pro, python-pro, test-runner, typescript-pro) with comprehensive system prompts, domain-specific rules, and quality guidelines
+
+### Removed
+
+- Legacy `commands/` directory
+
 ## [0.8.1] - 2026-01-24
 
 ### Changed
@@ -273,7 +287,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Architecture documentation explaining the spec-kit/beads bridge
 - AGENTS.md snippet for automatic beads awareness in Claude Code
 
-[Unreleased]: https://github.com/NorthShoreAutomation/trellis/compare/v0.8.1...HEAD
+[Unreleased]: https://github.com/NorthShoreAutomation/trellis/compare/v0.9.0...HEAD
+[0.9.0]: https://github.com/NorthShoreAutomation/trellis/compare/v0.8.1...v0.9.0
 [0.8.1]: https://github.com/NorthShoreAutomation/trellis/compare/v0.8.0...v0.8.1
 [0.8.0]: https://github.com/NorthShoreAutomation/trellis/compare/v0.7.3...v0.8.0
 [0.7.3]: https://github.com/NorthShoreAutomation/trellis/compare/v0.7.2...v0.7.3

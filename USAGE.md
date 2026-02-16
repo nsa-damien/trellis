@@ -7,8 +7,14 @@ Step-by-step workflow for spec-driven development with Trellis.
 ### Install Trellis
 
 ```bash
-claude plugin install github:NorthShoreAutomation/trellis
+# Add the repository as a marketplace source
+/plugin marketplace add NorthShoreAutomation/trellis
+
+# Install the plugin
+/plugin install trellis@NorthShoreAutomation/trellis
 ```
+
+If upgrading from older installs that copied Trellis command files into `~/.claude/commands/` or `.claude/commands/`, remove those copies to avoid duplicate command definitions.
 
 ### Install and Initialize Beads
 
@@ -30,7 +36,7 @@ Spec-kit commands are bundled with Trellis. No separate installation needed.
 ## Workflow Overview
 
 ```
-PRD → Epics → Specify → Clarify → Plan → Tasks → Analyze → Import → Implement → Test Plan → Push → Release
+PRD → Epics → Specify → Clarify → Plan → Tasks → Analyze → Import → Implement → Test Plan → Push → Open PR → Review → Release
 ```
 
 ---
@@ -38,7 +44,7 @@ PRD → Epics → Specify → Clarify → Plan → Tasks → Analyze → Import 
 ## Step 1: Generate Product Requirements
 
 ```bash
-/trellis.prd
+/trellis:prd
 ```
 
 Interactive PRD development workflow through structured discovery. Claude guides you through:
@@ -54,7 +60,7 @@ Interactive PRD development workflow through structured discovery. Claude guides
 ## Step 2: Break Down into Epics
 
 ```bash
-/trellis.epics
+/trellis:epics
 ```
 
 Breaks the PRD into sequenced, LLM-executable epics. Each epic is a self-contained phase of work that moves the project forward by a measurable step.
@@ -134,7 +140,7 @@ Non-destructive cross-artifact consistency and quality analysis. Reviews spec.md
 ## Step 8: Import to Beads
 
 ```bash
-/trellis.import
+/trellis:import
 ```
 
 Imports tasks.md into beads issue tracker with:
@@ -151,7 +157,7 @@ Imports tasks.md into beads issue tracker with:
 ## Step 9: Implement with Tracking
 
 ```bash
-/trellis.implement
+/trellis:implement
 ```
 
 Executes tasks using beads for dependency-aware ordering:
@@ -160,14 +166,31 @@ Executes tasks using beads for dependency-aware ordering:
 - Updates beads status as work completes
 - Syncs progress back to tasks.md
 
-**Requires:** `specs/{feature}/beads-mapping.json` (created by `/trellis.import`)
+**Requires:** `specs/{feature}/beads-mapping.json` (created by `/trellis:import`)
+
+### Agents (Implementation Routing)
+
+`/trellis:implement` launches specialized subagents (defined in the Trellis plugin under `agents/`) to execute individual beads/tasks.
+
+Common agent roles:
+- `frontend-developer`: UI work (React/Vue/Svelte, CSS, components)
+- `backend-architect`: APIs, services, validation, error handling
+- `database-architect`: schema changes, migrations, queries
+- `python-pro`: Python-focused implementation
+- `typescript-pro`: TypeScript/Node-focused implementation
+- `golang-pro`: Go-focused implementation
+- `general-purpose`: fallback for unclear scope
+
+Support roles:
+- `code-reviewer`: read-only review of recent changes
+- `test-runner`: runs tests and reports failures
 
 ---
 
 ## Step 10: Generate Test Plan
 
 ```bash
-/trellis.test-plan
+/trellis:test-plan
 ```
 
 Generates manual test documentation for a feature specification.
@@ -181,7 +204,7 @@ Generates manual test documentation for a feature specification.
 ## Step 11: Commit and Push
 
 ```bash
-/trellis.push
+/trellis:push
 ```
 
 Commits and pushes current changes with:
@@ -193,10 +216,10 @@ Commits and pushes current changes with:
 
 ## Step 12: Create Pull Request
 
-Create a PR using standard git workflow:
+Create a PR for the current branch:
 
 ```bash
-gh pr create --title "feat: your feature" --body "Description"
+/trellis:pr
 ```
 
 ---
@@ -204,7 +227,7 @@ gh pr create --title "feat: your feature" --body "Description"
 ## Step 13: Create Release
 
 ```bash
-/trellis.release
+/trellis:release
 ```
 
 Creates a release from an existing PR:
@@ -220,18 +243,19 @@ Creates a release from an existing PR:
 
 | Phase | Command | Purpose |
 |-------|---------|---------|
-| Requirements | `/trellis.prd` | Interactive PRD development |
-| Planning | `/trellis.epics` | Break PRD into epics |
+| Requirements | `/trellis:prd` | Interactive PRD development |
+| Planning | `/trellis:epics` | Break PRD into epics |
 | Specification | `/speckit.specify` | Create feature spec from epic |
 | Clarification | `/speckit.clarify` | Resolve ambiguities |
 | Design | `/speckit.plan` | Generate design artifacts |
 | Tasks | `/speckit.tasks` | Generate task breakdown |
 | Validation | `/speckit.analyze` | Consistency check (read-only) |
-| Tracking | `/trellis.import` | Import tasks to beads |
-| Execution | `/trellis.implement` | Build with beads tracking |
-| Testing | `/trellis.test-plan` | Generate test documentation |
-| Commit | `/trellis.push` | Push with changelog |
-| Release | `/trellis.release` | Publish release from PR |
+| Tracking | `/trellis:import` | Import tasks to beads |
+| Execution | `/trellis:implement` | Build with beads tracking |
+| Testing | `/trellis:test-plan` | Generate test documentation |
+| Commit | `/trellis:push` | Push with changelog |
+| PR | `/trellis:pr` | Create pull request |
+| Release | `/trellis:release` | Publish release from PR |
 
 ---
 
@@ -239,9 +263,9 @@ Creates a release from an existing PR:
 
 | Command | Purpose |
 |---------|---------|
-| `/trellis.status` | Project health overview |
-| `/trellis.ready` | Show unblocked tasks |
-| `/trellis.sync` | Sync beads ↔ tasks.md |
+| `/trellis:status` | Project health overview |
+| `/trellis:ready` | Show unblocked tasks |
+| `/trellis:sync` | Sync beads ↔ tasks.md |
 | `bd ready` | Beads: available work |
 | `bd stats` | Beads: project statistics |
 | `bd show <id>` | Beads: issue details |
@@ -250,8 +274,8 @@ Creates a release from an existing PR:
 
 ## Tips
 
-- Run `/speckit.analyze` before `/trellis.import` to catch issues early
-- Use `/trellis.status` anytime to check progress
+- Run `/speckit.analyze` before `/trellis:import` to catch issues early
+- Use `/trellis:status` anytime to check progress
 - The workflow is iterative - you can re-run clarify/plan/tasks as needed
 - Each epic can go through steps 3-11 independently
 - The beads-mapping.json file links tasks.md entries to beads issues

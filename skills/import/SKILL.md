@@ -1,5 +1,7 @@
 ---
+name: import
 description: Import tasks.md into beads issue tracker for LLM-aware task execution with dependency management
+disable-model-invocation: true
 ---
 
 ## User Input
@@ -286,9 +288,9 @@ You **MUST** consider the user input before proceeding (if not empty).
 
     NEXT STEPS:
     1. Run `bd ready --json` to see available work
-    2. Use `/trellis.implement` to execute with beads tracking
+    2. Use `/trellis:implement` to execute with beads tracking
     3. Run `bd dep tree [ROOT_EPIC_ID]` to visualize full hierarchy
-    4. Run `/trellis.sync` to sync status back to tasks.md
+    4. Run `/trellis:sync` to sync status back to tasks.md
     ═══════════════════════════════════════════════════════════
     ```
 

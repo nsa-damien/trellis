@@ -2,8 +2,12 @@
 .DS_Store
 Thumbs.db
 .beads/
-.claude/
+.claude/*
+!.claude/settings.local.json
+!.claude/commands/
+!.claude/commands/**
 .specify/
+.cache/
 
 # Editor files
 .vscode/
