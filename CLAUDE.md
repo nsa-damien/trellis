@@ -4,40 +4,38 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Trellis bridges spec-kit planning with beads issue tracking for Claude Code. It imports tasks from `tasks.md` into beads for dependency-aware execution, then keeps both in sync.
+Trellis is an AI-native development workflow plugin for Claude Code. Two-command lifecycle: scope (do the work) and release (ship it).
 
-**Architecture:**
+**Workflow:**
 ```
-spec-kit (tasks.md) → /trellis:import → beads issues
-                      /trellis:implement → dependency-aware execution
-                      /trellis:sync → bidirectional sync
+/trellis:scope "description"  →  /trellis:release
+         ↓                              ↓
+  branch+implement+push+PR      merge+tag+publish
 ```
 
-## Key Commands
+## Skills
 
-### Trellis Commands (this plugin)
-| Command | Purpose |
-|---------|---------|
-| `/trellis:import` | Import tasks.md into beads with dependency graph |
-| `/trellis:implement` | Execute tasks using beads ordering |
-| `/trellis:sync` | Reconcile beads ↔ tasks.md status |
-| `/trellis:ready` | Show unblocked tasks |
-| `/trellis:status` | Project health overview |
-| `/trellis:push` | Commit and push with changelog updates |
-| `/trellis:pr` | Create a pull request for the current branch |
-| `/trellis:release` | Create release from PR with version tag |
+### Primary
+| Skill | Purpose |
+|-------|---------|
+| `/trellis:scope` | **Start new work** — branch + implement + push + PR |
+| `/trellis:release` | **Ship it** — merge + tag + GitHub release |
+
+### Supporting
+| Skill | Purpose |
+|-------|---------|
+| `/trellis:implement` | Autonomous build engine (used by scope, or standalone for additional work) |
+| `/trellis:status` | Project health, ready work, branch state |
 | `/trellis:codemap` | Generate/update CODEMAP.yaml for LLM navigation |
+| `/trellis:init` | First-time project setup |
 
-**Typical Workflow:**
-```
-/trellis:push → /trellis:pr → /trellis:release
-     ↓              ↓              ↓
-  commit+push   create PR    merge+tag+release
-```
+### Escape Hatches
+| Skill | Purpose |
+|-------|---------|
+| `/trellis:push` | Manual commit and push |
+| `/trellis:pr` | Manual PR creation |
 
-Note: `/trellis:release` will auto-create a PR if one doesn't exist, so `/trellis:pr` is optional.
-
-### Beads Commands
+### Beads Commands (optional)
 ```bash
 bd ready                              # Find available work
 bd show <id>                          # View issue details
@@ -47,49 +45,41 @@ bd sync                               # Sync with git
 bd stats                              # Project statistics
 ```
 
+Beads is optional. Skills check for availability and skip beads-specific steps when not installed.
+
 ## Repository Structure
 
 ```
-skills/              # Trellis skills (`*/SKILL.md`)
-agents/              # Trellis subagents
-.claude-plugin/     # Plugin manifest for Claude Code
-.specify/           # spec-kit templates and scripts
-  templates/        # Document templates (spec, plan, tasks)
-  scripts/          # Helper scripts (check-prerequisites.sh)
-  memory/           # Project constitution
-specs/              # Feature specifications
-  {feature}/        # Per-feature directory
-    spec.md         # Feature specification
-    plan.md         # Implementation plan
-    tasks.md        # Task breakdown
-    beads-mapping.json  # Task ID ↔ beads ID mapping
-docs/               # Documentation
-  ARCHITECTURE.md   # Data flow and component roles
-  release/          # Release notes per version
+skills/              # Trellis skills (*/SKILL.md)
+  scope/             # Primary entry point
+  implement/         # Autonomous build engine
+  status/            # Project health + ready work
+  init/              # First-time setup
+  codemap/           # Codebase navigation map
+  push/              # Manual commit+push
+  pr/                # Manual PR creation
+  release/           # Merge, tag, publish
+  architecture/      # [knowledge] Plugin structure
+  style/             # [knowledge] Working conventions
+agents/              # Specialized subagents
+.claude-plugin/      # Plugin manifest (plugin.json)
+specs/               # Feature specifications
+docs/                # Documentation
+  release/           # Release notes per version
 ```
-
-## Hierarchy Mapping
-
-| spec-kit | beads | ID Pattern |
-|----------|-------|------------|
-| Feature | Root Epic | `proj-a1b2` |
-| Phase | Child Epic | `proj-a1b2.1` |
-| Task | Issue | `proj-a1b2.1.1` |
-| Sequential task | `blocks` dependency | Enforces order |
-| `[P]` parallel marker | No dependency | Can run anytime |
 
 ## Session End Checklist
 
-Before ending a session, complete ALL steps:
+Before ending a session:
 
 ```bash
 git status            # Check uncommitted changes
 git add <files>       # Stage changes
-bd sync               # Sync beads state
 git commit -m "..."   # Commit code
-bd sync               # Commit any new beads changes
 git push              # Push to remote
 ```
+
+If beads is configured, also run `bd sync --from-main` before committing.
 
 Work is not complete until `git push` succeeds.
 
@@ -102,10 +92,3 @@ claude --plugin-dir /path/to/trellis
 ```
 
 Skills are markdown files in `skills/<skill-name>/SKILL.md` and subagents are defined in `agents/`. Changes require restart to take effect.
-
-## Active Technologies
-- Markdown (Claude Code command file format) + Claude Code Task tool, beads CLI (`bd`), speckit scripts (002-implement-concurrency)
-- N/A (stateless command orchestration; beads handles persistence) (002-implement-concurrency)
-
-## Recent Changes
-- 002-implement-concurrency: Added Markdown (Claude Code command file format) + Claude Code Task tool, beads CLI (`bd`), speckit scripts

@@ -1,19 +1,21 @@
 # Trellis
 
-> A Claude Code plugin for structured software development — from planning through implementation, tracking, and release.
+> An AI-native development workflow plugin for Claude Code — describe what you want, approve the approach, walk away.
 
 ## What It Does
 
-Trellis gives Claude Code a complete development workflow through skills and specialized agents:
+Trellis gives Claude Code an autonomous development workflow. Two commands:
 
-- **Plan** — Interactive PRD creation, epic decomposition, spec-driven task generation
-- **Track** — Import tasks into [beads](https://github.com/steveyegge/beads) for dependency-aware execution and progress tracking
-- **Build** — Parallel agent dispatch with specialized agents (frontend, backend, database, Go, Python, TypeScript)
-- **Ship** — Commit, push, PR creation, and tagged releases with changelogs
+1. **`/trellis:scope "description"`** — Creates a branch, proposes an approach, implements with parallel agents, tests, commits, pushes, and opens a PR. One approval, then hands-off.
+2. **`/trellis:release`** — Merges the PR, tags, and publishes a GitHub release.
+
+Everything else is supporting infrastructure or manual escape hatches.
 
 ## Installation
 
-**Prerequisites:** [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [beads](https://github.com/steveyegge/beads)
+**Prerequisites:** [Claude Code](https://docs.anthropic.com/en/docs/claude-code)
+
+**Optional:** [beads](https://github.com/steveyegge/beads) for session recovery and dependency tracking
 
 ```bash
 # Add the marketplace and install
@@ -41,28 +43,33 @@ Or add to `~/.claude/settings.json`:
 
 ## Skills
 
+### Primary Workflow
 | Skill | Purpose |
 |-------|---------|
-| `/trellis:prd` | Interactive PRD development through structured discovery |
-| `/trellis:epics` | Break PRD into sequenced, dependency-aware epics |
-| `/trellis:import` | Import tasks.md into beads with hierarchy and dependencies |
-| `/trellis:implement` | Execute tasks with parallel agents and dependency ordering |
-| `/trellis:sync` | Bidirectional sync between beads and tasks.md |
-| `/trellis:ready` | Show unblocked tasks ready to work |
-| `/trellis:status` | Project health and progress overview |
+| `/trellis:scope` | **Start new work** — branch + implement + push + PR |
+| `/trellis:release` | **Ship it** — merge + tag + GitHub release |
+
+### Supporting
+| Skill | Purpose |
+|-------|---------|
+| `/trellis:implement` | Autonomous build engine (also available standalone) |
+| `/trellis:status` | Project health, ready work, branch state |
 | `/trellis:codemap` | Generate CODEMAP.yaml for LLM code navigation |
-| `/trellis:test-plan` | Generate test plan and executable test files |
-| `/trellis:push` | Commit and push with changelog updates |
-| `/trellis:pr` | Create pull request for current branch |
-| `/trellis:release` | Create release with tag, notes, and GitHub release |
+| `/trellis:init` | First-time project setup |
+
+### Escape Hatches
+| Skill | Purpose |
+|-------|---------|
+| `/trellis:push` | Manual commit and push |
+| `/trellis:pr` | Manual PR creation |
 
 ## Agents
 
-Trellis includes specialized agents that `/trellis:implement` routes tasks to automatically:
+Specialized agents that `/trellis:implement` dispatches in parallel:
 
 | Agent | Focus |
 |-------|-------|
-| `backend-architect` | APIs, services, middleware |
+| `backend-architect` | APIs, services, middleware, error handling |
 | `frontend-developer` | UI components, accessibility, responsive design |
 | `database-architect` | Schemas, migrations, query optimization |
 | `golang-pro` | Idiomatic Go with concurrency patterns |
@@ -75,22 +82,13 @@ Trellis includes specialized agents that `/trellis:implement` routes tasks to au
 ## Quick Start
 
 ```bash
-# 1. Create a PRD interactively
-/trellis:prd
+# 1. Set up your project (first time only)
+/trellis:init
 
-# 2. Break into epics
-/trellis:epics
+# 2. Build something
+/trellis:scope "add a health check endpoint"
 
-# 3. Generate tasks and import to beads
-/speckit.tasks
-/trellis:import
-
-# 4. Implement with parallel agents
-/trellis:implement
-
-# 5. Ship it
-/trellis:push
-/trellis:pr
+# 3. Ship it
 /trellis:release
 ```
 
@@ -105,8 +103,6 @@ Changes to skills and agents take effect on restart.
 
 ## Documentation
 
-- [Architecture](docs/ARCHITECTURE.md) — Data flow and component roles
-- [Usage Guide](USAGE.md) — Step-by-step workflow walkthrough
 - [Changelog](CHANGELOG.md) — Version history
 
 ## License
