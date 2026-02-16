@@ -66,7 +66,7 @@ Wait for user confirmation. Accept "yes", "go", "ok", "approved", or similar aff
 
 If the user requests changes to the plan, revise and re-present. This is the ONLY point where human interaction occurs.
 
-**Exception**: If invoked by `/trellis:scope` and scope already obtained user approval for this work, skip the proposal and begin execution immediately.
+**Exception**: If invoked by `/trellis:scope` (i.e., the arguments include `--approved`), skip the proposal and begin execution immediately — scope already obtained user approval.
 
 After approval: **NO MORE human interaction. Run to completion autonomously.**
 

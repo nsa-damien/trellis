@@ -96,10 +96,10 @@ Analyze the codebase and the description to formulate an implementation approach
 After user approval, invoke the implement skill to execute the work autonomously:
 
 ```
-Use the Skill tool to invoke: /trellis:implement <description>
+Use the Skill tool to invoke: /trellis:implement --approved <description>
 ```
 
-Pass the full description as context so implement understands the scope of work.
+The `--approved` flag signals that scope already obtained user confirmation, so implement skips its own proposal step.
 
 **If the Skill tool invocation fails**, fall back to direct implementation:
 - Execute the work directly based on the approved approach
@@ -114,7 +114,7 @@ After implementation completes:
    - Run `git status` to check for uncommitted changes
    - If uncommitted changes exist, stage and commit them:
      ```bash
-     git add -A
+     git add <specific changed files>
      git commit -m "<type>(<scope>): <summary of remaining changes>"
      ```
 

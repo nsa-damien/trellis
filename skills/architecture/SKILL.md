@@ -95,19 +95,19 @@ Skills are either user-invocable commands or knowledge resources referenced by o
 
 ### Agents
 
-Agents are specialized executors dispatched by the implement skill. Each agent handles a specific domain and runs as a Task tool invocation.
+Agents are specialized executors. Implementation agents are dispatched by the implement skill; utility agents serve verification and review roles outside the implementation dispatch.
 
-| Agent | Domain |
-|-------|--------|
-| `backend-architect` | System design, API architecture, service structure |
-| `frontend-developer` | UI components, client-side logic, styling |
-| `database-architect` | Schema design, migrations, query optimization |
-| `golang-pro` | Go implementation following Go idioms |
-| `python-pro` | Python implementation following Python conventions |
-| `typescript-pro` | TypeScript implementation with type safety |
-| `general-purpose` | Cross-cutting changes, config, infrastructure |
-| `code-reviewer` | Code review, quality checks, style enforcement |
-| `test-runner` | Test execution, coverage, verification |
+| Agent | Domain | Role |
+|-------|--------|------|
+| `backend-architect` | System design, API architecture, service structure | Implementation |
+| `frontend-developer` | UI components, client-side logic, styling | Implementation |
+| `database-architect` | Schema design, migrations, query optimization | Implementation |
+| `golang-pro` | Go implementation following Go idioms | Implementation |
+| `python-pro` | Python implementation following Python conventions | Implementation |
+| `typescript-pro` | TypeScript implementation with type safety | Implementation |
+| `general-purpose` | Cross-cutting changes, config, infrastructure | Implementation |
+| `code-reviewer` | Code review, quality checks, style enforcement | Utility |
+| `test-runner` | Test execution, coverage, verification | Utility |
 
 ### Beads (Optional)
 
@@ -135,8 +135,7 @@ When beads is unavailable, Trellis proceeds without it. No errors are raised. Gi
     |       |-- dispatch: typescript-pro (API routes)
     |       |-- dispatch: database-architect (schema)
     |       |-- dispatch: frontend-developer (login form)
-    |       |-- verify: test-runner
-    |       |-- verify: code-reviewer
+    |       |-- verify: run tests + lint (shell)
     |       |-- commit per work unit
     |-- git push + create PR
     |

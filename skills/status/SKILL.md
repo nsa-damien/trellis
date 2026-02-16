@@ -60,25 +60,25 @@ BEADS PROGRESS:
 Total: [N] issues | Complete: [N]%
 ```
 
-Display ready work (absorbs old `/trellis:ready` functionality):
+Display ready work (unblocked tasks available for pickup):
 ```
 READY WORK ([N] tasks):
-• [bead-id]  [priority] [title]
-• [bead-id]  [priority] [title]
+• [id]  [priority] [title]
+• [id]  [priority] [title]
 ...
 ```
 
 Display in-progress work:
 ```
 IN PROGRESS ([N] tasks):
-• [bead-id]  [priority] [title]
+• [id]  [priority] [title]
 ...
 ```
 
 Display blocked work:
 ```
 BLOCKED ([N] tasks):
-• [bead-id]  blocked by: [dependency-ids]
+• [id]  blocked by: [dependency-ids]
 ...
 ```
 
