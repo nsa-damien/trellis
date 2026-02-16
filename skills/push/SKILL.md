@@ -1,7 +1,6 @@
 ---
 name: push
 description: Commit and push current changes to the remote repository with changelog updates
-disable-model-invocation: true
 ---
 
 ## User Input

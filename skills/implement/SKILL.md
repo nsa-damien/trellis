@@ -1,7 +1,6 @@
 ---
 name: implement
 description: Autonomous plan-build-verify engine — decomposes work, dispatches parallel agents, tests, and commits incrementally
-disable-model-invocation: true
 ---
 
 ## User Input

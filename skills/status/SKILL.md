@@ -1,7 +1,6 @@
 ---
 name: status
 description: Project health overview — progress, ready work, branch state, and session recovery
-disable-model-invocation: true
 ---
 
 ## User Input

@@ -1,7 +1,6 @@
 ---
 name: architecture
 description: Trellis plugin structure, data flow, and integration rules
-user-invocable: false
 ---
 
 # Trellis Architecture

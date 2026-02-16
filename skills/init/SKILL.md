@@ -1,7 +1,6 @@
 ---
 name: init
 description: First-time project setup — detect project type, check beads availability, set conventions
-disable-model-invocation: true
 ---
 
 ## User Input

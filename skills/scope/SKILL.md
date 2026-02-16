@@ -1,7 +1,6 @@
 ---
 name: scope
 description: Start a new scope of work — creates branch, implements autonomously, pushes, and creates PR
-disable-model-invocation: true
 ---
 
 ## User Input

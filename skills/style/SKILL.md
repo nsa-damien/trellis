@@ -1,7 +1,6 @@
 ---
 name: style
 description: Trellis working conventions -- git, commits, safety, and code discipline
-user-invocable: false
 ---
 
 # Trellis Style Guide

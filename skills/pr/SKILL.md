@@ -1,7 +1,6 @@
 ---
 name: pr
 description: Create a pull request for the current branch
-disable-model-invocation: true
 ---
 
 ## User Input

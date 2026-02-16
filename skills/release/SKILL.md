@@ -1,7 +1,6 @@
 ---
 name: release
 description: Create a release with changelog, release notes, and tagged GitHub release (auto-creates PR if needed)
-disable-model-invocation: true
 ---
 
 ## User Input

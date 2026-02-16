@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Remove `disable-model-invocation` and `user-invocable` from skill frontmatter — these non-standard keys prevented skills from appearing in Claude Code autocomplete
+
 ## [0.10.0] - 2026-02-16
 
 ### Added
