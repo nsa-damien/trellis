@@ -1,78 +1,19 @@
 ---
 name: style
-description: Trellis working conventions (sync, commits, safety, formatting)
+description: Trellis working conventions -- git, commits, safety, and code discipline
 user-invocable: false
 ---
 
 # Trellis Style Guide
 
-Conventions for working with Trellis-managed projects. These guidelines ensure consistency and prevent common mistakes.
-
-## Beads-First Workflow
-
-### Source of Truth
-
-- **Beads owns task state** — Never update tasks.md checkboxes directly; use `bd close <id>` then `/trellis:sync`
-- **Check before acting** — Run `bd ready` to see what's available before picking work
-- **Resume via beads** — Use `bd list --status=in_progress` to find interrupted work
-
-### Status Updates
-
-```bash
-# Correct workflow
-bd update <id> --status=in_progress  # Claim task
-# ... do work ...
-bd close <id>                         # Complete task
-/trellis:sync                         # Update tasks.md
-
-# Incorrect - don't do this
-# Manually checking [X] in tasks.md
-```
-
-### Dependency Respect
-
-- Never work on blocked tasks — Check `bd blocked` if confused
-- Complete dependencies first — `bd show <id>` shows blockers
-- Don't skip ahead — Follow `bd ready` ordering
-
-## Markdown Conventions
-
-### Minimal Edits
-
-When editing markdown files:
-- **Change only what you must** — Don't reformat unrelated sections
-- **Preserve existing style** — Match surrounding indentation and formatting
-- **Checkbox edits only for sync** — `/trellis:sync` should only toggle `[ ]` ↔ `[X]`
-
-### tasks.md Formatting
-
-```markdown
-## Phase 1: Setup
-- [ ] 1.1 First task
-- [ ] 1.2 Second task (depends on 1.1)
-- [P] 1.3 Parallel task (can run anytime)
-
-## Phase 2: Implementation
-- [ ] 2.1 Blocked until Phase 1 complete
-```
-
-- Use `[P]` prefix for parallel tasks
-- Keep task descriptions concise (one line)
-- Don't add extra metadata — beads tracks details
-
-### Preserving Structure
-
-When `/trellis:sync` updates tasks.md:
-- Only checkbox state changes
-- No line reordering
-- No whitespace normalization
-- No comment additions
+Working conventions for Trellis-managed projects. These guidelines ensure consistency, prevent common mistakes, and define safety boundaries.
 
 ## Git Conventions
 
 ### Commit Messages
 
-Follow conventional commits:
+Follow conventional commits format:
+
 ```
 type(scope): description
 
@@ -82,18 +23,19 @@ type(scope): description
 ```
 
 Types:
-- `feat` — New feature
-- `fix` — Bug fix
-- `docs` — Documentation only
-- `refactor` — Code change that neither fixes nor adds
-- `test` — Adding or updating tests
-- `chore` — Maintenance tasks
+- `feat` -- New feature
+- `fix` -- Bug fix
+- `docs` -- Documentation only
+- `refactor` -- Code change that neither fixes nor adds
+- `test` -- Adding or updating tests
+- `chore` -- Maintenance tasks
 
 Examples:
-```bash
+```
 feat(auth): add OAuth2 login flow
 fix(api): handle null response from external service
 docs(readme): update installation instructions
+refactor(router): extract middleware into separate module
 ```
 
 ### Branch Naming
@@ -102,120 +44,79 @@ docs(readme): update installation instructions
 type/short-description
 ```
 
+Types mirror commit types: `feat/`, `fix/`, `refactor/`, `chore/`, `docs/`
+
 Examples:
 - `feat/user-authentication`
 - `fix/login-timeout`
-- `docs/api-reference`
+- `refactor/extract-middleware`
+- `chore/update-dependencies`
 
 ### Commit Frequency
 
-- **Commit working states** — Don't commit broken code
-- **Atomic commits** — Each commit is one logical change
-- **Commit before switching tasks** — Preserve work state
+- **Commit working states** -- Never commit broken code
+- **Atomic commits** -- Each commit is one logical change
+- **Commit before switching tasks** -- Preserve work state
+- **Incremental during implement** -- Each work unit gets its own commit, not one big commit at the end
 
 ## Safety Practices
 
 ### Confirmation Required
 
-Always prompt user before:
-- `git push` — Especially to main/master
-- `git push --force` — Warn strongly, require explicit confirmation
-- Release creation — Tag + GitHub release
-- PR merge — Permanent action
-- Destructive beads operations — Closing epics, bulk updates
+Always prompt the user before:
+- `git push` -- Especially to main/master
+- `git push --force` -- Warn strongly, require explicit confirmation
+- Release creation -- Tag + GitHub release
+- PR merge -- Permanent action
+- Branch deletion -- Destructive
 
-### Dry-Run First
+### Dry-Run Support
 
-For risky operations, offer `--dry-run`:
+For risky operations, offer `--dry-run` where applicable:
 ```bash
-/trellis:import --dry-run    # Preview what would be imported
-/trellis:sync --dry-run      # Show what would change
 /trellis:release --dry-run   # Preview release without creating
 ```
 
 ### Never Auto-Execute
 
-These require explicit user request:
+These require an explicit user request:
 - Force push (`--force`, `--force-with-lease`)
 - Branch deletion
 - Release/tag creation
 - PR merge
-- Credential/secret handling
+- Credential or secret handling
 
 ### Error Recovery
 
 When operations fail:
-1. Report the specific error
-2. Suggest recovery steps
-3. Don't retry automatically without user consent
+1. Report the specific error with context
+2. Suggest concrete recovery steps
+3. Do not retry automatically without user consent
 
-## Session Management
+## Code Discipline
 
-### Starting Work
+### Stay on Task
 
-```bash
-bd ready                           # What's available?
-bd list --status=in_progress       # Any interrupted work?
-bd show <id>                       # Review task details
-bd update <id> --status=in_progress  # Claim it
-```
-
-### During Work
-
-- Keep changes focused on the current task
-- Don't refactor unrelated code
-- Commit incrementally for complex tasks
-
-### Completing Work
-
-```bash
-# For each completed task
-bd close <id>
-
-# Then sync and push
-/trellis:sync
-git add <files>
-git commit -m "feat(scope): description"
-git push
-```
-
-### Session Checklist
-
-Before saying "done":
-```
-[ ] All tasks marked closed in beads
-[ ] /trellis:sync run (tasks.md updated)
-[ ] git status clean (all changes committed)
-[ ] git push successful
-```
-
-**Work is not complete until `git push` succeeds.**
-
-## Code Conventions
-
-### Scope Discipline
-
-- **Stay on task** — Don't fix unrelated issues you notice
-- **Note, don't fix** — Log discovered issues as new beads tasks
-- **Minimal changes** — Smallest diff that accomplishes the goal
-
-### Creating New Work
-
-When you discover additional work needed:
-```bash
-bd create --title="Fix discovered issue" --type=bug --priority=2
-```
-
-Don't:
-- Silently expand scope
-- Fix "while you're in there"
-- Refactor without explicit request
+- **Do not fix unrelated issues** -- Even if you notice them
+- **Note discovered work** -- Log it as a new beads issue (`bd create`) if beads is available, or document it in a comment/TODO
+- **Minimal changes** -- The smallest diff that accomplishes the goal
+- **No opportunistic refactoring** -- Do not "improve" code that is not part of the current task
 
 ### Documentation
 
-- Update docs for changed behavior
-- Keep README current
-- Add inline comments only where non-obvious
+- Update docs when behavior changes
+- Keep README current with new features
+- Add inline comments only where logic is non-obvious
+- Do not generate documentation files unless explicitly requested
+
+## Markdown Conventions
+
+### Minimal Edits
+
+When editing markdown files:
+- **Change only what you must** -- Do not reformat unrelated sections
+- **Preserve existing style** -- Match surrounding indentation, heading levels, and formatting
+- **No whitespace normalization** -- Do not fix trailing spaces or line endings in lines you are not changing
 
 ## CHANGELOG Maintenance
 
@@ -228,13 +129,15 @@ Update `CHANGELOG.md` for:
 - Deprecations
 - Security fixes
 
-Don't update for:
+Do not update for:
 - Internal refactoring
-- Test changes
-- CI/CD changes
+- Test additions or changes
+- CI/CD pipeline changes
 - Documentation-only changes
 
 ### Format
+
+Follow Keep a Changelog format:
 
 ```markdown
 ## [Unreleased]
@@ -252,46 +155,55 @@ Don't update for:
 - Removed feature description
 ```
 
-## Beads ID Conventions
+## Session Management
 
-### ID Format
+### Before Ending a Session
 
-```
-proj-XXXX       # Root epic (feature)
-proj-XXXX.N     # Phase epic
-proj-XXXX.N.M   # Task issue
-```
-
-### Referencing IDs
-
-In commit messages:
 ```bash
-git commit -m "feat(auth): implement login [proj-a1b2.1.3]"
+git status            # Check for uncommitted changes
+git add <files>       # Stage changes
+git commit -m "..."   # Commit
+git push              # Push to remote
 ```
 
-In PR descriptions:
-```markdown
-## Related Issues
-- proj-a1b2.1.3: Implement login form
-- proj-a1b2.1.4: Add validation
+If beads is available:
+```bash
+bd sync               # Persist beads state to git
+```
+
+**Work is not complete until `git push` succeeds.**
+
+### Ephemeral Branches
+
+On ephemeral feature branches, if beads is available:
+```bash
+bd sync --from-main   # Sync beads state from main before starting
 ```
 
 ## Error Messages
 
-### User-Facing Errors
+### Be Specific and Actionable
 
-Be specific and actionable:
+Bad:
 ```
-❌ "Error occurred"
-✅ "Database locked. Another beads process may be running. Try: bd sync --status"
+Error: Operation failed.
 ```
 
-### Recovery Guidance
-
-Always include next steps:
+Good:
 ```
-Error: No beads-mapping.json found in specs/my-feature/
+Push rejected: remote branch has diverged.
+Run `git pull --rebase` to incorporate remote changes, then push again.
+```
 
-This feature hasn't been imported yet. Run:
-  /trellis:import specs/my-feature/tasks.md
+### Always Include Next Steps
+
+Every error message should tell the user what to do next. If the recovery path is ambiguous, present options:
+
+```
+Verification failed after 3 retries: 2 tests failing in auth.test.ts
+
+Options:
+  1. Review failures: npm test -- --filter auth
+  2. Skip verification: /trellis:push (commits without verification)
+  3. Abort: git checkout main
 ```

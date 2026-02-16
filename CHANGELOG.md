@@ -7,6 +7,46 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.10.0] - 2026-02-16
+
+### Added
+
+- `/trellis:scope` command — primary entry point for all new work
+  - Accepts natural language description, creates conventionally-named branch (feat/, fix/, refactor/, chore/)
+  - Proposes approach with single confirmation, then runs fully autonomously
+  - Invokes `/trellis:implement`, pushes, and creates PR — one command for the entire build cycle
+  - Optional beads integration for session recovery when available
+- `/trellis:init` command — first-time project setup
+  - Detects project type, test framework, linter, CI configuration
+  - Checks beads availability, sets conventions
+
+### Changed
+
+- **BREAKING:** Redesigned as AI-native development workflow (two-command lifecycle: scope + release)
+- `/trellis:implement` rewritten as autonomous plan-build-verify engine
+  - Accepts intent from conversation (no longer requires spec-kit artifacts)
+  - Layered verification: tests, linting, browser automation (each optional)
+  - Self-correction loops (max 3 retries per work unit)
+  - Incremental commits after each verified work unit
+  - Supports `--approved` flag to skip proposal when invoked by scope
+- `/trellis:status` now absorbs ready functionality (shows unblocked work alongside project health)
+- All skills now have consistent frontmatter (`disable-model-invocation: true` for user-invocable, `user-invocable: false` for knowledge)
+- Beads downgraded to soft dependency — all skills gracefully skip beads when not installed
+- Architecture and style knowledge skills rewritten for AI-native identity
+- Agent terminology decoupled from beads — all agents use generic "task" language
+- Backend-architect agent expanded to match peer agent depth
+- Plugin description updated to "AI-native development workflow plugin for Claude Code"
+- plugin.json version and keywords updated
+- License changed from Proprietary to MIT
+- README rewritten for AI-native workflow (scope + release)
+- CLAUDE.md rewritten to reflect new skill set
+
+### Removed
+
+- **BREAKING:** Skills removed: `prd`, `epics`, `import`, `sync`, `test-plan`, `ready`
+- All spec-kit content: `.specify/` directory, `.claude/commands/speckit.*.md`
+- All spec-kit references from remaining skills, agents, and documentation
+
 ## [0.9.0] - 2026-02-16
 
 ### Changed
@@ -287,7 +327,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Architecture documentation explaining the spec-kit/beads bridge
 - AGENTS.md snippet for automatic beads awareness in Claude Code
 
-[Unreleased]: https://github.com/NorthShoreAutomation/trellis/compare/v0.9.0...HEAD
+[Unreleased]: https://github.com/NorthShoreAutomation/trellis/compare/v0.10.0...HEAD
+[0.10.0]: https://github.com/NorthShoreAutomation/trellis/compare/v0.9.0...v0.10.0
 [0.9.0]: https://github.com/NorthShoreAutomation/trellis/compare/v0.8.1...v0.9.0
 [0.8.1]: https://github.com/NorthShoreAutomation/trellis/compare/v0.8.0...v0.8.1
 [0.8.0]: https://github.com/NorthShoreAutomation/trellis/compare/v0.7.3...v0.8.0

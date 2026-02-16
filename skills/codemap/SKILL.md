@@ -1,6 +1,7 @@
 ---
 name: codemap
 description: Generate or update CODEMAP.yaml - a semantic map of code locations for LLM navigation
+disable-model-invocation: true
 ---
 
 ## User Input

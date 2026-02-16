@@ -1,237 +1,210 @@
 ---
 name: architecture
-description: Trellis invariants, data flow, and integration rules (spec-kit ↔ beads)
+description: Trellis plugin structure, data flow, and integration rules
 user-invocable: false
 ---
 
 # Trellis Architecture
 
-Trellis bridges spec-kit planning with beads issue tracking for Claude Code, enabling dependency-aware task execution with persistent state across sessions.
+Trellis is an AI-native development workflow plugin for Claude Code. It provides a two-command lifecycle: **scope** (branch + build + verify + PR) and **release** (merge + tag + publish). After a single user approval, Trellis executes autonomously -- dispatching specialized agents in parallel, running verification, and committing incrementally.
 
 ## Data Flow
 
 ```
-┌─────────────┐     /trellis:import      ┌─────────────┐
-│  tasks.md   │ ──────────────────────→  │   beads     │
-│  (spec-kit) │                          │  database   │
-└──────┬──────┘                          └──────┬──────┘
-       │                                        │
-       │         beads-mapping.json             │
-       │    (task_id ←→ beads_id mapping)       │
-       │                                        │
-       ↓           /trellis:sync                ↓
-┌─────────────┐  ←────────────────────→  ┌─────────────┐
-│  checkboxes │                          │   status    │
-│  [ ] / [X]  │                          │   updates   │
-└─────────────┘                          └─────────────┘
+User intent (natural language)
+    |
+    v
+/trellis:scope
+    |-- creates branch
+    |-- /trellis:implement (autonomous)
+    |       |-- specialized agents (parallel)
+    |       |-- verification (tests, lint, visual)
+    |       |-- incremental commits
+    |-- push + PR
+    |
+    v
+/trellis:release
+    |-- merge PR
+    |-- tag version
+    |-- GitHub release
+```
+
+## Plugin Structure
+
+```
+skills/              # Skill definitions (*/SKILL.md)
+  scope/             # Primary entry point -- branch, build, verify, PR
+  implement/         # Autonomous build engine
+  status/            # Project health + ready work
+  init/              # First-time setup
+  codemap/           # Codebase navigation map
+  push/              # Manual commit + push
+  pr/                # Manual PR creation
+  release/           # Merge, tag, publish
+  architecture/      # [knowledge] Plugin structure and data flow
+  style/             # [knowledge] Working conventions
+agents/              # Specialized subagents
+  backend-architect  # System design and API architecture
+  frontend-developer # UI components and client-side logic
+  database-architect # Schema design and migrations
+  golang-pro         # Go implementation
+  python-pro         # Python implementation
+  typescript-pro     # TypeScript implementation
+  general-purpose    # Cross-cutting and misc tasks
+  code-reviewer      # Review and quality checks
+  test-runner        # Test execution and verification
+.claude-plugin/      # Plugin manifest (plugin.json)
 ```
 
 ## Core Invariants
 
-These rules MUST be preserved:
+These rules must be preserved across all skills and agents:
 
-1. **Beads is source of truth** — Once tasks are imported, beads owns task state. Never update tasks.md status without checking beads first.
+1. **Scope creates branches; release merges them.** These are the only two user-facing lifecycle commands. Everything else is either an implementation detail or a manual escape hatch.
 
-2. **Mapping file is authoritative** — `FEATURE_DIR/beads-mapping.json` is the single source for task_id ↔ beads_id relationships.
+2. **Implement runs autonomously after one approval.** Once the user confirms the scope, no further prompts should interrupt execution. Errors are self-corrected or reported at the end.
 
-3. **Checkboxes reflect beads** — tasks.md checkboxes should only be updated to reflect beads status, not the other way around (unless using `--force-tasks`).
+3. **Agents are dispatched in parallel where possible.** Independent work units run concurrently via the Task tool. Dependent work is sequenced automatically.
 
-4. **Epic closure gates** — A feature root epic should not be closed until test plan generation is complete.
+4. **Verification is layered and optional.** The verification sequence is: tests, then lint, then visual. Each layer runs only if applicable to the project. Failure at any layer triggers self-correction before moving on.
 
-5. **Session persistence** — Work state persists in beads across sessions; always check `bd ready` to resume work.
+5. **Self-correction is bounded.** A failing step may be retried up to 3 times. After that, the failure is reported to the user rather than looping indefinitely.
+
+6. **Beads is optional.** When the `bd` CLI is available, Trellis uses it for session recovery and dependency tracking. When unavailable, Trellis skips beads operations silently and relies on git commits alone.
+
+7. **Commits are incremental.** Each logical work unit produces its own commit. Do not batch all changes into a single commit at the end.
 
 ## Component Roles
 
-### spec-kit (Planning)
+### Skills
 
-Generates the implementation plan:
-- `spec.md` — User stories, acceptance criteria, requirements
-- `plan.md` — Tech stack, architecture decisions, approach
-- `tasks.md` — Implementation breakdown with phases and tasks
+Skills are either user-invocable commands or knowledge resources referenced by other skills and agents.
 
-spec-kit output is **input-only** for Trellis. Once imported, edits flow through beads.
+| Skill | Type | Purpose |
+|-------|------|---------|
+| `scope` | command | Branch, build, verify, PR -- the primary workflow |
+| `implement` | command | Autonomous build engine (usually called by scope) |
+| `status` | command | Project health overview and ready work |
+| `init` | command | First-time project setup |
+| `codemap` | command | Generate/update CODEMAP.yaml for navigation |
+| `push` | command | Manual commit and push |
+| `pr` | command | Manual PR creation |
+| `release` | command | Merge, tag, publish |
+| `architecture` | knowledge | Plugin structure and data flow (this file) |
+| `style` | knowledge | Working conventions for git, commits, safety |
 
-### beads (Execution Tracking)
+### Agents
 
-Tracks work execution with:
-- **Dependency graph** — Determines task execution order
-- **Status persistence** — State survives session boundaries
-- **Git integration** — `bd sync` commits state changes
-- **Ready queue** — `bd ready` shows unblocked work
+Agents are specialized executors. Implementation agents are dispatched by the implement skill; utility agents serve verification and review roles outside the implementation dispatch.
 
-Key commands:
-```bash
-bd ready                    # What can I work on now?
-bd show <id>               # Issue details + dependencies
-bd update <id> --status=X  # Change status
-bd close <id>              # Mark complete
-bd sync                    # Commit to git
-```
+| Agent | Domain | Role |
+|-------|--------|------|
+| `backend-architect` | System design, API architecture, service structure | Implementation |
+| `frontend-developer` | UI components, client-side logic, styling | Implementation |
+| `database-architect` | Schema design, migrations, query optimization | Implementation |
+| `golang-pro` | Go implementation following Go idioms | Implementation |
+| `python-pro` | Python implementation following Python conventions | Implementation |
+| `typescript-pro` | TypeScript implementation with type safety | Implementation |
+| `general-purpose` | Cross-cutting changes, config, infrastructure | Implementation |
+| `code-reviewer` | Code review, quality checks, style enforcement | Utility |
+| `test-runner` | Test execution, coverage, verification | Utility |
 
-### Trellis (Bridge)
+### Beads (Optional)
 
-Connects spec-kit planning to beads execution:
-
-| Skill | Purpose |
-|-------|---------|
-| `/trellis:import` | Parse tasks.md → create beads hierarchy |
-| `/trellis:implement` | Execute tasks using `bd ready` ordering |
-| `/trellis:sync` | Reconcile beads ↔ tasks.md status |
-| `/trellis:ready` | Quick view of available work |
-| `/trellis:status` | Project health overview |
-
-## Hierarchy Mapping
-
-spec-kit structure maps to beads hierarchy:
-
-| spec-kit | beads | ID Pattern | Example |
-|----------|-------|------------|---------|
-| Feature | Root Epic | `proj-XXXX` | `proj-a1b2` |
-| Phase | Child Epic | `proj-XXXX.N` | `proj-a1b2.1` |
-| Task | Issue | `proj-XXXX.N.M` | `proj-a1b2.1.3` |
-
-### ID Generation
-
-- Feature epic: Random 4-char hex suffix
-- Phase epic: Sequential `.1`, `.2`, etc.
-- Task issue: Sequential within phase `.1.1`, `.1.2`, etc.
-
-## Dependency Rules
-
-### From tasks.md Structure
-
-| tasks.md Pattern | beads Behavior |
-|------------------|----------------|
-| Sequential tasks (no marker) | Each task `blocks` the previous |
-| `[P]` parallel marker | No blocking dependency |
-| Phase N+1 | Blocked until all Phase N tasks complete |
-| Subtask under task | Child blocks parent completion |
-
-### Dependency Commands
+When the `bd` CLI is available, Trellis uses it for persistent state:
 
 ```bash
-bd dep add <issue> <depends-on>  # issue depends on depends-on
-bd dep remove <issue> <dep>      # Remove dependency
-bd blocked                       # Show all blocked issues
+bd create --title="..." --type=task   # Track scope as issue
+bd update <id> --status=in_progress   # Mark progress
+bd close <id>                         # Complete work
+bd ready                              # Find unblocked work
+bd sync                               # Persist state to git
 ```
 
-### Ready Calculation
-
-A task is "ready" when:
-1. Status is `open` (not `in_progress`, not `closed`)
-2. All blocking dependencies are `closed`
-3. Parent epic is not `closed`
-
-## Conflict Resolution
-
-When beads and tasks.md status disagree:
-
-| beads | tasks.md | Default Resolution |
-|-------|----------|-------------------|
-| `closed` | `[ ]` unchecked | Auto-update to `[X]` |
-| `open` | `[X]` checked | Prompt user for decision |
-| `in_progress` | `[X]` checked | Prompt user for decision |
-
-Override flags:
-- `--force-beads` — Beads status wins, update tasks.md
-- `--force-tasks` — tasks.md wins, update beads
-
-## Repository Structure
-
-```
-project/
-├── .beads/                    # Beads database
-│   ├── beads.db              # SQLite database
-│   └── config.yaml           # Beads configuration
-├── specs/                     # Feature specifications
-│   └── {feature-name}/       # Per-feature directory
-│       ├── spec.md           # Requirements
-│       ├── plan.md           # Implementation plan
-│       ├── tasks.md          # Task breakdown
-│       └── beads-mapping.json # Task ↔ beads ID mapping
-├── docs/                      # Documentation
-│   ├── ARCHITECTURE.md       # This architecture doc
-│   └── release/              # Release notes
-└── CHANGELOG.md              # Version history
-```
-
-### beads-mapping.json Format
-
-```json
-{
-  "feature_id": "proj-a1b2",
-  "feature_name": "User Authentication",
-  "created_at": "2025-01-15T10:30:00Z",
-  "mappings": {
-    "1": "proj-a1b2.1",
-    "1.1": "proj-a1b2.1.1",
-    "1.2": "proj-a1b2.1.2",
-    "2": "proj-a1b2.2"
-  }
-}
-```
+When beads is unavailable, Trellis proceeds without it. No errors are raised. Git commits serve as the sole record of progress.
 
 ## Skill Interactions
 
-### Typical Workflow
+### Primary Workflow (scope + release)
 
 ```
-/speckit:tasks     →  Generate tasks.md
-        ↓
-/trellis:import    →  Create beads hierarchy
-        ↓
-/trellis:implement →  Execute with dependency ordering
-        ↓                    ↑
-    bd close <id>  ←─────────┘  (per task)
-        ↓
-/trellis:sync      →  Update tasks.md checkboxes
-        ↓
-/trellis:push      →  Commit + push
-        ↓
-/trellis:pr        →  Create pull request
-        ↓
-/trellis:release   →  Merge + tag + release
+/trellis:scope "add user authentication"
+    |
+    |-- git checkout -b feat/user-authentication
+    |-- /trellis:implement
+    |       |-- dispatch: typescript-pro (API routes)
+    |       |-- dispatch: database-architect (schema)
+    |       |-- dispatch: frontend-developer (login form)
+    |       |-- verify: run tests + lint (shell)
+    |       |-- commit per work unit
+    |-- git push + create PR
+    |
+    v
+/trellis:release
+    |-- merge PR
+    |-- git tag v1.2.0
+    |-- GitHub release with notes
 ```
+
+### Manual Escape Hatches
+
+| Skill | When to Use |
+|-------|-------------|
+| `push` | Need to commit and push without a full scope cycle |
+| `pr` | Need a PR without going through scope |
+| `status` | Check project state, find ready work, review health |
+| `init` | First time setting up Trellis in a project |
+| `codemap` | Regenerate navigation map after structural changes |
 
 ### Skill Dependencies
 
 | Skill | Requires | Produces |
 |-------|----------|----------|
-| `import` | tasks.md | beads issues, beads-mapping.json |
-| `implement` | beads-mapping.json | Code changes, closed issues |
-| `sync` | beads-mapping.json | Updated tasks.md checkboxes |
-| `ready` | beads database | Status display |
-| `status` | beads database | Health report |
-| `push` | Git changes | Commits |
+| `scope` | User intent | Branch, code changes, PR |
+| `implement` | Branch, work description | Code changes, commits |
+| `status` | Git repo | Health report |
+| `init` | Git repo | Plugin configuration |
+| `codemap` | Source files | CODEMAP.yaml |
+| `push` | Staged/unstaged changes | Commits, remote push |
 | `pr` | Remote branch | Pull request |
-| `release` | Merged PR | Git tag, GitHub release |
+| `release` | PR (or creates one) | Merge, tag, GitHub release |
 
 ## Session Management
 
 ### Starting a Session
 
-```bash
-bd ready              # Check what's available
-bd list --status=in_progress  # Resume any in-progress work
-```
+- `/trellis:status` -- shows branch state, uncommitted changes, and project health
+- `/trellis:init` -- first-time setup if the project has not been configured
+- If beads is available: `bd ready` shows unblocked work; `bd list --status=in_progress` shows interrupted work
+
+### During a Session
+
+Implement runs autonomously. Agents are dispatched, verification runs, and commits are made without user intervention. The user is only interrupted if:
+- A verification failure cannot be self-corrected after 3 retries
+- A destructive operation requires confirmation (see style knowledge skill)
 
 ### Ending a Session
 
+Code is committed and pushed by scope automatically. For manual sessions:
+
 ```bash
-bd sync               # Commit beads state
-git add <files>       # Stage code changes
+git status            # Check for uncommitted changes
+git add <files>       # Stage changes
 git commit -m "..."   # Commit
 git push              # Push to remote
 ```
+
+If beads is available: `bd sync` to persist issue state.
 
 **Work is not complete until `git push` succeeds.**
 
 ### Session Recovery
 
-If Claude context is lost mid-session:
-1. `bd list --status=in_progress` — Find active work
-2. `bd show <id>` — Review task details
-3. Continue implementation
+If a session is interrupted mid-work:
+1. `/trellis:status` -- shows branch state and uncommitted changes
+2. `git log --oneline -10` -- shows recent commits on the branch
+3. If beads is available: `bd list --status=in_progress` -- shows interrupted work
+4. Resume with `/trellis:implement` or manual work
 
 ## Error Handling
 
@@ -239,46 +212,19 @@ If Claude context is lost mid-session:
 
 | Error | Cause | Resolution |
 |-------|-------|------------|
-| "No beads integration found" | Missing beads-mapping.json | Run `/trellis:import` |
-| "Database locked" | Concurrent beads access | Wait, retry, or restart |
-| "Merge conflict in .beads/" | Parallel beads edits | Run `bd sync --resolve` |
-| "Task not found in mapping" | tasks.md edited after import | Re-run `/trellis:import --force` |
+| Branch already exists | Re-scoping same work | Delete branch or use a different name |
+| Push rejected | Remote has diverged | Pull and rebase, then push |
+| Agent task failed | Implementation error | Check error output, retry or fix manually |
+| Verification failed 3x | Persistent test/lint failure | Report to user with details for manual fix |
+| `bd` command not found | Beads not installed | Ignore; Trellis works without beads |
+| PR creation failed | No remote, auth issue | Check `gh auth status`, verify remote exists |
+| Merge conflict | Parallel branch changes | Resolve conflicts manually, then continue |
 
-### Recovery Commands
+### Recovery Steps
 
-```bash
-bd doctor             # Diagnose issues
-bd sync --status      # Check sync state
-bd sync --repair      # Attempt auto-repair
-```
+For most failures, the recovery path is:
 
-## Integration Points
-
-### Git Hooks
-
-Beads integrates with git via hooks:
-- `post-commit` — Auto-sync after commits
-- `post-merge` — Sync after pulls/merges
-
-### beads Daemon
-
-If running, the beads daemon handles:
-- Auto-commit of beads changes
-- Auto-push to remote
-- Auto-pull from remote
-
-Check status: `bd sync --status`
-
-## Best Practices
-
-1. **Always import before implementing** — Don't manually create beads issues for spec-kit tasks.
-
-2. **Use `bd ready` for ordering** — Don't pick random tasks; follow dependency order.
-
-3. **Close via beads, not tasks.md** — Use `bd close <id>`, then `/trellis:sync` to update checkboxes.
-
-4. **Keep mapping file in git** — beads-mapping.json should be committed with the feature.
-
-5. **One feature per mapping** — Each feature directory has its own beads-mapping.json.
-
-6. **Sync before switching features** — Run `/trellis:sync` before working on a different feature.
+1. Check `/trellis:status` for current state
+2. Review git log and diff to understand what completed
+3. Fix the issue (resolve conflict, fix test, etc.)
+4. Resume with `/trellis:implement` or `/trellis:push`
