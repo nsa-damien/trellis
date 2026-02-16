@@ -35,8 +35,7 @@ skills/              # Skill definitions (*/SKILL.md)
   scope/             # Primary entry point -- branch, build, verify, PR
   implement/         # Autonomous build engine
   status/            # Project health + ready work
-  init/              # First-time setup
-  codemap/           # Codebase navigation map
+  codemap/           # Codebase navigation map (recommended starting point)
   push/              # Manual commit + push
   pr/                # Manual PR creation
   release/           # Merge, tag, publish
@@ -84,8 +83,7 @@ Skills are either user-invocable commands or knowledge resources referenced by o
 | `scope` | command | Branch, build, verify, PR -- the primary workflow |
 | `implement` | command | Autonomous build engine (usually called by scope) |
 | `status` | command | Project health overview and ready work |
-| `init` | command | First-time project setup |
-| `codemap` | command | Generate/update CODEMAP.yaml for navigation |
+| `codemap` | command | Generate/update CODEMAP.yaml for navigation (recommended starting point) |
 | `push` | command | Manual commit and push |
 | `pr` | command | Manual PR creation |
 | `release` | command | Merge, tag, publish |
@@ -152,17 +150,15 @@ When beads is unavailable, Trellis proceeds without it. No errors are raised. Gi
 | `push` | Need to commit and push without a full scope cycle |
 | `pr` | Need a PR without going through scope |
 | `status` | Check project state, find ready work, review health |
-| `init` | First time setting up Trellis in a project |
-| `codemap` | Regenerate navigation map after structural changes |
+| `codemap` | Generate or update navigation map (recommended first step for new projects) |
 
 ### Skill Dependencies
 
 | Skill | Requires | Produces |
 |-------|----------|----------|
 | `scope` | User intent | Branch, code changes, PR |
-| `implement` | Branch, work description | Code changes, commits |
+| `implement` | Branch, work description | Code changes, commits, CODEMAP.yaml update |
 | `status` | Git repo | Health report |
-| `init` | Git repo | Plugin configuration |
 | `codemap` | Source files | CODEMAP.yaml |
 | `push` | Staged/unstaged changes | Commits, remote push |
 | `pr` | Remote branch | Pull request |
@@ -173,7 +169,7 @@ When beads is unavailable, Trellis proceeds without it. No errors are raised. Gi
 ### Starting a Session
 
 - `/trellis:status` -- shows branch state, uncommitted changes, and project health
-- `/trellis:init` -- first-time setup if the project has not been configured
+- `/trellis:codemap` -- generate or update the codebase navigation map (recommended for new projects)
 - If beads is available: `bd ready` shows unblocked work; `bd list --status=in_progress` shows interrupted work
 
 ### During a Session

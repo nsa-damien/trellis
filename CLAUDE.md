@@ -26,8 +26,7 @@ Trellis is an AI-native development workflow plugin for Claude Code. Two-command
 |-------|---------|
 | `/trellis:implement` | Autonomous build engine (used by scope, or standalone for additional work) |
 | `/trellis:status` | Project health, ready work, branch state |
-| `/trellis:codemap` | Generate/update CODEMAP.yaml for LLM navigation |
-| `/trellis:init` | First-time project setup |
+| `/trellis:codemap` | Generate/update CODEMAP.yaml for LLM navigation (recommended starting point) |
 
 ### Escape Hatches
 | Skill | Purpose |
@@ -54,8 +53,7 @@ skills/              # Trellis skills (*/SKILL.md)
   scope/             # Primary entry point
   implement/         # Autonomous build engine
   status/            # Project health + ready work
-  init/              # First-time setup
-  codemap/           # Codebase navigation map
+  codemap/           # Codebase navigation map (recommended starting point)
   push/              # Manual commit+push
   pr/                # Manual PR creation
   release/           # Merge, tag, publish

@@ -54,8 +54,7 @@ Or add to `~/.claude/settings.json`:
 |-------|---------|
 | `/trellis:implement` | Autonomous build engine (also available standalone) |
 | `/trellis:status` | Project health, ready work, branch state |
-| `/trellis:codemap` | Generate CODEMAP.yaml for LLM code navigation |
-| `/trellis:init` | First-time project setup |
+| `/trellis:codemap` | Generate/update CODEMAP.yaml for LLM code navigation |
 
 ### Escape Hatches
 | Skill | Purpose |
@@ -82,8 +81,8 @@ Specialized agents that `/trellis:implement` dispatches in parallel:
 ## Quick Start
 
 ```bash
-# 1. Set up your project (first time only)
-/trellis:init
+# 1. Map your codebase (recommended for new projects)
+/trellis:codemap
 
 # 2. Build something
 /trellis:scope "add a health check endpoint"
