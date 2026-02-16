@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- License changed from Proprietary to MIT
+- README rewritten to reflect broader project scope (plan, track, build, ship)
+- Removed private repository authentication instructions from README
+- Updated GitHub repo description and topics
+
 ## [0.9.0] - 2026-02-16
 
 ### Changed

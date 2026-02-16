@@ -7,6 +7,6 @@
     "email": "support@northshoreautomation.com"
   },
   "repository": "https://github.com/NorthShoreAutomation/trellis",
-  "license": "Proprietary",
+  "license": "MIT",
   "keywords": ["spec-kit", "beads", "task-tracking", "planning"]
 }
