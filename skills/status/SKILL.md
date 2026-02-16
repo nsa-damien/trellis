@@ -85,7 +85,7 @@ BLOCKED ([N] tasks):
 
 Skip this entire section. Display a single line:
 ```
-Beads: not configured (optional — run /trellis:init to set up)
+Beads: not configured (optional — install beads and run `bd init`)
 ```
 
 ### 3. Health Checks (always available)

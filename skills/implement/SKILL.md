@@ -27,12 +27,13 @@ If none of these yield a clear intent, ask the user: "What would you like to bui
 
 Before proposing an approach, gather project context:
 
-1. **Project type**: Detect language and framework from `package.json`, `tsconfig.json`, `go.mod`, `pyproject.toml`, `Cargo.toml`, `Makefile`, or similar.
-2. **Existing patterns**: Scan directory structure, identify naming conventions, module organization, import patterns.
-3. **Test framework**: Look for test configuration (`jest.config.*`, `vitest.config.*`, `pytest.ini`, `*_test.go`, `Makefile` test targets). Record the test command.
-4. **Linting/type checking**: Look for `eslint`, `biome`, `ruff`, `golangci-lint`, `tsc --noEmit`, or similar. Record the lint command.
-5. **Dev server**: Check for running dev server or start commands (`npm run dev`, `yarn dev`, `cargo watch`, etc.) for potential visual verification.
-6. **Beads availability**: Check if `bd` command is available and `.beads/` directory exists. Record availability for optional progress tracking.
+1. **Codemap**: Check for `CODEMAP.yaml` at the project root. If it exists, read it first — it provides a semantic map of modules, entry points, key types, and dependencies that accelerates navigation. Use it to identify which modules are relevant to the work description before scanning files.
+2. **Project type**: Detect language and framework from `package.json`, `tsconfig.json`, `go.mod`, `pyproject.toml`, `Cargo.toml`, `Makefile`, or similar.
+3. **Existing patterns**: Scan directory structure, identify naming conventions, module organization, import patterns.
+4. **Test framework**: Look for test configuration (`jest.config.*`, `vitest.config.*`, `pytest.ini`, `*_test.go`, `Makefile` test targets). Record the test command.
+5. **Linting/type checking**: Look for `eslint`, `biome`, `ruff`, `golangci-lint`, `tsc --noEmit`, or similar. Record the lint command.
+6. **Dev server**: Check for running dev server or start commands (`npm run dev`, `yarn dev`, `cargo watch`, etc.) for potential visual verification.
+7. **Beads availability**: Check if `bd` command is available and `.beads/` directory exists. Record availability for optional progress tracking.
 
 ### 3. Propose Approach (ONLY human interaction)
 
@@ -217,7 +218,20 @@ If `bd` command is available and `.beads/` directory exists:
 
 If `bd` is not available: proceed without beads, rely solely on git commits for tracking. This is not an error.
 
-### 7. Completion Report
+### 7. Update Codemap
+
+After all work units are processed and committed, update the project's code navigation map:
+
+1. **Check for CODEMAP.yaml** at the project root
+2. **If it exists**: Run a non-interactive update:
+   - Scan for new modules, removed modules, new/removed entry points, and changed dependencies
+   - Auto-apply obvious changes (new files in existing modules, removed files, renamed symbols)
+   - Skip interactive enrichment questions — use auto-generated descriptions for new modules
+   - Preserve all manually-edited descriptions and custom fields
+   - If changes were detected, commit: `docs: update CODEMAP.yaml`
+3. **If it does not exist**: Skip silently. Do not create one automatically — the user should run `/trellis:codemap` to generate the initial map interactively.
+
+### 8. Completion Report
 
 After all work units are processed, display:
 

@@ -159,7 +159,9 @@ Beads: <issue-id> (or "not tracked")
 Commits: <count>
 Files changed: <count>
 
-Next: Run /trellis:release when ready to merge and publish.
+Next:
+• /trellis:release — merge and publish when ready
+• /trellis:codemap — map or update your codebase (recommended for new projects)
 ```
 
 ## Notes

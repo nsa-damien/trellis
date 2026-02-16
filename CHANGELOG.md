@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.11.0] - 2026-02-16
+
+### Added
+
+- Codemap integration in `/trellis:implement` — reads `CODEMAP.yaml` at start for faster navigation, auto-updates it after implementation completes
+- Codemap promoted as recommended starting point for new projects (replaces init)
+
+### Removed
+
+- `/trellis:init` skill — provided no durable value; codemap serves as the meaningful onboarding step
+
 ### Fixed
 
 - Remove `disable-model-invocation` and `user-invocable` from skill frontmatter — these non-standard keys prevented skills from appearing in Claude Code autocomplete
@@ -20,10 +31,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Proposes approach with single confirmation, then runs fully autonomously
   - Invokes `/trellis:implement`, pushes, and creates PR — one command for the entire build cycle
   - Optional beads integration for session recovery when available
-- `/trellis:init` command — first-time project setup
-  - Detects project type, test framework, linter, CI configuration
-  - Checks beads availability, sets conventions
-
 ### Changed
 
 - **BREAKING:** Redesigned as AI-native development workflow (two-command lifecycle: scope + release)
@@ -34,7 +41,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Incremental commits after each verified work unit
   - Supports `--approved` flag to skip proposal when invoked by scope
 - `/trellis:status` now absorbs ready functionality (shows unblocked work alongside project health)
-- All skills now have consistent frontmatter (`disable-model-invocation: true` for user-invocable, `user-invocable: false` for knowledge)
+- All skills now have consistent frontmatter (name and description only)
 - Beads downgraded to soft dependency — all skills gracefully skip beads when not installed
 - Architecture and style knowledge skills rewritten for AI-native identity
 - Agent terminology decoupled from beads — all agents use generic "task" language
@@ -331,7 +338,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Architecture documentation explaining the spec-kit/beads bridge
 - AGENTS.md snippet for automatic beads awareness in Claude Code
 
-[Unreleased]: https://github.com/NorthShoreAutomation/trellis/compare/v0.10.0...HEAD
+[Unreleased]: https://github.com/NorthShoreAutomation/trellis/compare/v0.11.0...HEAD
+[0.11.0]: https://github.com/NorthShoreAutomation/trellis/compare/v0.10.0...v0.11.0
 [0.10.0]: https://github.com/NorthShoreAutomation/trellis/compare/v0.9.0...v0.10.0
 [0.9.0]: https://github.com/NorthShoreAutomation/trellis/compare/v0.8.1...v0.9.0
 [0.8.1]: https://github.com/NorthShoreAutomation/trellis/compare/v0.8.0...v0.8.1
