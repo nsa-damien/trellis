@@ -30,7 +30,7 @@ const normalized = results.map(r => ({ ...r, score: r.score / maxScore }));
 
 ## Merge Strategies
 
-### Current: Weighted Linear Combination (default)
+### Weighted Linear Combination (recommended default)
 
 ```
 finalScore = (sqlScore * 0.35) + (semanticScore * 0.45) + (transcriptScore * 0.20)
@@ -65,7 +65,7 @@ Semantic minimum score varies by context:
 | Natural language, no filters | 0.42 | Moderate — semantic needs to be meaningful |
 | Short query (1-3 terms) | +0.05 | Short queries produce noisier embeddings |
 
-**Recommendation**: These thresholds were tuned empirically. Log actual score distributions to validate:
+**Recommendation**: These thresholds are starting points — tune empirically. Log actual score distributions to validate:
 
 ```typescript
 // Add to search response for monitoring
@@ -147,7 +147,7 @@ Set `includeProvenance: true` in the search request. This adds per-result explan
 - Boost factors applied
 
 ### Score Distribution Analysis
-Use the `explainQuery` endpoint to see:
+Expose a query explanation endpoint that returns:
 - Raw query plans for each backend
 - Execution timing breakdown
 - Score histograms
@@ -173,7 +173,7 @@ Use the `explainQuery` endpoint to see:
 ## Improvement Opportunities
 
 ### 1. Query-Time Embedding Input Type
-The `buildEmbeddingRequestBody()` currently uses `input_type: 'search_document'` for all calls. Query-time calls should use `input_type: 'search_query'` for Cohere models. This is the single highest-impact fix for semantic search quality.
+A common mistake is using `input_type: 'search_document'` for all embedding calls. Query-time calls should use `input_type: 'search_query'` for Cohere models. This is the single highest-impact fix for semantic search quality.
 
 ### 2. Dynamic Score Normalization
 Replace fixed divisors (3.0, 2.5) with per-result-set max-score normalization. This adapts to actual score distributions rather than theoretical maximums.

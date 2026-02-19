@@ -29,24 +29,21 @@ The search system has three backends that can run independently or combined:
 
 Users select via `searchType: 'fulltext' | 'semantic' | 'hybrid' | 'natural'` or toggle individual backends via `searchTypes: { sql, semantic, transcript }`.
 
-## Key Files
+## Typical Component Architecture
 
 ```
-apps/api/src/
-  routers/search.router.ts              # tRPC endpoints
-  services/search/search.service.ts     # Orchestrator (dispatch, cache, history)
-  services/search/strategies/
-    sql-search.strategy.ts              # PostgreSQL fulltext + LIKE
-    semantic-search.strategy.ts         # OpenSearch kNN via Bedrock embeddings
-    hybrid-search.strategy.ts           # Parallel SQL+semantic with fallback
-    transcript-search.strategy.ts       # Dedicated transcript segment search
-    custom-search.strategy.ts           # Debug panel: any combination
-  services/search/result-merger.service.ts  # Score normalization + merge
-  services/opensearch.service.ts        # Index CRUD, kNN queries
-  services/aws/bedrock.service.ts       # Embedding generation (Cohere/Titan)
-  services/embeddings/batch-embedding.service.ts  # Bulk embedding pipeline
-  types/opensearch-service.contract.ts  # Types, validation, constants
-  config/bedrock.config.ts              # Model IDs, dimensions, region
+Search Router / API Layer         — Endpoints, input validation, pagination
+Search Orchestrator / Service     — Strategy dispatch, caching, search history
+Search Strategies:
+  SQL Fulltext Strategy           — PostgreSQL ts_rank + to_tsquery, LIKE
+  Semantic Strategy               — OpenSearch kNN via embedding service
+  Hybrid Strategy                 — Parallel SQL + semantic with fallback
+  Transcript Strategy             — Dedicated transcript segment search
+Result Merger                     — Score normalization + weighted merge
+OpenSearch Client                 — Index CRUD, kNN queries
+Embedding Service                 — Embedding generation (Cohere/Titan via Bedrock)
+Batch Embedding Pipeline          — Bulk embedding for indexing
+Configuration                     — Model IDs, dimensions, region settings
 ```
 
 ## Embedding Configuration
@@ -59,9 +56,9 @@ Default model: **Cohere Embed English v3** (`cohere.embed-english-v3`) — 1024 
 | `cohere.embed-multilingual-v3` | 1024 | Same | Multilingual support |
 | `amazon.titan-embed-text-v2:0` | 1024 | Plain text | AWS native, slightly lower quality |
 
-Cohere v3 uses **asymmetric search** — documents are embedded with `input_type: 'search_document'`, queries with `input_type: 'search_query'`. This is critical for quality. See `buildEmbeddingRequestBody()` in `bedrock.service.ts`.
+Cohere v3 uses **asymmetric search** — documents are embedded with `input_type: 'search_document'`, queries with `input_type: 'search_query'`. This is critical for quality. Ensure your embedding service uses the correct input type for each context.
 
-**Important**: The current code uses `search_document` for all embeddings including queries. If query embeddings also use `search_document`, switch query-time calls to `search_query` for better results.
+**Common mistake**: Using `search_document` for all embeddings including queries. If your embedding service doesn't distinguish between document and query input types, switching query-time calls to `search_query` typically improves results significantly.
 
 ## OpenSearch Index Design
 
@@ -80,12 +77,12 @@ See [references/opensearch-patterns.md](references/opensearch-patterns.md) for i
 
 ## Hybrid Scoring & Ranking
 
-Score normalization before merging:
-- **SQL**: `score / 3.0` (additive weighted sum can reach ~3.0)
-- **Semantic**: `min(score, 1.0)` (cosine similarity already 0-1)
-- **Transcript**: `score / 2.5`
+Score normalization before merging (example values — tune to your implementation):
+- **SQL**: `score / maxPossibleScore` (e.g., `/ 3.0` for an additive weighted sum across fields)
+- **Semantic**: `min(score, 1.0)` (cosine similarity is inherently 0-1)
+- **Transcript**: `score / maxPossibleScore` (e.g., `/ 2.5` with boost + log scaling)
 
-Default merge weights: SQL 0.35, Semantic 0.45, Transcript 0.20. Multi-source boost: +10% per additional source.
+Recommended starting weights: SQL 0.35, Semantic 0.45, Transcript 0.20. Multi-source boost: +10% per additional source.
 
 See [references/hybrid-ranking.md](references/hybrid-ranking.md) for the full scoring pipeline, adaptive thresholds, and merge strategies.
 
@@ -111,17 +108,19 @@ See [references/transcript-search.md](references/transcript-search.md) for chunk
 3. Verify `dropSemanticOnlyWhenSqlPresent` isn't discarding valid semantic matches
 
 ### Slow search
-1. Profile `componentTimings` in response to identify bottleneck
-2. Check embedding cache hit rate — cache misses mean Bedrock API calls per query
+1. Profile per-component timing in the search response to identify bottlenecks
+2. Check embedding cache hit rate — cache misses mean embedding API calls per query
 3. OpenSearch: verify index has enough replicas for read throughput
-4. SQL: ensure `searchVector` GIN index exists on transcript table
+4. SQL: ensure a GIN index exists on the transcript search vector column
 
 ### Missing transcript timecodes
-1. Verify `TranscriptSegment.embeddingId` links to the OpenSearch document
-2. Check that `start_time`/`end_time` are populated in `transcript_embeddings` index
+1. Verify transcript segments link to their corresponding OpenSearch embedding documents
+2. Check that `start_time`/`end_time` are populated in the transcript embeddings index
 3. Confirm segment resolution logic handles multiple chunks per asset correctly
 
-## Quick Reference: Search Request Shape
+## Quick Reference: Search Request Shape (Example)
+
+A typical hybrid search request supports these parameters:
 
 ```typescript
 {

@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.12.1] - 2026-02-19
+
+### Changed
+
+- Generalized both knowledge skills for use in any project context — removed project-specific file paths, class names, API contracts, and config references; framed implementation details as patterns and recommended starting points
+
 ## [0.12.0] - 2026-02-19
 
 ### Added
@@ -349,7 +355,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Architecture documentation explaining the spec-kit/beads bridge
 - AGENTS.md snippet for automatic beads awareness in Claude Code
 
-[Unreleased]: https://github.com/NorthShoreAutomation/trellis/compare/v0.12.0...HEAD
+[Unreleased]: https://github.com/NorthShoreAutomation/trellis/compare/v0.12.1...HEAD
+[0.12.1]: https://github.com/NorthShoreAutomation/trellis/compare/v0.12.0...v0.12.1
 [0.12.0]: https://github.com/NorthShoreAutomation/trellis/compare/v0.11.0...v0.12.0
 [0.11.0]: https://github.com/NorthShoreAutomation/trellis/compare/v0.10.0...v0.11.0
 [0.10.0]: https://github.com/NorthShoreAutomation/trellis/compare/v0.9.0...v0.10.0

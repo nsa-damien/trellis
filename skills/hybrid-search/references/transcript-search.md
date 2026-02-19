@@ -11,7 +11,7 @@
 
 ## Chunking Strategy
 
-### Current Implementation
+### Basic Implementation
 
 Transcripts are chunked by sentence boundaries:
 
@@ -97,11 +97,11 @@ interface TranscriptChunk {
 
 ## Embedding Pipeline
 
-### Current Flow
-1. `BatchEmbeddingService.getTranscriptChunks()` loads `Transcript.fullText`
-2. `chunkText()` splits into chunks
-3. Each chunk → `BedrockService.generateEmbedding()` (Cohere/Titan)
-4. `OpensearchService.insertEmbeddings()` stores in `transcript_embeddings`
+### Typical Flow
+1. Load full transcript text from the database
+2. Split into chunks using sentence-boundary chunking
+3. Generate embeddings for each chunk via the embedding service (Cohere/Titan)
+4. Store vectors in the transcript embeddings index
 
 ### Cohere Embed v3 Specifics
 
@@ -128,20 +128,20 @@ interface TranscriptChunk {
 **Recommendation**: Set chunk size to **400-500 tokens** to stay within Cohere's effective window.
 
 ### Caching
-Embeddings are cached in Redis with 7-day TTL using SHA256 hash of input text as key. Cache is checked before rate limiter, which is good for avoiding unnecessary API calls.
+Consider caching embeddings (e.g., in Redis with a 7-day TTL, keyed by SHA256 hash of input text). Check the cache before the rate limiter to avoid unnecessary API calls.
 
 ## Timecode Resolution
 
 After semantic search returns matching chunks, timecodes are resolved:
 
 1. kNN search returns `transcript_embeddings` documents with `start_time`/`end_time`
-2. For each match, find the corresponding `TranscriptSegment` in PostgreSQL
+2. For each match, find the corresponding transcript segment record in PostgreSQL
 3. Return `startTimeSeconds`/`endTimeSeconds` in highlights
 
 ### Current Resolution Logic
 ```
 semantic result → asset_id + start_time
-  → find TranscriptSegment where assetId matches and startTime is closest
+  → find the transcript segment where asset ID matches and start time is closest
   → return segment's startTime/endTime for player navigation
 ```
 
@@ -178,7 +178,7 @@ This is useful for showing meaningful transcript excerpts in search results rath
 
 ## Transcript Intelligence
 
-`TranscriptSummaryMemory` stores extracted metadata per transcript:
+A transcript intelligence store (e.g., a summary/metadata table) holds extracted metadata per transcript:
 - `summaryText`: AI-generated summary
 - `topics`: array of topic strings
 - `keywords`: array of keyword strings
@@ -194,11 +194,11 @@ This allows queries like "climate change" to boost assets whose transcript intel
 ## SQL Transcript Search
 
 PostgreSQL fulltext search on transcripts uses:
-- `Transcript.searchVector` (tsvector column with GIN index)
+- A `tsvector` column with GIN index on the transcript table
 - `ts_rank` for relevance scoring
 - `LIKE` pattern matching for phrase matching
 - Logarithmic scaling for occurrence count: `1 + log(1 + occurrences) * 0.3`
-- `LATERAL` join on `TranscriptSegment` for first-match timecode
+- `LATERAL` join on the transcript segment table for first-match timecode
 
 The SQL approach finds exact text matches and is better for:
 - Specific quotes ("she said the project was cancelled")

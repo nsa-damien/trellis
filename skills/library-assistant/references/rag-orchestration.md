@@ -246,7 +246,7 @@ For discovery queries, a single search is insufficient. Run multiple searches an
 
 ```
 Search 1: Aggregate tags → get top 20 tags by frequency
-Search 2: Aggregate keywords from TranscriptSummaryMemory → get top themes
+Search 2: Aggregate keywords from transcript intelligence store → get top themes
 Search 3: Semantic search for "main topics themes subjects" → get representative assets
 Search 4: Faceted search → asset types, date distribution, creator distribution
 ```
@@ -272,7 +272,7 @@ Raw search results (id, score, snippet)
   │
   ├─ Hydrate with full asset metadata (title, date, duration, tags, creator)
   │
-  ├─ Fetch transcript summary from TranscriptSummaryMemory
+  ├─ Fetch transcript summary from transcript intelligence store
   │
   ├─ Fetch 2-3 representative transcript excerpts with timecodes
   │   (not just the matching snippet — also key moments from summary)

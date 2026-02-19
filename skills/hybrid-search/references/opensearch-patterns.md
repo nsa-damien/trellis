@@ -72,19 +72,19 @@ Consider adding to improve filtering and debugging:
 
 ## HNSW Tuning
 
-| Parameter | Current | Effect of increase | Guidance |
+| Parameter | Recommended | Effect of increase | Guidance |
 |-----------|---------|-------------------|----------|
 | `ef_construction` | 512 | Better recall, slower indexing | 256-512 is good. >512 rarely helps |
 | `m` | 16 | More connections, higher memory | 16 is standard. 32 for >1M docs |
 | `ef_search` | 512 | Better recall, slower queries | Start at `k * 2` minimum. 256-512 for quality |
 
-**Current settings are aggressive for quality.** For production with latency constraints:
+**These settings are aggressive for quality.** For production with latency constraints:
 - Reduce `ef_search` to 256 if queries are slow
 - `ef_construction` only matters at index time — high values are fine
 
 ### Engine Choice
 
-Current: `nmslib`. OpenSearch 3.x also supports:
+Default engine in most setups: `nmslib`. OpenSearch also supports:
 - **faiss**: Better for large datasets (>10M vectors), supports IVF+PQ compression
 - **lucene**: Native engine, supports pre-filtering (filters applied before kNN, not post-filter)
 
