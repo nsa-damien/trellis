@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.12.0] - 2026-02-19
+
+### Added
+
+- `/trellis:hybrid-search` knowledge skill — expert guidance for building hybrid search systems combining PostgreSQL full-text search with OpenSearch vector/semantic search over transcribed media content
+  - Reference docs: OpenSearch index patterns, hybrid ranking/scoring, transcript search optimization
+  - Covers Cohere Embed v3 embeddings, kNN index design, transcript chunking, and natural language query processing
+- `/trellis:library-assistant` knowledge skill — design guide for building conversational media library assistants powered by hybrid search
+  - Reference docs: system prompt template, conversation patterns, RAG orchestration
+  - Covers system prompt engineering, admin-customizable personas, conversation memory, result presentation strategies, and follow-up query reformulation
+
 ## [0.11.0] - 2026-02-16
 
 ### Added
@@ -338,7 +349,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Architecture documentation explaining the spec-kit/beads bridge
 - AGENTS.md snippet for automatic beads awareness in Claude Code
 
-[Unreleased]: https://github.com/NorthShoreAutomation/trellis/compare/v0.11.0...HEAD
+[Unreleased]: https://github.com/NorthShoreAutomation/trellis/compare/v0.12.0...HEAD
+[0.12.0]: https://github.com/NorthShoreAutomation/trellis/compare/v0.11.0...v0.12.0
 [0.11.0]: https://github.com/NorthShoreAutomation/trellis/compare/v0.10.0...v0.11.0
 [0.10.0]: https://github.com/NorthShoreAutomation/trellis/compare/v0.9.0...v0.10.0
 [0.9.0]: https://github.com/NorthShoreAutomation/trellis/compare/v0.8.1...v0.9.0

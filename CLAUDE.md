@@ -28,6 +28,12 @@ Trellis is an AI-native development workflow plugin for Claude Code. Two-command
 | `/trellis:status` | Project health, ready work, branch state |
 | `/trellis:codemap` | Generate/update CODEMAP.yaml for LLM navigation (recommended starting point) |
 
+### Knowledge
+| Skill | Purpose |
+|-------|---------|
+| `/trellis:hybrid-search` | Hybrid search systems (PostgreSQL + OpenSearch + Cohere embeddings) |
+| `/trellis:library-assistant` | Conversational media library assistant design (RAG, prompts, patterns) |
+
 ### Escape Hatches
 | Skill | Purpose |
 |-------|---------|
@@ -57,6 +63,8 @@ skills/              # Trellis skills (*/SKILL.md)
   push/              # Manual commit+push
   pr/                # Manual PR creation
   release/           # Merge, tag, publish
+  hybrid-search/     # [knowledge] Hybrid search systems
+  library-assistant/ # [knowledge] Conversational library assistant design
   architecture/      # [knowledge] Plugin structure
   style/             # [knowledge] Working conventions
 agents/              # Specialized subagents

@@ -56,6 +56,12 @@ Or add to `~/.claude/settings.json`:
 | `/trellis:status` | Project health, ready work, branch state |
 | `/trellis:codemap` | Generate/update CODEMAP.yaml for LLM code navigation |
 
+### Knowledge
+| Skill | Purpose |
+|-------|---------|
+| `/trellis:hybrid-search` | Hybrid search systems (PostgreSQL + OpenSearch + Cohere embeddings) |
+| `/trellis:library-assistant` | Conversational media library assistant design |
+
 ### Escape Hatches
 | Skill | Purpose |
 |-------|---------|

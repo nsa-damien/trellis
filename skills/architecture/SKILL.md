@@ -39,6 +39,8 @@ skills/              # Skill definitions (*/SKILL.md)
   push/              # Manual commit + push
   pr/                # Manual PR creation
   release/           # Merge, tag, publish
+  hybrid-search/     # [knowledge] Hybrid search systems (PostgreSQL + OpenSearch)
+  library-assistant/ # [knowledge] Conversational library assistant design
   architecture/      # [knowledge] Plugin structure and data flow
   style/             # [knowledge] Working conventions
 agents/              # Specialized subagents
@@ -87,6 +89,8 @@ Skills are either user-invocable commands or knowledge resources referenced by o
 | `push` | command | Manual commit and push |
 | `pr` | command | Manual PR creation |
 | `release` | command | Merge, tag, publish |
+| `hybrid-search` | knowledge | Hybrid search (PostgreSQL + OpenSearch + Cohere embeddings) |
+| `library-assistant` | knowledge | Conversational media library assistant design (RAG, prompts, patterns) |
 | `architecture` | knowledge | Plugin structure and data flow (this file) |
 | `style` | knowledge | Working conventions for git, commits, safety |
 
