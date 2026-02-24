@@ -28,6 +28,7 @@ Trellis is an AI-native development workflow plugin for Claude Code. Two-command
 | `/trellis:status` | Project health, ready work, branch state |
 | `/trellis:codemap` | Generate/update CODEMAP.yaml for LLM navigation (recommended starting point) |
 | `/trellis:context-handoff` | Generate handoff document for session continuity |
+| `/trellis:context-resume` | Resume work from a handoff document |
 
 ### Knowledge
 | Skill | Purpose |
@@ -65,6 +66,7 @@ skills/              # Trellis skills (*/SKILL.md)
   pr/                # Manual PR creation
   release/           # Merge, tag, publish
   context-handoff/   # Session continuity handoff generator
+  context-resume/    # Resume from handoff document
   hybrid-search/     # [knowledge] Hybrid search systems
   library-assistant/ # [knowledge] Conversational library assistant design
   architecture/      # [knowledge] Plugin structure

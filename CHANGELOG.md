@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.14.0] - 2026-02-24
+
+### Added
+
+- `/trellis:context-resume` skill — resume work from a handoff document with git state validation
+  - Reads `handoff.md` and validates current branch, commit, and working tree against the handoff's recorded state
+  - Detects drift: branch mismatch, new commits since handoff, missing/unexpected uncommitted changes
+  - Presents compact orientation summary (goal, completed, in-progress, remaining work)
+  - Warns when handoff document is stale (>48 hours old)
+  - Pairs with `/trellis:context-handoff` to complete the session continuity lifecycle
+
+### Changed
+
+- `/trellis:context-handoff` now references `/trellis:context-resume` instead of "read handoff.md" in its post-generation reminder
+
 ## [0.13.0] - 2026-02-24
 
 ### Added
@@ -364,7 +379,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Architecture documentation explaining the spec-kit/beads bridge
 - AGENTS.md snippet for automatic beads awareness in Claude Code
 
-[Unreleased]: https://github.com/NorthShoreAutomation/trellis/compare/v0.13.0...HEAD
+[Unreleased]: https://github.com/NorthShoreAutomation/trellis/compare/v0.14.0...HEAD
+[0.14.0]: https://github.com/NorthShoreAutomation/trellis/compare/v0.13.0...v0.14.0
 [0.13.0]: https://github.com/NorthShoreAutomation/trellis/compare/v0.12.1...v0.13.0
 [0.12.1]: https://github.com/NorthShoreAutomation/trellis/compare/v0.12.0...v0.12.1
 [0.12.0]: https://github.com/NorthShoreAutomation/trellis/compare/v0.11.0...v0.12.0

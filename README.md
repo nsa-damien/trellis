@@ -55,6 +55,8 @@ Or add to `~/.claude/settings.json`:
 | `/trellis:implement` | Autonomous build engine (also available standalone) |
 | `/trellis:status` | Project health, ready work, branch state |
 | `/trellis:codemap` | Generate/update CODEMAP.yaml for LLM code navigation |
+| `/trellis:context-handoff` | Save session context to `handoff.md` |
+| `/trellis:context-resume` | Resume from a `handoff.md` with drift detection |
 
 ### Knowledge
 | Skill | Purpose |

@@ -101,7 +101,7 @@ like "Run the test suite to verify X still passes, then implement the Y function
 After writing, display:
 - The file path
 - A 2-3 line summary of what was captured
-- Reminder: "Start your next session with: read handoff.md"
+- Reminder: "Start your next session with: `/trellis:context-resume`"
 
 ## Guidelines
 
