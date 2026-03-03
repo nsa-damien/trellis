@@ -3,14 +3,14 @@ name: sow-generator
 description: >
   Generate client Statements of Work from templates. Use when anyone mentions
   "SOW", "statement of work", "new SOW", "generate SOW", or asks to create
-  a client proposal or scope document. Interviews for project details, downloads
-  the template from Google Drive, processes it locally, and delivers a ready
-  .docx file. Do NOT use for general document editing or non-SOW documents.
+  a client proposal or scope document. Interviews for project details, duplicates
+  the template in Google Drive, fills placeholders and applies conditional logic
+  directly via the Google Docs API. Do NOT use for general document editing or non-SOW documents.
 ---
 
 # SOW Generator
 
-Generate professional Statements of Work from Google Docs templates via a guided interview. Ask questions, collect details, download the template as .docx, run a local Python script to fill placeholders and apply conditional logic, and deliver a ready-to-send document.
+Generate professional Statements of Work from Google Docs templates via a guided interview. Ask questions, collect details, duplicate the template in Google Drive, fill placeholders and apply conditional logic using the Google Docs API, and deliver a ready-to-send Google Doc.
 
 Two active templates are available today:
 - **MAM Migration** — general media asset management platform migration
@@ -39,9 +39,8 @@ Default Google Doc IDs can be overridden if the user provides a Google Doc link.
 
 Before starting, verify:
 
-1. **Google Drive access** — The user must have a working Google Drive connection (any connector: Google Workspace integration, Drive connector, etc.). If Google Drive access is not available, tell the user they need to configure it and **stop**. Do not attempt to generate without a template.
-2. **Python code execution** — Must be enabled in this environment.
-3. **python-docx library** — Install with `pip install python-docx` if not already available.
+1. **Google Workspace MCP** — The user must have a working Google Workspace connection with Google Docs and Drive access. If not available, tell the user they need to configure it and **stop**.
+2. **User's Google email** — Required for all Google Workspace API calls. Ask once at the start if not already known.
 
 ---
 
@@ -85,7 +84,7 @@ Ask **one question at a time**. Do not batch multiple questions together.
 11. "Network speed?" (10Gb / 1Gb / Bonded 1Gb)
 12. "What date for the SOW?" (Default: today's date)
 
-For any answer of "I don't know" on Avid fields, note the field and leave its placeholder unfilled. The script handles this automatically.
+For any answer of "I don't know" on Avid fields, note the field and skip its replacement — the placeholder text stays in the document.
 
 Read `REFERENCE.md` (in this skill's directory) for full placeholder tables and conditional logic rules.
 
@@ -137,74 +136,86 @@ Ready to generate?
 
 After the user approves, execute the following steps:
 
-1. **Download the template** from Google Drive as .docx:
-   - Use the Google Doc ID from the Template Registry (or user-provided override if given)
-   - Export/download as .docx format
-   - Save to a temporary file
+#### 4a. Duplicate the template
 
-2. **Install python-docx** if not already available:
-   ```bash
-   pip install python-docx
-   ```
+Use `copy_drive_file` to create a copy of the template in the user's Google Drive:
+- Use the Google Doc ID from the Template Registry (or user-provided override)
+- Set `new_name` to the SOW document name (e.g., "NSA MAM Migration SOW - March 2, 2026")
+- Save the **new document ID** from the response — all subsequent operations use this ID
 
-3. **Build the config JSON** from interview answers (see formats below).
+#### 4b. Fill placeholders
 
-4. **Run the generation script:**
-   ```bash
-   python scripts/generate_sow.py --template <downloaded_template.docx> --output "<Client> <Template Type> SOW - <Date>.docx" --config '<json>'
-   ```
+Run `find_and_replace_doc` calls to replace all placeholders. **Run these in parallel** for speed since they are independent.
 
-5. **Check the script's JSON output:**
-   - `replacements_made` — how many placeholders were filled
-   - `not_found` — any placeholders that were not found in the template (may indicate the template has changed)
+**Migration template replacements:**
 
-#### Config JSON — Migration Template
+| find_text | replace_text |
+|-----------|-------------|
+| `#client` | Client name |
+| `#reseller` | Reseller name |
+| `#platform` | Source MAM platform |
+| `#date` | SOW date |
+| `#logo` | Client name (manual logo insertion later) |
 
-```json
-{
-  "template": "migration",
-  "client": "...",
-  "reseller": "...",
-  "platform": "...",
-  "date": "...",
-  "discovery": true
-}
-```
+**Avid template replacements** (in addition to #client, #reseller, #date, #logo):
 
-Set `"discovery": false` to exclude Exhibit 2 (Discovery & Extraction Services).
+| find_text | replace_text |
+|-----------|-------------|
+| `#destination` | Destination MAM |
+| `#total_data_size` | Total data size |
+| `#disk_data` | Disk data in TB |
+| `#clip_count` | Online clip count |
+| `#lto_data` | LTO data size or N/A |
+| `#archive_system` | Archive system type |
+| `#free_storage` | Free storage in TB |
+| `#hypervisor` | See Hypervisor Options in REFERENCE.md |
+| `#network` | See Network Options in REFERENCE.md |
 
-#### Config JSON — Avid Template
+For "don't know" values, **skip the replacement** — leave the `#placeholder` text in the document.
 
-```json
-{
-  "template": "avid",
-  "client": "...",
-  "reseller": "...",
-  "destination": "...",
-  "total_data_size": "...",
-  "disk_data": "...",
-  "clip_count": "...",
-  "lto_data": "...",
-  "archive_system": "...",
-  "free_storage": "...",
-  "hypervisor": "Client VMWare",
-  "network": "10Gb",
-  "date": "..."
-}
-```
+**Hypervisor replacement values:**
+- Client VMWare → `Client-provided VMWare`
+- Client Proxmox → `Client-provided Proxmox`
+- NSA Proxmox → `NSA-provided Proxmox hardware`
 
-Valid `hypervisor` values: `Client VMWare`, `Client Proxmox`, `NSA Proxmox`
-Valid `network` values: `10Gb`, `1Gb`, `Bonded 1Gb`
+**Network replacement values:**
+- 10Gb → `10Gb host bus adapter (HBA)`
+- 1Gb → `1Gb networking`
+- Bonded 1Gb → `Bonded 1Gb connections`
 
-For "don't know" values, omit the key from the config or set it to `"don't know"` — the script will leave the placeholder text in the document.
+#### 4c. Apply conditional logic (section removal)
+
+After all replacements are complete, remove conditional sections. This requires finding text positions and deleting ranges.
+
+**Migration template — Discovery excluded:**
+
+When discovery is excluded, remove two things:
+1. The deliverables reference line — use `find_and_replace_doc` to replace the line `Note: If the source {platform} system requires database discovery and extraction services, please see Exhibit 2: Discovery & Extraction Services (Optional) for more information` with empty string `""`
+2. The Exhibit 2 section — use `inspect_doc_structure` (with `detailed: true`) to find the start index of "Exhibit 2: Discovery & Extraction Services (Optional)" and the end index of "[END]", then use `batch_update_doc` with a `delete_text` operation to remove that range
+
+**Avid template — Client-provided hypervisor:**
+
+When hypervisor is Client VMWare or Client Proxmox, use `find_and_replace_doc` to replace the line containing "Server rental fees" with empty string.
+
+**Avid template — 10Gb network:**
+
+When network is 10Gb, use `find_and_replace_doc` to remove these three caveat lines (replace each with empty string):
+1. `Note: 1Gb networking is supported; however, this will significantly increase the overall project timeline and may result in a Change Order`
+2. `NSA recommends bonded 1Gb connections minimum or installation of a 10Gb host bus adapter (HBA)`
+3. `All NSA-provided systems are equipped with multiple 1Gb and 10Gb network interfaces`
+
+#### 4d. Verify
+
+After all operations, use `get_doc_content` to spot-check that placeholders were replaced and sections were removed correctly. Report any `#placeholder` text that remains.
 
 ### Step 5: Deliver
 
-Present the result to the user:
+Present the result to the user with the Google Doc link:
 
 ```
 SOW GENERATED:
-  Document: {filename}.docx
+  Document: {doc name}
+  Link:     {Google Doc link from copy_drive_file response}
 
 Manual steps remaining:
   1. Replace "#logo" text with actual client/project logo
@@ -227,13 +238,11 @@ If Discovery was excluded (Migration template):
   Note: Exhibit 2 (Discovery & Extraction) was removed.
 ```
 
-Then offer to upload to Google Drive if Drive access is available.
-
 ### Step 6: Next Steps
 
 After delivery, ask:
 
-"Want me to upload this to Google Drive, export a PDF, or generate another SOW?"
+"Want me to move this to a specific Drive folder, export a .docx or PDF, or generate another SOW?"
 
 ---
 
@@ -241,25 +250,17 @@ After delivery, ask:
 
 | Scenario | What to do |
 |----------|-----------|
-| No Google Drive access | Tell the user they need to configure Google Drive access and provide setup guidance. Stop — do not attempt generation without a template. |
-| Template download fails | "The template may have moved. Do you have the current Google Doc link?" Prompt for a link, extract the Doc ID, and retry. |
+| No Google Workspace MCP | Tell the user they need to configure Google Workspace access. Stop — do not attempt generation without it. |
+| Template copy fails | "The template may have moved. Do you have the current Google Doc link?" Prompt for a link, extract the Doc ID, and retry. |
 | Placeholder not found (0 matches) | Warning: "Placeholder `#foo` was not found in the template — the template may have changed. The document was still generated." |
-| python-docx not installed | Run `pip install python-docx` and retry. |
-| Upload to Drive fails | Deliver the local .docx file and note that the upload failed. |
+| Section removal fails | If `inspect_doc_structure` can't find section boundaries, warn the user and leave the section in place for manual removal. |
+| find_and_replace returns 0 | The placeholder text may have changed in the template. Warn but continue. |
 
 ---
 
 ## Known Limitations
 
-- **`#logo` replacement is text-only** — the script replaces the `#logo` text with the client name. Actual logo image insertion requires manual editing in the final document.
-- **Document formatting is preserved** — replaced text inherits the run formatting from the original template.
-- **Section removal works by paragraph** — if the template structure changes significantly, section boundaries (used for conditional removal of Exhibit 2, rental notes, and network caveats) may need updating in the script.
-
----
-
-## Installation
-
-1. Download `sow-generator.zip`
-2. In Claude Desktop or claude.ai: Settings > Skills > Upload Skill
-3. Ensure Google Drive access is configured
-4. Say "Generate a new SOW" to start
+- **`#logo` replacement is text-only** — replaces the `#logo` text with the client name. Actual logo image insertion requires manual editing.
+- **Document formatting is preserved** — `find_and_replace_doc` preserves the formatting of the original text.
+- **Section removal requires index calculation** — if the template structure changes significantly, `inspect_doc_structure` may need careful analysis to find correct deletion boundaries for Exhibit 2.
+- **Google Docs API only** — no local Python dependencies required. The `scripts/` directory contains a legacy local generation script as a fallback.
