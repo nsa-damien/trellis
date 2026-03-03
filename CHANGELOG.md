@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.15.0] - 2026-03-03
+
+### Added
+
+- `/trellis:sow-generator` skill — generate client Statements of Work from Google Docs templates via guided interview
+  - Interviews for project details (client, scope, timeline, pricing)
+  - Duplicates template in Google Drive, fills placeholders and applies conditional logic via Google Docs API
+  - Supports MAM Migration and Avid Interplay Migration templates
+- `/trellis:meeting-summary` skill — generate professional meeting summary emails from guided interview
+  - Pulls participant info from Google Calendar
+  - Accepts notes and transcripts inline or via Google Drive links
+  - Produces ready-to-send summary email with optional Gmail draft
+
+### Changed
+
+- SOW generator migrated from local python-docx to Google Docs API — template duplication and placeholder replacement now happen directly in Google Drive, removing the python-docx dependency and delivering a Google Doc link instead of a local .docx file
+
 ## [0.14.0] - 2026-02-24
 
 ### Added
@@ -379,7 +396,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Architecture documentation explaining the spec-kit/beads bridge
 - AGENTS.md snippet for automatic beads awareness in Claude Code
 
-[Unreleased]: https://github.com/NorthShoreAutomation/trellis/compare/v0.14.0...HEAD
+[Unreleased]: https://github.com/NorthShoreAutomation/trellis/compare/v0.15.0...HEAD
+[0.15.0]: https://github.com/NorthShoreAutomation/trellis/compare/v0.14.0...v0.15.0
 [0.14.0]: https://github.com/NorthShoreAutomation/trellis/compare/v0.13.0...v0.14.0
 [0.13.0]: https://github.com/NorthShoreAutomation/trellis/compare/v0.12.1...v0.13.0
 [0.12.1]: https://github.com/NorthShoreAutomation/trellis/compare/v0.12.0...v0.12.1
