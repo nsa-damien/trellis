@@ -38,57 +38,60 @@ Wait for the response before continuing. Do not ask multiple questions at once.
 
 ---
 
-### Step 2: Calendar Event
+### Step 2: Audience and Tone
 
-Ask for the Google Calendar event link:
+Ask who the summary is for:
 
-> "Can you share the link to the calendar invitation? I'll pull the participant list and agenda from it."
+> "Who's the audience for this summary — the same folks who were in the meeting, or will this go to leadership or a broader team too?"
 
-Once you receive the link:
+Use the answer to calibrate the output:
+- **Same participants** — conversational tone, more detail, focus on action items and decisions.
+- **Leadership / executive audience** — concise, outcomes-focused, minimal process detail.
+- **Broader team** — add more context and background since recipients weren't in the room.
+
+If the user doesn't have a strong preference, default to "same participants" tone.
+
+---
+
+### Step 3: Calendar Event
+
+Ask the user to identify the meeting. Accept any of the following:
+
+> "Which calendar event is this? You can share the link, or just tell me the meeting name and approximate date and I'll look it up."
+
+**If the user provides a link:**
 - Extract the event ID from the URL
-- Use the Google Calendar MCP to fetch event details
-- Extract: title, date/time, attendees (names and emails), description/agenda
-- Confirm what you found: "I found {N} attendees and the following agenda: {summary}. Look right?"
+- Use Google Calendar MCP to fetch event details
 
-If the user doesn't have a link, ask them to list participants manually.
+**If the user provides a name/date:**
+- Use `get_events` with a `query` parameter to search for the meeting
+- If multiple matches, present them and ask the user to pick the right one
+
+**From the event, extract:**
+- Title, date/time, attendees (names and emails), description/agenda
+
+Confirm what you found:
+> "I found {N} attendees and the following agenda: {summary}. Look right?"
+
+If the user doesn't have a calendar event, ask them to list participants manually.
 
 ---
 
-### Step 3: Meeting Notes
+### Step 4: Notes and Transcript
 
-Ask for meeting notes:
+Ask for meeting notes and transcript in a single question:
 
-> "Do you have meeting notes to share? You can paste them here or give me a Google Drive/Docs link."
+> "Do you have any meeting notes, a transcript, or both? You can paste them here or share a Google Drive/Docs link."
 
-Accept either:
+Accept any combination:
 - **Inline text** — pasted directly into the chat
-- **Google link** — fetch the content via Google Drive/Docs MCP
-
-If the user has no notes, that's fine — move on. Notes are helpful but not required.
-
----
-
-### Step 4: Transcript
-
-Ask for the transcript:
-
-> "Do you have a transcript of the meeting? Same deal — paste it or share a Google link."
-
-Accept either format. Transcripts are optional. If the user provides both notes and a transcript, use the transcript for completeness and the notes for editorial emphasis.
+- **Google link** — fetch content via Google Drive/Docs MCP
+- **Both** — use the transcript for completeness and the notes for editorial emphasis
+- **Neither** — that's fine, proceed with what the user told you in Step 1
 
 ---
 
-### Step 5: Video Recording (Conditional)
-
-Only ask this if the meeting content suggests a recording would be valuable (e.g., a demo was given, visual content was shared, or the user mentioned recording it):
-
-> "Was this meeting recorded? If there's a link to the recording, I can include it in the summary for anyone who missed it."
-
-If not relevant, skip this step entirely.
-
----
-
-### Step 6: Decisions
+### Step 5: Decisions
 
 Ask about decisions made:
 
@@ -98,7 +101,7 @@ Collect each decision with the decision-maker. If the user says no decisions wer
 
 ---
 
-### Step 7: Action Items
+### Step 6: Action Items
 
 Ask about action items:
 
@@ -113,65 +116,69 @@ If the user mentions Jira tickets, project codes, or document links, include the
 
 ---
 
-### Step 8: Follow-up
+### Step 7: Follow-up and Recording
 
-Ask about next steps:
+Ask about next steps and, if relevant, a recording:
 
-> "Any follow-up meetings scheduled or next steps to call out? For example, a follow-up call next week or a deliverable due by a certain date."
+> "Any follow-up meetings scheduled or next steps to call out? And was this meeting recorded — should I include a link?"
 
----
+If the user provides a recording link, include it in the Overview section of the output.
 
-### Step 9: Clarification
+**Visual capture from recording:** If the user mentions that the meeting included visual content worth capturing (a demo, architecture diagram, slide walkthrough, whiteboard sketch, etc.), ask:
 
-If anything from the previous steps is ambiguous or incomplete, ask **one clarifying question at a time** until you have a clear picture. For each question, suggest the approach most aligned with best practices:
+> "Want me to grab some screenshots from the recording? I can open the video and capture key moments — like the demo or any diagrams that were shared."
 
-> "You mentioned {topic} — could you clarify {specific question}? Typically in these situations, {best practice suggestion}."
+If the user agrees:
+1. Open the recording URL in the browser (supports Google Meet recordings, Loom, YouTube, Vimeo, and most hosted video players).
+2. Ask the user which moments to capture, or if they'd prefer you scan through and pick the most relevant visuals.
+3. Play/scrub through the video, pause at key moments, and take screenshots.
+4. Save screenshots to the workspace folder as `meeting-{slug}-capture-{N}.png`.
+5. Reference the screenshots in the **Detailed Notes** section of the summary with descriptive captions (e.g., "Architecture diagram presented by Sarah — see screenshot below").
+6. If the final delivery is a Gmail draft, attach the screenshots. If it's a Google Doc, insert the images inline.
 
----
-
-### Step 10: Confirm Understanding
-
-Before generating, present a summary of everything you've collected:
-
-> "Here's what I have:
-> - **Meeting:** {title} on {date}
-> - **Participants:** {count} attendees
-> - **Key outcomes:** {brief list}
-> - **Decisions:** {count}
-> - **Action items:** {count}
-> - **Follow-ups:** {list}
->
-> Ready for me to generate the summary?"
-
-Wait for explicit approval before proceeding.
+If the video is behind authentication or can't be opened, let the user know and ask if they can share specific screenshots manually instead.
 
 ---
 
-### Step 11: Generate Summary
+### Step 8: Clarification
 
-Generate the meeting summary email using the format below. Write to `tmp/meeting-summary-{YYYY-MM-DD}-{slug}.md` where `{slug}` is a lowercase-hyphenated short name derived from the meeting title.
+If anything from the previous steps is ambiguous or incomplete, ask **one clarifying question at a time** until you have a clear picture:
 
-After generating, present the full email content to the user for review.
+> "You mentioned {topic} — could you clarify {specific question}?"
 
-> "Here's the summary. Review it and let me know if you'd like any changes."
+If everything is clear, skip this step.
+
+---
+
+### Step 9: Confirm and Generate
+
+Before generating, present a brief summary of what you'll cover:
+
+> "Got it. I'll write up a summary covering {key topics}, {N} decisions, and {N} action items for {audience}. Anything missing before I generate it?"
+
+Wait for approval, then generate the summary as a **markdown artifact** — write the file to the workspace folder so the user can view it directly. Name it `meeting-summary-{YYYY-MM-DD}-{slug}.md` where `{slug}` is a lowercase-hyphenated short name derived from the meeting title.
+
+After generating, present a link to the file and ask for feedback:
+
+> "Here's the summary — [view it here](link). Let me know if you'd like any changes."
 
 If the user requests edits, make them and present again.
 
 ---
 
-### Step 12: Delivery (On Request)
+### Step 10: Delivery (On Request)
 
 After the user approves the summary:
 
-- **Gmail draft** — If the user asks, create a Gmail draft addressed to all attendees from the calendar event. Use the meeting summary as the email body. Confirm before creating: "I'll create a Gmail draft to {N} recipients with subject '{subject}'. Go ahead?"
+- **Gmail draft** — If the user asks, create a Gmail draft addressed to all attendees from the calendar event. Use the meeting summary as the email body (convert markdown to HTML with `body_format: "html"` for proper formatting). Confirm before creating: "I'll create a Gmail draft to {N} recipients with subject '{subject}'. Go ahead?"
 - **Google Doc** — If the user provides a Google Doc link, append the summary to that document. Confirm before writing: "I'll append this summary to the Google Doc at {link}. Go ahead?"
-- **Neither** — The markdown file in `tmp/` is the deliverable. Let the user know where it is.
+- **Neither** — The markdown file in the workspace is the deliverable.
 
 ---
 
 ## Email Format
 
-Use this format for the generated summary. The tone is professional but conversational — clear and direct, not stuffy.
+Use this format for the generated summary. Adjust tone based on the audience identified in Step 2.
 
 ```markdown
 **Subject:** Meeting Summary: {Meeting Title} — {Date}
@@ -183,6 +190,8 @@ Here's a recap of our {meeting title} on {date}.
 ## Overview
 
 {2-4 paragraph summary of what was discussed and the key outcomes. Lead with the most important points. Write in plain language — no jargon unless it was used in the meeting. If a recording exists, mention it here: "A recording of this meeting is available [here](link)."}
+
+{For executive audiences: keep this to 1-2 paragraphs focused on outcomes and decisions. For broader team audiences: add context about why the meeting happened and what background is relevant.}
 
 ## Decisions
 
@@ -206,17 +215,19 @@ Here's a recap of our {meeting title} on {date}.
 ## Detailed Notes
 
 {Comprehensive synthesis of the meeting content. This section is longer and more detailed than the overview. Organize by topic or agenda item. Include relevant context, discussion points, and nuance that didn't make it into the overview. If a transcript was provided, this section should capture the substance without being a verbatim dump.}
+
+{For executive audiences: keep this section short or omit it entirely — they want the top-line, not the play-by-play. For same-participant audiences: be thorough. For broader teams: include enough context that someone who wasn't there can follow along.}
 ```
 
 ### Formatting Rules
 
 - **Subject line:** Always "Meeting Summary: {Title} — {Month Day, Year}"
 - **Greeting:** "Hi all," — keep it simple
-- **Overview:** 2-4 paragraphs max. Lead with outcomes, not process.
+- **Overview:** 2-4 paragraphs max (1-2 for executive audiences). Lead with outcomes, not process.
 - **Decisions:** Include the person who made or approved each decision. If pulled from a group consensus, say so.
 - **Action Items:** Always a table. Include due dates when known, "TBD" when not. If the user mentioned ticket numbers or links, include them in the action description.
 - **Follow-up:** Bulleted list. Include dates if known.
-- **Detailed Notes:** The longest section. Organize by topic. Be thorough but not verbose — synthesize, don't transcribe.
+- **Detailed Notes:** The longest section. Organize by topic. Be thorough but not verbose — synthesize, don't transcribe. For executive audiences, abbreviate or omit.
 - **No emojis** unless the user explicitly requests them.
 - **References:** Only include links to tickets, documents, or recordings that the user explicitly mentioned. Do not look up or infer references.
 
@@ -236,3 +247,4 @@ Here's a recap of our {meeting title} on {date}.
 ---
 
 *Skill created: 2026-03-03*
+*Last updated: 2026-03-03*
