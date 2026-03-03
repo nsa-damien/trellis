@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.16.0] - 2026-03-03
+
+### Added
+
+- `/trellis:project-requirements` skill — generate client-facing project requirements documents through guided interview
+  - Captures project background, deliverables, assumptions, exclusions, dependencies, success criteria, and timeline
+  - Produces structured markdown for client approval before SOW/pricing phase
+  - Workflow position: Requirements Doc → Client Approval → SOW → Quote
+
 ## [0.15.1] - 2026-03-03
 
 ### Changed
@@ -402,7 +411,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Architecture documentation explaining the spec-kit/beads bridge
 - AGENTS.md snippet for automatic beads awareness in Claude Code
 
-[Unreleased]: https://github.com/NorthShoreAutomation/trellis/compare/v0.15.1...HEAD
+[Unreleased]: https://github.com/NorthShoreAutomation/trellis/compare/v0.16.0...HEAD
+[0.16.0]: https://github.com/NorthShoreAutomation/trellis/compare/v0.15.1...v0.16.0
 [0.15.1]: https://github.com/NorthShoreAutomation/trellis/compare/v0.15.0...v0.15.1
 [0.15.0]: https://github.com/NorthShoreAutomation/trellis/compare/v0.14.0...v0.15.0
 [0.14.0]: https://github.com/NorthShoreAutomation/trellis/compare/v0.13.0...v0.14.0
