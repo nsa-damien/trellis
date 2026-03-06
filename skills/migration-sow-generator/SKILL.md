@@ -1,9 +1,9 @@
 ---
-name: sow-generator
+name: migration-sow-generator
 description: |
-  Generate client SOWs from templates. Interviews for project details, copies the template,
-  replaces placeholders, applies conditional logic, and delivers a ready-to-review
-  Google Doc. Use when Damien says "new SOW", "generate SOW", or "/sow".
+  Generate Migration SOWs (MAM Migration and Avid Interplay Migration) from templates.
+  Interviews for project details, copies the template, replaces placeholders, applies
+  conditional logic, and delivers a ready-to-review Google Doc.
 license: MIT
 compatibility: marvin
 metadata:
