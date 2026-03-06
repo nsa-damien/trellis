@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.17.0] - 2026-03-06
+
+### Changed
+
+- Renamed `sow-generator` → `migration-sow-generator` to scope skill to Migration SOWs (MAM + Avid Interplay)
+
+### Removed
+
+- Legacy python-docx scripts from migration-sow-generator — all SOW generation now uses Google Docs API natively
+
 ## [0.16.0] - 2026-03-03
 
 ### Added
