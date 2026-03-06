@@ -1,99 +1,152 @@
 ---
 name: sow-generator
-description: >
-  Generate client Statements of Work from templates. Use when anyone mentions
-  "SOW", "statement of work", "new SOW", "generate SOW", or asks to create
-  a client proposal or scope document. Interviews for project details, duplicates
-  the template in Google Drive, fills placeholders and applies conditional logic
-  directly via the Google Docs API. Do NOT use for general document editing or non-SOW documents.
+description: |
+  Generate client SOWs from templates. Interviews for project details, copies the template,
+  replaces placeholders, applies conditional logic, and delivers a ready-to-review
+  Google Doc. Use when Damien says "new SOW", "generate SOW", or "/sow".
+license: MIT
+compatibility: marvin
+metadata:
+  marvin-category: work
+  user-invocable: true
+  slash-command: /sow
+  model: default
+  proactive: false
 ---
 
 # SOW Generator
 
-Generate professional Statements of Work from Google Docs templates via a guided interview. Ask questions, collect details, duplicate the template in Google Drive, fill placeholders and apply conditional logic using the Google Docs API, and deliver a ready-to-send Google Doc.
+Generate client Statements of Work from NSA templates via Google Docs.
 
-Two active templates are available today:
-- **MAM Migration** — general media asset management platform migration
-- **Avid Interplay Migration** — Avid-specific migration to a new MAM
-
-Two more are coming soon:
-- Iconik Up and Running
-- CatDV Up and Running
-
----
-
-## Template Registry
+## Templates
 
 | Template | Google Doc ID | Status |
 |----------|---------------|--------|
 | MAM Migration | `1QUNVJNaSUU5MztXAQHbjWTINKCJREkT8D1Kypf6WmAA` | Active |
 | Avid Interplay Migration | `1wz7hGKQ_kOfKOrKxwk6AhzNNch2q4HHVOe7IxD5U3gg` | Active |
-| Iconik Up and Running | `1llE-VLSF_ivYrCSXdMvuoXECcCbd8TkSJzWWURzerOg` | Coming soon |
-| CatDV Up and Running | `13I-g12freK_Z2OjVC181Jt4rKdkHL3YP3b_-E9JXo18` | Coming soon |
+| Iconik Up and Running | `1llE-VLSF_ivYrCSXdMvuoXECcCbd8TkSJzWWURzerOg` | Not yet integrated |
+| CatDV Up and Running | `13I-g12freK_Z2OjVC181Jt4rKdkHL3YP3b_-E9JXo18` | Not yet integrated |
 
-Default Google Doc IDs can be overridden if the user provides a Google Doc link. On download failure, prompt the user for the current link.
+## Placeholder Reference — Migration Template
 
----
+### Required fill-ins
 
-## Prerequisites
+| Placeholder | Description | Example |
+|-------------|-------------|---------|
+| `#client` | Client company name | Acme Broadcasting |
+| `#reseller` | Reseller/dealer company name | Signiant Media |
+| `#platform` | Source MAM platform name | Dalet |
+| `#date` | Document date | February 25, 2026 |
+| `#logo` | Client or project logo | *(manual — not automated)* |
 
-Before starting, verify:
+### Optional sections
 
-1. **Google Workspace MCP** — The user must have a working Google Workspace connection with Google Docs and Drive access. If not available, tell the user they need to configure it and **stop**.
-2. **User's Google email** — Required for all Google Workspace API calls. Ask once at the start if not already known.
+| Section | Location | Default |
+|---------|----------|---------|
+| Exhibit 2: Discovery & Extraction Services | End of document | Exclude unless source platform requires DB reverse-engineering |
 
----
+## Placeholder Reference — Avid Interplay Migration Template
+
+### Shared fill-ins (same as Migration)
+
+| Placeholder | Description | Example |
+|-------------|-------------|---------|
+| `#client` | Client company name | Acme Broadcasting |
+| `#reseller` | Reseller/dealer company name | ASG |
+| `#date` | Document date | February 25, 2026 |
+| `#logo` | Client or project logo | *(manual — not automated)* |
+
+### Avid-specific fill-ins
+
+| Placeholder | Description | Example | "I don't know" |
+|-------------|-------------|---------|----------------|
+| `#destination` | Destination MAM system | Iconik | Leave as `#destination` |
+| `#total_data_size` | Total estimated data size | 150 TB | Leave as `#total_data_size` |
+| `#disk_data` | Disk data in TB | 80 | Leave as `#disk_data` |
+| `#clip_count` | Approximate online clip count | 250,000 | Leave as `#clip_count` |
+| `#lto_data` | LTO tape data size | 70 TB / N/A if none | Leave as `#lto_data` |
+| `#archive_system` | Archive system type | FlashNet, SDNA | Leave as `#archive_system` |
+| `#free_storage` | Current free storage in TB | 40 | Leave as `#free_storage` |
+| `#hypervisor` | Hypervisor setup (see options below) | Client-provided VMWare | Leave as `#hypervisor` |
+| `#network` | Network speed (see options below) | 10Gb | Leave as `#network` |
+
+### Hypervisor options (pick one)
+
+| Answer | Replacement text | Server rental |
+|--------|-----------------|---------------|
+| Client VMWare | `Client-provided VMWare` | No |
+| Client Proxmox | `Client-provided Proxmox` | No |
+| NSA Proxmox | `NSA-provided Proxmox hardware` | Yes — keep rental note |
+
+**Server rental logic:** If `#hypervisor` = NSA Proxmox, the "Note: Server rental fees apply when NSA-provided hardware is used" line stays as-is. If client-provided, remove the server rental note line.
+
+### Network options and conditional text
+
+| Answer | Replacement text | Conditional action |
+|--------|------------------|--------------------|
+| 10Gb | `10Gb host bus adapter (HBA)` | **Remove** the three lines after `Network:` (1Gb caveat, bonded recommendation, NSA equipment note) |
+| 1Gb | `1Gb networking` | Keep all three caveat lines as-is |
+| Bonded 1Gb | `Bonded 1Gb connections` | Keep all three caveat lines as-is |
+| Don't know | Leave `#network` | Keep all three caveat lines as-is |
+
+The three conditional lines after the Network placeholder:
+1. `Note: 1Gb networking is supported; however, this will significantly increase the overall project timeline and may result in a Change Order`
+2. `NSA recommends bonded 1Gb connections minimum or installation of a 10Gb host bus adapter (HBA)`
+3. `All NSA-provided systems are equipped with multiple 1Gb and 10Gb network interfaces`
 
 ## Process
 
 ### Step 1: Select Template
 
-If the user already specified a template type in their request (e.g., "generate an Avid SOW"), skip this step.
+If the user specified a template type in their input (e.g., "/sow migration", "/sow avid"), skip this question.
+Otherwise ask:
 
-Otherwise, ask which template they need.
+> Which template?
+> 1. **MAM Migration** — standard platform-to-platform migration
+> 2. **Avid Interplay Migration** — Avid-specific with media processing, VM deployment, and infrastructure variables
 
-**Shortcut detection:**
-- "Avid", "Interplay", "OP-1a", "MXF" --> Avid Interplay Migration template
-- "MAM", "migration" (without Avid context) --> MAM Migration template
-- "Iconik" or "CatDV" --> Inform the user those templates are not integrated yet and are coming soon
+Shortcut detection: If the user mentions "Avid", "Interplay", "OP-1a", or "MXF" → select Avid template.
+
+If they ask for Iconik or CatDV Up and Running, tell them those templates
+haven't been integrated into the workflow yet and offer to generate manually.
 
 ### Step 2: Interview
 
-Ask **one question at a time**. Do not batch multiple questions together.
+Ask **one question at a time**. Damien's explicit preference — no multi-question batches.
 
-#### MAM Migration Template Questions (in order)
+If the answer to any Avid-specific question is "I don't know" or equivalent, leave the placeholder
+as-is in the document. Tell the user which placeholders remain unfilled at delivery.
 
-1. "What's the client name?"
-2. "Who's the reseller?"
-3. "What's the source MAM platform?" (Common platforms: Dalet, Reach Engine, CatDV, EditShare Flow)
-4. "Does this platform require database discovery and extraction?" (Explain: this adds Exhibit 2 to the SOW for database reverse-engineering services)
-5. "What date for the SOW?" (Default: today's date, formatted as full month — e.g., "March 2, 2026")
+#### Migration Template — Question order:
 
-#### Avid Interplay Migration Template Questions (in order)
+1. **Client name** — "What's the client name?"
+2. **Reseller** — "Who's the reseller?"
+3. **Source platform** — "What's the source MAM platform?" *(Common: Dalet, Reach Engine, CatDV, EditShare Flow)*
+4. **Discovery & Extraction** — "Does this platform require database discovery and extraction? (This adds Exhibit 2 — the optional Discovery & Extraction Services scope)"
+5. **Date** — "What date for the SOW? Default: today" *(Format as full month, e.g., "February 25, 2026")*
+6. **Destination folder** — Use default Drive folder `10l3uRO7-VCZ7ML6YvUmp3eooqBDyWhaQ` unless told otherwise.
 
-1. "What's the client name?"
-2. "Who's the reseller?"
-3. "What's the destination MAM?" (Most likely Iconik)
-4. "What's the total estimated data size?"
-5. "How much disk data (in TB)?"
-6. "Approximately how many online clips?"
-7. "Any LTO tape data?" (Size in TB, or N/A)
-8. "What archive system?" (FlashNet, SDNA, other, or N/A)
-9. "How much free storage does the client currently have (in TB)?"
-10. "Hypervisor setup?" (Client VMWare / Client Proxmox / NSA Proxmox)
-11. "Network speed?" (10Gb / 1Gb / Bonded 1Gb)
-12. "What date for the SOW?" (Default: today's date)
+#### Avid Interplay Template — Question order:
 
-For any answer of "I don't know" on Avid fields, note the field and skip its replacement — the placeholder text stays in the document.
-
-Read `REFERENCE.md` (in this skill's directory) for full placeholder tables and conditional logic rules.
+1. **Client name** — "What's the client name?"
+2. **Reseller** — "Who's the reseller?"
+3. **Destination MAM** — "What's the destination MAM? (Likely Iconik)"
+4. **Total data size** — "What's the total estimated data size?"
+5. **Disk data** — "How much disk data (in TB)?"
+6. **Clip count** — "Approximately how many online clips?"
+7. **LTO tape data** — "Any LTO tape data? (Size, or N/A if none)"
+8. **Archive system** — "What archive system? (FlashNet, SDNA, other, or N/A)"
+9. **Free storage** — "How much free storage does the client currently have (in TB)?"
+10. **Hypervisor** — "Hypervisor setup? (Client VMWare / Client Proxmox / NSA Proxmox)"
+11. **Network** — "Network speed? (10Gb / 1Gb / Bonded 1Gb)"
+12. **Date** — "What date for the SOW? Default: today" *(Format as full month, e.g., "February 25, 2026")*
+13. **Destination folder** — Use default Drive folder `10l3uRO7-VCZ7ML6YvUmp3eooqBDyWhaQ` unless told otherwise.
 
 ### Step 3: Confirm
 
-Present a summary table before generating. **Wait for explicit approval** before proceeding.
+Present a summary table before creating anything.
 
-#### Migration Confirmation Format
-
+**Migration:**
 ```
 SOW DETAILS:
   Template:    MAM Migration
@@ -102,13 +155,13 @@ SOW DETAILS:
   Platform:    {platform}
   Date:        {date}
   Discovery:   Included / Excluded
+  Save to:     {folder name}
   Doc name:    {client} MAM Migration SOW - {date}
 
 Ready to generate?
 ```
 
-#### Avid Confirmation Format
-
+**Avid Interplay:**
 ```
 SOW DETAILS:
   Template:    Avid Interplay Migration
@@ -123,8 +176,9 @@ SOW DETAILS:
   Free Storage:{free_storage} TB
   Hypervisor:  {hypervisor}
   Network:     {network}
-  Rental:      Yes / No  (derived from hypervisor — Yes only if NSA Proxmox)
+  Rental:      Yes / No  (derived from hypervisor)
   Date:        {date}
+  Save to:     {folder name}
   Doc name:    {client} Avid Interplay Migration SOW - {date}
 
   Unfilled (left as placeholders): {list any "don't know" items}
@@ -132,90 +186,104 @@ SOW DETAILS:
 Ready to generate?
 ```
 
-### Step 4: Generate
+Wait for explicit confirmation before proceeding.
 
-After the user approves, execute the following steps:
+### Step 4: Create the Document
 
-#### 4a. Duplicate the template
+1. **Find destination folder** (if not using default):
+   - Use `mcp__google-workspace__search_drive_files` to find the folder
+   - If multiple matches, ask which one
+   - If no match, offer to use default folder
 
-Use `copy_drive_file` to create a copy of the template in the user's Google Drive:
-- Use the Google Doc ID from the Template Registry (or user-provided override)
-- Set `new_name` to the SOW document name (e.g., "NSA MAM Migration SOW - March 2, 2026")
-- Save the **new document ID** from the response — all subsequent operations use this ID
+2. **Copy template**:
 
-#### 4b. Fill placeholders
+   *Migration:*
+   ```
+   mcp__google-workspace__copy_drive_file
+     file_id: 1QUNVJNaSUU5MztXAQHbjWTINKCJREkT8D1Kypf6WmAA
+     new_name: "{client} MAM Migration SOW - {date}"
+     parent_folder_id: {folder_id}
+   ```
 
-Run `find_and_replace_doc` calls to replace all placeholders. **Run these in parallel** for speed since they are independent.
+   *Avid Interplay:*
+   ```
+   mcp__google-workspace__copy_drive_file
+     file_id: 1wz7hGKQ_kOfKOrKxwk6AhzNNch2q4HHVOe7IxD5U3gg
+     new_name: "{client} Avid Interplay Migration SOW - {date}"
+     parent_folder_id: {folder_id}
+   ```
 
-**Migration template replacements:**
+3. **Replace placeholders** — run in parallel where possible. Use `match_case: true` for all.
 
-| find_text | replace_text |
-|-----------|-------------|
-| `#client` | Client name |
-| `#reseller` | Reseller name |
-| `#platform` | Source MAM platform |
-| `#date` | SOW date |
-| `#logo` | Client name (manual logo insertion later) |
+   *Migration:*
+   ```
+   find_and_replace_doc: #client   → {client}
+   find_and_replace_doc: #reseller → {reseller}
+   find_and_replace_doc: #platform → {platform}
+   find_and_replace_doc: #date     → {date}
+   find_and_replace_doc: #logo     → {client}   (temporary — note for manual logo insertion)
+   ```
 
-**Avid template replacements** (in addition to #client, #reseller, #date, #logo):
+   *Avid Interplay — batch 1 (shared placeholders):*
+   ```
+   find_and_replace_doc: #client   → {client}
+   find_and_replace_doc: #reseller → {reseller}
+   find_and_replace_doc: #date     → {date}
+   find_and_replace_doc: #logo     → {client}   (temporary — note for manual logo insertion)
+   ```
 
-| find_text | replace_text |
-|-----------|-------------|
-| `#destination` | Destination MAM |
-| `#total_data_size` | Total data size |
-| `#disk_data` | Disk data in TB |
-| `#clip_count` | Online clip count |
-| `#lto_data` | LTO data size or N/A |
-| `#archive_system` | Archive system type |
-| `#free_storage` | Free storage in TB |
-| `#hypervisor` | See Hypervisor Options in REFERENCE.md |
-| `#network` | See Network Options in REFERENCE.md |
+   *Avid Interplay — batch 2 (Avid-specific, skip any marked "don't know"):*
+   ```
+   find_and_replace_doc: #destination     → {destination}
+   find_and_replace_doc: #total_data_size → {total_data_size}
+   find_and_replace_doc: #disk_data       → {disk_data}
+   find_and_replace_doc: #clip_count      → {clip_count}
+   find_and_replace_doc: #lto_data        → {lto_data}
+   find_and_replace_doc: #archive_system  → {archive_system}
+   find_and_replace_doc: #free_storage    → {free_storage}
+   find_and_replace_doc: #hypervisor      → {hypervisor replacement text}
+   find_and_replace_doc: #network         → {network replacement text}
+   ```
 
-For "don't know" values, **skip the replacement** — leave the `#placeholder` text in the document.
+   **IMPORTANT**: After replacements, verify counts in the responses. If any replacement returns
+   0 matches, flag it — the template may have changed.
 
-**Hypervisor replacement values:**
-- Client VMWare → `Client-provided VMWare`
-- Client Proxmox → `Client-provided Proxmox`
-- NSA Proxmox → `NSA-provided Proxmox hardware`
+4. **Apply conditional logic** (Avid template only):
 
-**Network replacement values:**
-- 10Gb → `10Gb host bus adapter (HBA)`
-- 1Gb → `1Gb networking`
-- Bonded 1Gb → `Bonded 1Gb connections`
+   **Server rental** — If hypervisor is client-provided (VMWare or Proxmox):
+   ```
+   find_and_replace_doc: "Note: Server rental fees apply when NSA-provided hardware is used" → " "
+   ```
+   If NSA-provided, leave the note as-is.
 
-#### 4c. Apply conditional logic (section removal)
+   **Network caveats** — If network is 10Gb, remove the three caveat lines:
+   ```
+   find_and_replace_doc: "Note: 1Gb networking is supported; however, this will significantly increase the overall project timeline and may result in a Change Order" → " "
+   find_and_replace_doc: "NSA recommends bonded 1Gb connections minimum or installation of a 10Gb host bus adapter (HBA)" → " "
+   find_and_replace_doc: "All NSA-provided systems are equipped with multiple 1Gb and 10Gb network interfaces" → " "
+   ```
+   If network is 1Gb, Bonded 1Gb, or unknown, leave all caveats as-is.
 
-After all replacements are complete, remove conditional sections. This requires finding text positions and deleting ranges.
-
-**Migration template — Discovery excluded:**
-
-When discovery is excluded, remove two things:
-1. The deliverables reference line — use `find_and_replace_doc` to replace the line `Note: If the source {platform} system requires database discovery and extraction services, please see Exhibit 2: Discovery & Extraction Services (Optional) for more information` with empty string `""`
-2. The Exhibit 2 section — use `inspect_doc_structure` (with `detailed: true`) to find the start index of "Exhibit 2: Discovery & Extraction Services (Optional)" and the end index of "[END]", then use `batch_update_doc` with a `delete_text` operation to remove that range
-
-**Avid template — Client-provided hypervisor:**
-
-When hypervisor is Client VMWare or Client Proxmox, use `find_and_replace_doc` to replace the line containing "Server rental fees" with empty string.
-
-**Avid template — 10Gb network:**
-
-When network is 10Gb, use `find_and_replace_doc` to remove these three caveat lines (replace each with empty string):
-1. `Note: 1Gb networking is supported; however, this will significantly increase the overall project timeline and may result in a Change Order`
-2. `NSA recommends bonded 1Gb connections minimum or installation of a 10Gb host bus adapter (HBA)`
-3. `All NSA-provided systems are equipped with multiple 1Gb and 10Gb network interfaces`
-
-#### 4d. Verify
-
-After all operations, use `get_doc_content` to spot-check that placeholders were replaced and sections were removed correctly. Report any `#placeholder` text that remains.
+5. **Remove excluded sections** (Migration template, if Discovery & Extraction is excluded):
+   - Read the new document with `get_doc_content`
+   - The section to remove starts with "Exhibit 2: Discovery & Extraction Services (Optional)"
+   - It ends at "[END]" (the last line of the document)
+   - Also remove the reference to Exhibit 2 in the Deliverables section:
+     "Note: If the source #platform system requires database discovery..."
+   - Use `find_and_replace_doc` to replace identifiable single-line anchors with empty strings
+   - For multi-line removal, use `modify_doc_text` with start_index/end_index if needed
+   - **Caution**: Multi-line find_and_replace is fragile in Google Docs. Prefer short, unique
+     anchor strings. See Dead Ends in handoff.md for known issues.
 
 ### Step 5: Deliver
 
-Present the result to the user with the Google Doc link:
+Present the result:
 
+**Migration:**
 ```
 SOW GENERATED:
-  Document: {doc name}
-  Link:     {Google Doc link from copy_drive_file response}
+  Document: {client} MAM Migration SOW - {date}
+  Link:     {google_doc_link}
 
 Manual steps remaining:
   1. Replace "#logo" text with actual client/project logo
@@ -223,44 +291,53 @@ Manual steps remaining:
   3. Send to reseller for pricing and PO
 ```
 
-If there are unfilled placeholders, also show:
+**Avid Interplay:**
+```
+SOW GENERATED:
+  Document: {client} Avid Interplay Migration SOW - {date}
+  Link:     {google_doc_link}
 
+Manual steps remaining:
+  1. Replace "#logo" text with actual client/project logo
+  2. Review document for accuracy
+  3. Send to reseller for pricing and PO
+```
+
+If any placeholders were left unfilled:
 ```
   Unfilled placeholders (need manual entry):
-    - #total_data_size
-    - #disk_data
+    - #total_data_size (Total Estimated Data Size)
+    - #disk_data (Disk Data TB)
     ...
 ```
 
-If Discovery was excluded (Migration template):
-
+If Discovery & Extraction was excluded (Migration only):
 ```
   Note: Exhibit 2 (Discovery & Extraction) was removed.
+        The Deliverables reference to it was also removed.
 ```
 
-### Step 6: Next Steps
+### Step 6: Offer Next Steps
 
 After delivery, ask:
-
-"Want me to move this to a specific Drive folder, export a .docx or PDF, or generate another SOW?"
-
----
+> "Want me to export a PDF, share the doc with someone, or generate another SOW?"
 
 ## Error Handling
 
-| Scenario | What to do |
-|----------|-----------|
-| No Google Workspace MCP | Tell the user they need to configure Google Workspace access. Stop — do not attempt generation without it. |
-| Template copy fails | "The template may have moved. Do you have the current Google Doc link?" Prompt for a link, extract the Doc ID, and retry. |
-| Placeholder not found (0 matches) | Warning: "Placeholder `#foo` was not found in the template — the template may have changed. The document was still generated." |
-| Section removal fails | If `inspect_doc_structure` can't find section boundaries, warn the user and leave the section in place for manual removal. |
-| find_and_replace returns 0 | The placeholder text may have changed in the template. Warn but continue. |
-
----
+- **Copy fails**: Check if template doc ID is still valid. The template may have been moved or renamed.
+- **Replacement returns 0**: The placeholder text may have been changed in the template. Read the doc and search for similar text.
+- **Folder not found**: Default to `10l3uRO7-VCZ7ML6YvUmp3eooqBDyWhaQ` and tell the user.
+- **Permission error**: Remind user to check Google Workspace auth. May need to re-authenticate if session expired.
+- **Google Workspace timeout**: When sending many parallel find_and_replace calls, batch in groups of 6-8. Retry failures individually.
 
 ## Known Limitations
 
-- **`#logo` replacement is text-only** — replaces the `#logo` text with the client name. Actual logo image insertion requires manual editing.
-- **Document formatting is preserved** — `find_and_replace_doc` preserves the formatting of the original text.
-- **Section removal requires index calculation** — if the template structure changes significantly, `inspect_doc_structure` may need careful analysis to find correct deletion boundaries for Exhibit 2.
-- **Google Docs API only** — no local Python dependencies required. The `scripts/` directory contains a legacy local generation script as a fallback.
+- `#logo` replacement is text-only. Actual logo insertion requires manual editing in Google Docs.
+- Multi-line find_and_replace is unreliable. Always verify replacement counts.
+- Document formatting/styles from the template are preserved by copy, but any text inserted via the API comes in as plain text.
+- Removing lines via find_and_replace with `" "` (single space) leaves a blank line. This is a Google Docs API limitation — empty string replacement is rejected.
+
+---
+
+*Skill created: 2026-02-25*
+*Updated: 2026-02-25 — Added Avid Interplay Migration template support*
