@@ -36,16 +36,14 @@ The options index is a table on the first page of each template:
 | SSO | Deploy | External authentication (SSO/SAML) | — | — |
 | EDIT_PROXY | Deploy | ISG-based edit proxy (mezzanine) workflow | — | — |
 | VANTAGE | Deploy | Telestream Vantage transcoder config | — | — |
-| AWE | Deploy | AWE workflow engine deployment | — | awe_term |
-| DLR | Workflow | Gameday DLR auto-tagging | AWE | — |
-| EVS | Workflow | Gameday EVS/Evertz XML ingest | AWE | — |
-| INGEST_EXTRACT | Workflow | Gameday ingest extraction | AWE | — |
-| ARCHIVE_WF | Workflow | Archive workflow consulting/design | — | — |
+| AWE | Deploy | AWE workflow engine & Iconik connector | — | awe_term |
+| ARCHIVE_WF | Workflow | Archive workflow consulting/design & training | — | — |
 | REVIEW_WF | Workflow | Review & approval workflow | — | — |
 | REMOTE_EDIT | Workflow | Remote editorial with VFS | — | — |
 | CAMERA_INGEST | Workflow | Camera ingest / Telestream workflow | VANTAGE | — |
-| SUPPORT | Support | NSA support hour block | — | hour |
+| GAMEDAY | Workflow | Gameday bundle (Ingest Extraction + DLR + EVS) | AWE | — |
 | ADDL_TRAINING | Training | Additional training users/sessions | — | additional_training_users |
+| SUPPORT | Support | NSA support hour block | — | hour |
 
 **Column definitions:**
 - **Code**: Shortcode used as the XML-style tag in the document body
