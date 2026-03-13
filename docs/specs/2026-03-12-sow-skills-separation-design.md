@@ -1,6 +1,6 @@
 # SOW Skills Separation Design
 
-Split the monolithic `migration-sow-generator` skill into separate, self-contained skills — one per SOW type. Each skill is platform-agnostic (works as a Claude Code skill or a Gemini Gem) and follows a shared workflow pattern.
+Split the monolithic `migration-sow-generator` skill into separate, self-contained skills — one per SOW type. New skills are platform-agnostic (works as a Claude Code skill or a Gemini Gem). The existing migration skill retains its Claude-specific tool syntax for now and can be converted later.
 
 ## Skills
 
@@ -15,7 +15,7 @@ Split the monolithic `migration-sow-generator` skill into separate, self-contain
 ## Design Principles
 
 1. **Self-contained** — Each skill duplicates the shared workflow pattern. No cross-file references. This makes each skill independently pasteable into a Gemini Gem.
-2. **Platform-agnostic** — Operations described abstractly ("Copy the template", "Replace `#client`", "Remove content between `<TAG>` markers"). No tool-specific call syntax (no `mcp__*`, no `gws` CLI commands). The executing LLM uses whatever Google Workspace tools are available on its platform.
+2. **Platform-agnostic (new skills only)** — Operations described abstractly ("Copy the template", "Replace `#client`", "Remove content between `<TAG>` markers"). No tool-specific call syntax (no `mcp__*`, no `gws` CLI commands). The executing LLM uses whatever Google Workspace tools are available on its platform. The existing migration skill keeps its Claude-specific MCP tool syntax and can be converted to platform-agnostic later.
 3. **Context-aware interview** — Users may provide notes, a BOM, or pasted data alongside the command. The skill parses available context first and switches to verify mode rather than asking every question from scratch.
 4. **One question at a time** — When asking questions (fresh or verification), present one topic per message.
 
@@ -73,12 +73,14 @@ Offer: export PDF, share the doc, or generate another SOW.
 
 ## 1. migration-sow-generator Cleanup
 
+**Note:** This skill retains its Claude-specific MCP tool syntax (`mcp__google-workspace__*`). Platform-agnostic conversion is deferred — it works fine as-is.
+
 **Changes:**
 - Rename slash command: `/sow` → `/sow-migration`
 - Remove Iconik and CatDV rows from the Templates table
 - Remove the fallback logic: "If they ask for Iconik or CatDV Up and Running, tell them those templates haven't been integrated..."
-- Add Context Intake step (Step 0) to the process
-- No other changes — the existing interview, placeholder, and conditional logic stays as-is
+- Add Context Intake step (Step 0) to the process: If the user provides notes or context alongside the command, parse them to extract client name, reseller, source platform, and (for Avid) infrastructure details. If enough context exists to determine the template type (MAM vs Avid), skip the template selection question. Present extracted values for verification before proceeding to the standard interview for any remaining gaps.
+- No other changes — the existing interview, placeholder, conditional logic, and MCP tool calls stay as-is
 
 ---
 
@@ -151,7 +153,7 @@ Offer: export PDF, share the doc, or generate another SOW.
 8. **Custom workflows** — "Which custom workflows? (Archive WF, Review & Approval, Remote Edit, Camera Ingest — select all that apply, or none)" — enforce Camera Ingest requires Vantage
 9. **Additional training** — "Additional training beyond the base 5 power users?" → if yes: "How many additional users?" (`#additional_training_users`)
 10. **Support** — "Include NSA support hour block, or declined?" → if support: "How many hours?" (`#hour`)
-11. **Date** — "What date for the SOW? Default: today"
+11. **Date** — "What date for the SOW? Default: today" *(Format as full month, e.g., "March 12, 2026")*
 12. **Destination folder** — Use default unless told otherwise.
 
 ### Confirmation Summary
@@ -183,19 +185,23 @@ Ready to generate?
 
 After copying the template and replacing all `#variable` placeholders:
 
-1. **Selected option:** Remove the `<TAG>` and `</TAG>` markers. Keep all content between them.
-2. **Excluded option:** Remove the `<TAG>` marker, the `</TAG>` marker, and all content between them.
+1. **Selected option:** Remove the `<TAG>` and `</TAG>` markers. Keep all content between them. Use find-and-replace to replace each tag marker with a single space (Google Docs API rejects empty-string replacements).
+2. **Excluded option:** Remove the `<TAG>` marker, the `</TAG>` marker, and all content between them. For inline tags (e.g., `<AWE>AWE Deployment</AWE>` on a single line), find-and-replace the entire string with a single space. For block tags spanning multiple lines, use index-based deletion if the platform supports it, or iterative find-and-replace on identifiable anchor lines within the block.
 3. **Parent tag rollup:** If all children of a parent tag are excluded, apply rule 2 to the parent tag:
    - DEPLOY_OPTIONS — if none of CLOUD_ARCHIVE, SSO, EDIT_PROXY, VANTAGE selected
    - CUSTOM_WORKFLOWS — if none of ARCHIVE_WF, REVIEW_WF, REMOTE_EDIT, CAMERA_INGEST, GAMEDAY selected
-   - CUSTOM_WF_CHECKLIST — mirrors CUSTOM_WORKFLOWS (same rollup logic, applied in Exhibit 1)
-4. **GAMEDAY dual-parent:** GAMEDAY content appears in both `<AWE>` and `<CUSTOM_WORKFLOWS>`. Remove or keep consistently in both locations.
+   - CUSTOM_WF_CHECKLIST — mirrors CUSTOM_WORKFLOWS in Exhibit 1. Contains individually tagged children (`<ARCHIVE_WF>`, `<REVIEW_WF>`, `<REMOTE_EDIT>`, `<CAMERA_INGEST>`, `<GAMEDAY>`) that follow the same include/exclude rules. Remove entire section when all children are excluded.
+4. **GAMEDAY dual-parent:** The template contains TWO separate `<GAMEDAY>...</GAMEDAY>` blocks — one nested inside `<AWE>` (deployment items) and one nested inside `<CUSTOM_WORKFLOWS>` (workflow descriptions). Process both blocks identically: if GAMEDAY is selected, strip tags from both; if excluded, remove tags and content from both. Since GAMEDAY requires AWE, GAMEDAY can never be selected when AWE is excluded (the dependency rule prevents this contradiction).
 5. **SUPPORT/SUPPORT_DECLINED mutual exclusion:** The selected one keeps its content (tags stripped). The excluded one has tags and content removed.
 6. **Processing order:** Process child tags before parent tags (bottom-up). This ensures parent rollup detection works correctly.
+7. **Batching:** When performing many find-and-replace operations, batch in groups of 6-8 to avoid API timeouts. Retry failures individually.
 
 ### Also Remove
 
-After tag processing, also remove the **SOW Options Index** section and the **Global Variables** table from the top of the generated document. These are reference material for the generator, not client-facing content.
+After tag processing, remove the generator reference material from the top of the document. This content is not client-facing:
+- The section headed **"SOW Options Index"** — from the heading through the end of the Options Index table (12 data rows + header)
+- The introductory paragraph below it (starting with "This table defines all optional sections...")
+- The section headed **"Global Variables (always collected)"** — from the heading through the end of the Global Variables table (7 data rows + header)
 
 ### Delivery
 
