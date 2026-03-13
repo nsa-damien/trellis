@@ -30,6 +30,15 @@ Trellis is an AI-native development workflow plugin for Claude Code. Two-command
 | `/trellis:context-handoff` | Generate handoff document for session continuity |
 | `/trellis:context-resume` | Resume work from a handoff document |
 
+### SOW Generators
+| Skill | Purpose |
+|-------|---------|
+| `/trellis:migration-sow-generator` | **Migration SOWs** — MAM and Avid Interplay migration (`/sow-migration`) |
+| `/trellis:iconik-sow-generator` | **Iconik Up and Running SOW** — full interview + tag processing (`/sow-iconik`) |
+| `/trellis:catdv-sow-generator` | **CatDV Up and Running SOW** — placeholder (`/sow-catdv`) |
+| `/trellis:catdv-upgrade-sow-generator` | **CatDV Upgrade/Cloud Migration SOW** — placeholder (`/sow-catdv-upgrade`) |
+| `/trellis:dhub-ott-sow-generator` | **Dhub OTT SOW** — placeholder (`/sow-dhub`) |
+
 ### Knowledge
 | Skill | Purpose |
 |-------|---------|

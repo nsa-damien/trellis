@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `iconik-sow-generator` skill (`/sow-iconik`) — full interview flow with tag-based conditional logic for Iconik Up and Running SOWs
+- `catdv-sow-generator` skill (`/sow-catdv`) — placeholder for CatDV Up and Running SOWs
+- `catdv-upgrade-sow-generator` skill (`/sow-catdv-upgrade`) — placeholder for CatDV Upgrade & Cloud Migration SOWs
+- `dhub-ott-sow-generator` skill (`/sow-dhub`) — placeholder for Dhub OTT SOWs
+
+### Changed
+
+- Renamed `migration-sow-generator` slash command from `/sow` to `/sow-migration`
+- Removed Iconik and CatDV references from migration-sow-generator (now separate skills)
+- Added Context Intake (Step 0) to migration-sow-generator for pre-filled interviews
+
 ## [0.17.0] - 2026-03-06
 
 ### Changed
