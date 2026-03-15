@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.18.0] - 2026-03-15
+
 ### Added
 
 - `repo-docs-generator` skill — three-document package (Technical Overview, Deployment Guide, User Guide) from any codebase with turn-based interview
@@ -441,7 +443,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Architecture documentation explaining the spec-kit/beads bridge
 - AGENTS.md snippet for automatic beads awareness in Claude Code
 
-[Unreleased]: https://github.com/NorthShoreAutomation/trellis/compare/v0.16.0...HEAD
+[Unreleased]: https://github.com/NorthShoreAutomation/trellis/compare/v0.18.0...HEAD
+[0.18.0]: https://github.com/NorthShoreAutomation/trellis/compare/v0.17.0...v0.18.0
+[0.17.0]: https://github.com/NorthShoreAutomation/trellis/compare/v0.16.0...v0.17.0
 [0.16.0]: https://github.com/NorthShoreAutomation/trellis/compare/v0.15.1...v0.16.0
 [0.15.1]: https://github.com/NorthShoreAutomation/trellis/compare/v0.15.0...v0.15.1
 [0.15.0]: https://github.com/NorthShoreAutomation/trellis/compare/v0.14.0...v0.15.0
