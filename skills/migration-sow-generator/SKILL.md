@@ -9,7 +9,7 @@ compatibility: marvin
 metadata:
   marvin-category: work
   user-invocable: true
-  slash-command: /sow
+  slash-command: /sow-migration
   model: default
   proactive: false
 ---
@@ -24,8 +24,8 @@ Generate client Statements of Work from NSA templates via Google Docs.
 |----------|---------------|--------|
 | MAM Migration | `1QUNVJNaSUU5MztXAQHbjWTINKCJREkT8D1Kypf6WmAA` | Active |
 | Avid Interplay Migration | `1wz7hGKQ_kOfKOrKxwk6AhzNNch2q4HHVOe7IxD5U3gg` | Active |
-| Iconik Up and Running | `1llE-VLSF_ivYrCSXdMvuoXECcCbd8TkSJzWWURzerOg` | Not yet integrated |
-| CatDV Up and Running | `13I-g12freK_Z2OjVC181Jt4rKdkHL3YP3b_-E9JXo18` | Not yet integrated |
+
+See also: `/sow-iconik`, `/sow-catdv`, `/sow-catdv-upgrade`, `/sow-dhub`
 
 ## Placeholder Reference — Migration Template
 
@@ -96,6 +96,13 @@ The three conditional lines after the Network placeholder:
 
 ## Process
 
+### Step 0: Context Intake
+
+Check if the user provided text alongside the command (notes, BOM, email, etc.).
+
+- **If context provided:** Parse the text to extract client name, reseller, source platform, and (for Avid) infrastructure details (data size, hypervisor, network, etc.). If context mentions "Avid", "Interplay", "OP-1a", or "MXF", auto-select the Avid template. Present extracted values for verification, then proceed to the standard interview for any gaps.
+- **If no context:** Proceed to Step 1.
+
 ### Step 1: Select Template
 
 If the user specified a template type in their input (e.g., "/sow migration", "/sow avid"), skip this question.
@@ -106,9 +113,6 @@ Otherwise ask:
 > 2. **Avid Interplay Migration** — Avid-specific with media processing, VM deployment, and infrastructure variables
 
 Shortcut detection: If the user mentions "Avid", "Interplay", "OP-1a", or "MXF" → select Avid template.
-
-If they ask for Iconik or CatDV Up and Running, tell them those templates
-haven't been integrated into the workflow yet and offer to generate manually.
 
 ### Step 2: Interview
 
@@ -340,4 +344,4 @@ After delivery, ask:
 ---
 
 *Skill created: 2026-02-25*
-*Updated: 2026-02-25 — Added Avid Interplay Migration template support*
+*Updated: 2026-03-12 — Renamed to /sow-migration, added Context Intake, removed non-migration templates*

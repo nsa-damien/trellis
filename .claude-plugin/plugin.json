@@ -1,12 +1,12 @@
 {
   "name": "trellis",
-  "description": "AI-native development workflow plugin for Claude Code",
-  "version": "0.16.0",
+  "description": "AI-native workflow framework for Claude Code — development, client deliverables, documentation, and domain knowledge",
+  "version": "0.18.0",
   "author": {
     "name": "NorthShoreAutomation",
     "email": "support@northshoreautomation.com"
   },
   "repository": "https://github.com/NorthShoreAutomation/trellis",
   "license": "MIT",
-  "keywords": ["workflow", "agents", "development", "automation"]
+  "keywords": ["workflow", "agents", "development", "automation", "sow", "documentation", "google-docs"]
 }
