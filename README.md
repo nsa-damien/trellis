@@ -1,15 +1,31 @@
 # Trellis
 
-> An AI-native development workflow plugin for Claude Code — describe what you want, approve the approach, walk away.
+> An AI-native workflow framework for Claude Code — development, client deliverables, documentation, and domain knowledge in one plugin.
 
 ## What It Does
 
-Trellis gives Claude Code an autonomous development workflow. Two commands:
+Trellis is North Shore Automation's framework for working with AI. It started as a development workflow plugin and has grown into a comprehensive set of skills covering the full project lifecycle — from pre-sales discovery through implementation to delivery.
 
-1. **`/trellis:scope "description"`** — Creates a branch, proposes an approach, implements with parallel agents, tests, commits, pushes, and opens a PR. One approval, then hands-off.
+### Development Workflow
+
+Two-command lifecycle: describe what you want, approve the approach, walk away.
+
+1. **`/trellis:scope "description"`** — Creates a branch, proposes an approach, implements with parallel agents, tests, commits, pushes, and opens a PR.
 2. **`/trellis:release`** — Merges the PR, tags, and publishes a GitHub release.
 
-Everything else is supporting infrastructure or manual escape hatches.
+### Client Deliverables
+
+Interview-driven document generators that produce ready-to-review Google Docs:
+
+- **SOW Generators** — Statements of Work for Iconik, CatDV, Dhub OTT, and media migration projects. Template-driven with conditional logic.
+- **Project Requirements** — Client-facing requirements documents for approval before SOW/pricing phase.
+- **Meeting Summaries** — Professional recap emails with Calendar integration for attendee lookup.
+
+### Documentation & Knowledge
+
+- **Repo Docs Generator** — Three-document package (Technical Overview, Deployment Guide, User Guide) from any codebase.
+- **Hybrid Search** — Expert guidance for PostgreSQL + OpenSearch systems over transcribed media.
+- **Library Assistant** — Design guide for conversational media library assistants.
 
 ## Installation
 
@@ -43,26 +59,38 @@ Or add to `~/.claude/settings.json`:
 
 ## Skills
 
-### Primary Workflow
+### Development Workflow
 | Skill | Purpose |
 |-------|---------|
 | `/trellis:scope` | **Start new work** — branch + implement + push + PR |
 | `/trellis:release` | **Ship it** — merge + tag + GitHub release |
-
-### Supporting
-| Skill | Purpose |
-|-------|---------|
 | `/trellis:implement` | Autonomous build engine (also available standalone) |
 | `/trellis:status` | Project health, ready work, branch state |
-| `/trellis:codemap` | Generate/update CODEMAP.yaml for LLM code navigation |
-| `/trellis:context-handoff` | Save session context to `handoff.md` |
-| `/trellis:context-resume` | Resume from a `handoff.md` with drift detection |
 
-### Knowledge
+### Client Deliverables
 | Skill | Purpose |
 |-------|---------|
-| `/trellis:hybrid-search` | Hybrid search systems (PostgreSQL + OpenSearch + Cohere embeddings) |
+| `/sow-iconik` | **Iconik Up and Running SOW** — template-driven interview + conditional logic |
+| `/sow-migration` | **Migration SOWs** — MAM and Avid Interplay migration |
+| `/sow-catdv` | **CatDV Up and Running SOW** *(placeholder)* |
+| `/sow-catdv-upgrade` | **CatDV Upgrade/Cloud Migration SOW** *(placeholder)* |
+| `/sow-dhub` | **Dhub OTT SOW** *(placeholder)* |
+| `/trellis:project-requirements` | Client-facing requirements document for pre-SOW approval |
+| `/trellis:meeting-summary` | Meeting recap emails with Calendar attendee lookup |
+
+### Documentation & Knowledge
+| Skill | Purpose |
+|-------|---------|
+| `/trellis:repo-docs-generator` | Three-document package from any codebase |
+| `/trellis:codemap` | Generate/update CODEMAP.yaml for LLM code navigation |
+| `/trellis:hybrid-search` | Hybrid search systems (PostgreSQL + OpenSearch + Cohere) |
 | `/trellis:library-assistant` | Conversational media library assistant design |
+
+### Session Management
+| Skill | Purpose |
+|-------|---------|
+| `/trellis:context-handoff` | Save session context to `handoff.md` |
+| `/trellis:context-resume` | Resume from a `handoff.md` with drift detection |
 
 ### Escape Hatches
 | Skill | Purpose |
@@ -72,7 +100,7 @@ Or add to `~/.claude/settings.json`:
 
 ## Agents
 
-Specialized agents that `/trellis:implement` dispatches in parallel:
+Specialized agents dispatched by `/trellis:implement` based on task type:
 
 | Agent | Focus |
 |-------|-------|
@@ -89,14 +117,16 @@ Specialized agents that `/trellis:implement` dispatches in parallel:
 ## Quick Start
 
 ```bash
-# 1. Map your codebase (recommended for new projects)
-/trellis:codemap
+# Development workflow
+/trellis:codemap                              # Map your codebase (recommended first step)
+/trellis:scope "add a health check endpoint"  # Build something
+/trellis:release                              # Ship it
 
-# 2. Build something
-/trellis:scope "add a health check endpoint"
+# Generate a Statement of Work
+/sow-iconik                                   # Start the Iconik SOW interview
 
-# 3. Ship it
-/trellis:release
+# Document a repository
+/trellis:repo-docs-generator                  # Three-document package
 ```
 
 ## Development
@@ -106,11 +136,12 @@ git clone https://github.com/NorthShoreAutomation/trellis.git
 claude --plugin-dir /path/to/trellis
 ```
 
-Changes to skills and agents take effect on restart.
+Skills are markdown files in `skills/<skill-name>/SKILL.md` and agents are defined in `agents/`. Changes require restart to take effect.
 
 ## Documentation
 
 - [Changelog](CHANGELOG.md) — Version history
+- [Release Notes](docs/release/) — Per-version details
 
 ## License
 

@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- `repo-docs-generator` skill — three-document package (Technical Overview, Deployment Guide, User Guide) from any codebase with turn-based interview
 - `iconik-sow-generator` skill (`/sow-iconik`) — full interview flow with tag-based conditional logic for Iconik Up and Running SOWs
 - `catdv-sow-generator` skill (`/sow-catdv`) — placeholder for CatDV Up and Running SOWs
 - `catdv-upgrade-sow-generator` skill (`/sow-catdv-upgrade`) — placeholder for CatDV Upgrade & Cloud Migration SOWs
@@ -16,9 +17,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Refactored `iconik-sow-generator` to read variables and options from the template at runtime — template is now single source of truth, no hardcoded variable or option lists in the skill
+- Restructured iconik SOW interview flow: global variables first, then context intake, then options interview for remaining gaps
+- Added logo URL insertion via `insertInlineImage` (optional, with manual fallback)
+- Removed `user_count`, `group_count`, `acl_count` variables from iconik SOW (not needed)
+- Removed marvin compatibility metadata from iconik SOW (skill targets Claude Code and Gemini gems)
 - Renamed `migration-sow-generator` slash command from `/sow` to `/sow-migration`
 - Removed Iconik and CatDV references from migration-sow-generator (now separate skills)
 - Added Context Intake (Step 0) to migration-sow-generator for pre-filled interviews
+- Updated README, CLAUDE.md, and plugin manifest to reflect expanded scope beyond development workflow — Trellis is now an AI-native workflow framework covering development, client deliverables, documentation, and domain knowledge
 
 ## [0.17.0] - 2026-03-06
 
