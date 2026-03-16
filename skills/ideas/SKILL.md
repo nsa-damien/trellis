@@ -42,12 +42,13 @@ Capture a new idea. If the user provided the idea inline, skip step 1.
    - **High** — meaningfully changes how users work, unlocks new capability, or removes significant friction
    - **Medium** — clear improvement, nice to have, moderate reach
    - **Low** — minor polish, edge case, or affects few users
-5. Ask: "Rough effort estimate — small, medium, or large?"
-   - **Small** — an hour or less, straightforward change
-   - **Medium** — a focused session, some complexity
-   - **Large** — multiple sessions, significant design or implementation work
+5. **Estimate effort yourself** — do not ask the user. Assess the effort based on your understanding of the project's codebase, architecture, and the scope of the idea:
+   - **Small** — an hour or less, straightforward change (e.g., config tweak, copy change, adding a field)
+   - **Medium** — a focused session, some complexity (e.g., new skill, refactoring a workflow, adding a feature with a few moving parts)
+   - **Large** — multiple sessions, significant design or implementation work (e.g., new architecture, cross-cutting changes, external integrations)
+   State your estimate and a one-sentence rationale when presenting the confirmation. The user can override if they disagree.
 6. Write the new idea to `docs/IDEAS.md` under the appropriate section
-7. Confirm: "Added: **{title}** ({category}, {impact} impact, {effort} effort)"
+7. Confirm: "Added: **{title}** ({category}, {impact} impact, {effort} effort — *{rationale}*)"
 
 ### List
 
@@ -89,7 +90,7 @@ PRIORITY MATRIX (impact × effort):
 Interactive prioritization session. Walk through active ideas and help the user reassess.
 
 1. Present active ideas sorted by current priority (high impact + small effort first)
-2. For each idea, show the current ratings and ask: "Still accurate? Change impact/effort, promote, drop, or skip?"
+2. For each idea, show the current ratings. Re-evaluate the effort estimate yourself based on current project state — if your assessment differs from the recorded value, flag it (e.g., "Effort: medium → I'd now call this small since we added the X framework"). Then ask: "Still accurate? Change impact, promote, drop, or skip?"
 3. Accept quick responses: "skip", "drop", "promote", "impact high", "effort small", etc.
 4. After reviewing all ideas (or when the user says "done"), save updates and show the updated priority matrix
 
