@@ -44,8 +44,9 @@ Collect the global variables first, one at a time. These establish the basics of
 
 | Variable | Interview Rule |
 |----------|---------------|
-| `#client` | Always ask first: "What's the client name?" |
-| `#reseller` | Always ask second: "Who's the reseller?" |
+| `#client-code` | Always ask first: "What's the client code?" (e.g., "ACME", "NBC") |
+| `#client` | Always ask second: "What's the client name?" |
+| `#reseller` | Always ask third: "Who's the reseller?" |
 | `#date` | Ask last among globals: "What date for the SOW? Default: today" — format as full month (e.g., "March 12, 2026") |
 | `#logo` | Ask: "Do you have a link to the client or project logo? If not, no worries — it can be added manually later." If a URL is provided, insert it using `insertInlineImage` during generation. If skipped, note for manual insertion at delivery. |
 | *(any other)* | Ask using the Description from the Global Variables table |
@@ -120,7 +121,7 @@ SOW DETAILS:
 
   Date:        {date}
   Save to:     {folder name}
-  Doc name:    {client} Iconik Up and Running SOW - {date}
+  Doc name:    {client-code} {client} Iconik Up and Running SOW - {date}
 
 Ready to generate?
 ```
@@ -135,7 +136,7 @@ Use the folder ID collected during the interview (either extracted from the user
 
 #### 5b. Copy template
 
-Copy the template document `1llE-VLSF_ivYrCSXdMvuoXECcCbd8TkSJzWWURzerOg` to the destination folder with name: `{client} Iconik Up and Running SOW - {date}`
+Copy the template document `1llE-VLSF_ivYrCSXdMvuoXECcCbd8TkSJzWWURzerOg` to the destination folder with name: `{client-code} {client} Iconik Up and Running SOW - {date}`
 
 #### 5c. Replace global variables
 
@@ -178,7 +179,7 @@ Present the result:
 
 ```
 SOW GENERATED:
-  Document: {client} Iconik Up and Running SOW - {date}
+  Document: {client-code} {client} Iconik Up and Running SOW - {date}
   Link:     {google_doc_link}
 
 Manual steps remaining:

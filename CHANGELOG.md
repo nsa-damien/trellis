@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.19.1] - 2026-03-16
+
+### Changed
+
+- `iconik-sow-generator` now collects a client code during the interview and uses it in the document name (`{client-code} {client} Iconik Up and Running SOW - {date}`)
+
 ## [0.19.0] - 2026-03-16
 
 ### Added
