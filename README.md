@@ -66,6 +66,7 @@ Or add to `~/.claude/settings.json`:
 | `/trellis:release` | **Ship it** — merge + tag + GitHub release |
 | `/trellis:implement` | Autonomous build engine (also available standalone) |
 | `/trellis:status` | Project health, ready work, branch state |
+| `/trellis:ideas` | Capture, track, and prioritize project ideas |
 
 ### Client Deliverables
 | Skill | Purpose |

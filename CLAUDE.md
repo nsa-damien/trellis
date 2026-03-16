@@ -26,6 +26,7 @@ Trellis is North Shore Automation's AI-native workflow framework for Claude Code
 | `/trellis:release` | **Ship it** — merge + tag + GitHub release |
 | `/trellis:implement` | Autonomous build engine (used by scope, or standalone for additional work) |
 | `/trellis:status` | Project health, ready work, branch state |
+| `/trellis:ideas` | Capture, track, and prioritize project ideas in `docs/IDEAS.md` |
 
 ### Client Deliverables
 | Skill | Purpose |
@@ -78,6 +79,7 @@ skills/                        # Trellis skills (*/SKILL.md)
   implement/                   # Autonomous build engine
   release/                     # Merge, tag, publish
   status/                      # Project health + ready work
+  ideas/                       # Idea capture and prioritization
   codemap/                     # Codebase navigation map
   context-handoff/             # Session continuity handoff generator
   context-resume/              # Resume from handoff document

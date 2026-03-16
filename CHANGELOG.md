@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `ideas` skill (`/trellis:ideas`) — capture, track, and prioritize project ideas in `docs/IDEAS.md` with add, list, review, and promote operations
+
 ## [0.18.1] - 2026-03-16
 
 ### Changed
