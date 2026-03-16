@@ -1,7 +1,7 @@
 {
   "name": "trellis",
   "description": "AI-native workflow framework for Claude Code — development, client deliverables, documentation, and domain knowledge",
-  "version": "0.18.1",
+  "version": "0.19.0",
   "author": {
     "name": "NorthShoreAutomation",
     "email": "support@northshoreautomation.com"
