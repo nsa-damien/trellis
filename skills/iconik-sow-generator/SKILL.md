@@ -101,7 +101,10 @@ Group the Options Index rows by Category. For each category, present the options
 
 #### Destination
 
-Ask for the destination folder. Use the default unless told otherwise.
+Ask: "Where should I save the finished SOW? Paste a Google Drive folder link, or I can use the default SOW folder."
+
+- **If link provided:** Extract the folder ID from the URL (e.g., `https://drive.google.com/drive/folders/{FOLDER_ID}`) and use it as the destination.
+- **If "default" or skipped:** Use the default folder `10l3uRO7-VCZ7ML6YvUmp3eooqBDyWhaQ`.
 
 ### Step 4: Confirm
 
@@ -126,9 +129,9 @@ Wait for explicit confirmation before proceeding.
 
 ### Step 5: Create the Document
 
-#### 5a. Find destination folder (if not using default)
+#### 5a. Resolve destination folder
 
-Search Google Drive for the folder name. If multiple matches, ask which one. If no match, use default folder `10l3uRO7-VCZ7ML6YvUmp3eooqBDyWhaQ`.
+Use the folder ID collected during the interview (either extracted from the user's link or the default `10l3uRO7-VCZ7ML6YvUmp3eooqBDyWhaQ`).
 
 #### 5b. Copy template
 
@@ -204,7 +207,7 @@ After delivery, ask:
 
 - **Copy fails:** Template doc ID may have changed. Read the template doc to verify.
 - **Replacement returns 0:** Placeholder text may have changed in the template. Search for similar text.
-- **Folder not found:** Fall back to default folder `10l3uRO7-VCZ7ML6YvUmp3eooqBDyWhaQ`.
+- **Folder not accessible:** If the provided folder ID returns a permission error, inform the user and ask for a different link. Fall back to default folder `10l3uRO7-VCZ7ML6YvUmp3eooqBDyWhaQ` if requested.
 - **Permission error:** Check Google Workspace authentication.
 - **API timeout:** When performing many find-and-replace operations, batch in groups of 6-8. Retry failures individually.
 
